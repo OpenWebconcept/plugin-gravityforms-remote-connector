@@ -60,6 +60,7 @@ class Plugin
         $this->config->boot();
 
         $this->loader = Loader::getInstance();
+        $this->loader->addAction('wp_enqueue_scripts', $this, 'enqueueScripts');
 
         $this->bootServiceProviders();
 
@@ -67,26 +68,13 @@ class Plugin
     }
 
     /**
-     * Boot service providers
+     * Enqueue scripts within WordPress.
+     *
+     * @return void
      */
-    private function bootServiceProviders()
+    public function enqueueScripts()
     {
-        $services = $this->config->get('core.providers');
-
-        foreach ($services as $service) {
-            // Only boot global service providers here.
-            if (is_array($service)) {
-                continue;
-            }
-
-            $service = new $service($this);
-
-            if (!$service instanceof ServiceProvider) {
-                throw new Exception('Provider must extend ServiceProvider.');
-            }
-
-            $service->register();
-        }
+        wp_enqueue_script('irma-js', $this->resourceUrl('irma.js'), false);
     }
 
     /**
@@ -128,6 +116,29 @@ class Plugin
      */
     public function resourceUrl($file)
     {
-        return plugins_url('resources/' . $file, 'yard-blocks/plugin.php');
+        return plugins_url('resources/' . $file, 'irma-wp/plugin.php');
+    }
+
+    /**
+     * Boot service providers
+     */
+    protected function bootServiceProviders()
+    {
+        $services = $this->config->get('core.providers');
+
+        foreach ($services as $service) {
+            // Only boot global service providers here.
+            if (is_array($service)) {
+                continue;
+            }
+
+            $service = new $service($this);
+
+            if (!$service instanceof ServiceProvider) {
+                throw new Exception('Provider must extend ServiceProvider.');
+            }
+
+            $service->register();
+        }
     }
 }
