@@ -63,24 +63,24 @@ class GravityFormsServiceProvider extends ServiceProvider
                             'irma-demo.nijmegen.bsn.bsn'
                         ]
                     ],
-                    [
-                        'label' => 'Straat',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.street'
-                        ],
-                    ],
-                    [
-                        'label' => 'Huisnummer',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.houseNumber'
-                        ],
-                    ],
-                    [
-                        'label' => 'Stad',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.city'
-                        ],
-                    ],
+                    // [
+                    //     'label' => 'Straat',
+                    //     'attributes' => [
+                    //         'irma-demo.nijmegen.address.street'
+                    //     ],
+                    // ],
+                    // [
+                    //     'label' => 'Huisnummer',
+                    //     'attributes' => [
+                    //         'irma-demo.nijmegen.address.houseNumber'
+                    //     ],
+                    // ],
+                    // [
+                    //     'label' => 'Stad',
+                    //     'attributes' => [
+                    //         'irma-demo.nijmegen.address.city'
+                    //     ],
+                    // ],
                 ]
             ])
         ]);

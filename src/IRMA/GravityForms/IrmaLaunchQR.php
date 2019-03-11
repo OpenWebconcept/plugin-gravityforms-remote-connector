@@ -41,6 +41,11 @@ class IrmaLaunchQR extends GF_Field
         return $input;
     }
 
+    public function validate($value, $form)
+    {
+        $this->failed_validation = false;
+    }
+
     public function get_form_editor_button()
     {
         return [

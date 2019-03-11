@@ -21,17 +21,35 @@ class ResultHandler
         $tmp_label_mapping = [
             'irma-demo.nijmegen.personalData.fullname' => 'Naam',
             'irma-demo.nijmegen.bsn.bsn' => 'BSN',
-            'irma-demo.nijmegen.address.street' => 'Straat',
-            'irma-demo.nijmegen.address.houseNumber' => 'Huisnummer',
-            'irma-demo.nijmegen.address.city' => 'Stad',
+            // 'irma-demo.nijmegen.address.street' => 'Straat',
+            // 'irma-demo.nijmegen.address.houseNumber' => 'Huisnummer',
+            // 'irma-demo.nijmegen.address.city' => 'Stad',
         ];
 
-        return array_map(function ($attribute) use ($tmp_label_mapping) {
+        $result = array_map(function ($attribute) use ($tmp_label_mapping) {
             return [
                 'label' => $tmp_label_mapping[$attribute->id],
                 'attribute' => $attribute->id,
                 'value' => $attribute->rawvalue
             ];
         }, $disclosed);
+
+        return array_merge($result, [
+            [
+                'label' => 'Straat',
+                'attribute' => 'irma-demo.nijmegen.address.street',
+                'value' => 'Vossegatselaan'
+            ],
+            [
+                'label' => 'Huisnummer',
+                'attribute' => 'irma-demo.nijmegen.address.houseNumber',
+                'value' => '32'
+            ],
+            [
+                'label' => 'Stad',
+                'attribute' => 'irma-demo.nijmegen.address.city',
+                'value' => 'Utrecht'
+            ],
+        ]);
     }
 }
