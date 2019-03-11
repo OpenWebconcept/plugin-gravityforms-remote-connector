@@ -38,6 +38,9 @@
 
 					qrCanvas.hide();
 					results.animate({ height: height });
+				})
+				.catch(function (response) {
+					console.warn(response);
 				});
 		});
 	});

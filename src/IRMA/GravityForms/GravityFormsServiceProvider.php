@@ -56,10 +56,34 @@ class GravityFormsServiceProvider extends ServiceProvider
                 'type' => 'disclosing',
                 'content' => [
                     [
-                        'label' => 'Over 18',
+                        'label' => 'Naam',
                         'attributes' => [
-                            'irma-demo.nijmegen.ageLimits.over18'
+                            'irma-demo.nijmegen.personalData.fullname'
                         ]
+                    ],
+                    [
+                        'label' => 'BSN',
+                        'attributes' => [
+                            'irma-demo.nijmegen.bsn.bsn'
+                        ]
+                    ],
+                    [
+                        'label' => 'Straat',
+                        'attributes' => [
+                            'irma-demo.nijmegen.address.street'
+                        ],
+                    ],
+                    [
+                        'label' => 'Huisnummer',
+                        'attributes' => [
+                            'irma-demo.nijmegen.address.houseNumber'
+                        ],
+                    ],
+                    [
+                        'label' => 'Stad',
+                        'attributes' => [
+                            'irma-demo.nijmegen.address.city'
+                        ],
                     ],
                 ]
             ])
