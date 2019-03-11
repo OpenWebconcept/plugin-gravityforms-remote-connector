@@ -4,13 +4,17 @@ namespace IRMA\WP\GravityForms;
 
 use GF_Fields;
 use IRMA\WP\Foundation\ServiceProvider;
+<<<<<<< HEAD
 
 //use IRMA\WP\GravityForms\IRMAFieldAddOn;
+=======
+>>>>>>> feature/extend-gravityforms-mike
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
     public function register()
     {
+<<<<<<< HEAD
         add_action('rest_api_init', function () {
             register_rest_route('irma/v1', '/gf/handle', [
                 'methods' => 'POST',
@@ -39,6 +43,10 @@ class GravityFormsServiceProvider extends ServiceProvider
         // \GFAddOn::register( 'GFIrmaFieldAddOn' );
 
         // Class voor settings page
+=======
+        GF_Fields::register(new IrmaAttributeField);
+        GF_Fields::register(new IrmaLaunchQR);
+>>>>>>> feature/extend-gravityforms-mike
     }
 
     public function enqueueScripts($form, $is_ajax)

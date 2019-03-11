@@ -8,6 +8,7 @@ class IrmaLaunchQR extends GF_Field
 {
     public $type = 'IRMA-launch-QR';
 
+<<<<<<< HEAD
     /**
      * Renders the field.
      *
@@ -22,6 +23,16 @@ class IrmaLaunchQR extends GF_Field
         $form_id         = $form['id'];
         $is_entry_detail = $this->is_entry_detail();
         $id              = (int) $this->id;
+=======
+    public function get_form_editor_button() {
+        return array(
+            'group' => 'advanced_fields',
+            'text'  => $this->get_form_editor_field_title(),
+        );
+    }
+    
+}
+>>>>>>> feature/extend-gravityforms-mike
 
         $input = '<div class="ginput_container" id="gf_irma_container_'.$id.'">' .
              '<input type="button" value="Haal IRMA attributen op" ' . $this->get_tabindex() .' class="btn btn-secondary gf_irma_qr" data-id="'.$id.'" data-form-id="'.$form_id.'">' .
