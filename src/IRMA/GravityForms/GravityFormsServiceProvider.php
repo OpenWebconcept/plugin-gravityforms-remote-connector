@@ -35,8 +35,6 @@ class GravityFormsServiceProvider extends ServiceProvider
         //    require_once( __DIR__.'/includes/class-IRMAFieldAddOn.php' );
 
         // \GFAddOn::register( 'GFIrmaFieldAddOn' );
-
-        // Class voor settings page
     }
 
     public function enqueueScripts($form, $is_ajax)
