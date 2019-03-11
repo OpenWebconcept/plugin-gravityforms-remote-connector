@@ -40,4 +40,12 @@ class IrmaLaunchQR extends GF_Field
 
         return $input;
     }
+
+    public function get_form_editor_button()
+    {
+        return [
+            'group' => 'advanced_fields',
+            'text'  => $this->get_form_editor_field_title(),
+        ];
+    }
 }

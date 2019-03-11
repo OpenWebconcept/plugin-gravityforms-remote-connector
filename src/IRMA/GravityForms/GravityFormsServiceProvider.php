@@ -5,8 +5,6 @@ namespace IRMA\WP\GravityForms;
 use GF_Fields;
 use IRMA\WP\Foundation\ServiceProvider;
 
-//use IRMA\WP\GravityForms\IRMAFieldAddOn;
-
 class GravityFormsServiceProvider extends ServiceProvider
 {
     public function register()
