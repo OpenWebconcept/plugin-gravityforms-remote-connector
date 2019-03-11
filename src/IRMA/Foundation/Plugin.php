@@ -74,6 +74,7 @@ class Plugin
      */
     public function enqueueScripts()
     {
+        wp_enqueue_style('irma-wp', $this->resourceUrl('irma-wp.css'), false);
         wp_enqueue_script('irma-js', $this->resourceUrl('irma.js'), false);
     }
 
