@@ -26,7 +26,7 @@
 					var results = $('#gf_irma_results_' + id);
 					var resultsTable = results.find('table');
 
-					resultsTable.prepend("<div class=\"alert alert-success\">IRMA attributen zijn succesvol opgehaald!</div>");
+					results.prepend("<div class=\"alert alert-success\">IRMA attributen zijn succesvol opgehaald!</div>");
 
 					response.forEach(function (item) {
 						resultsTable.append("<tr><td>" + item.label + "</td><td>" + item.value + "</td></tr>");
