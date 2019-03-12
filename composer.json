@@ -1,5 +1,5 @@
 {
-  "name": "irma/wordpress",
+  "name": "privacybydesign/irma-wp",
   "description": "Integration with IRMA for WordPress",
   "homepage": "https://privacybydesign.foundation/",
   "type": "wordpress-plugin",
