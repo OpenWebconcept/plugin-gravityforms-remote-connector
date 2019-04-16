@@ -66,7 +66,7 @@ class GravityFormsServiceProvider extends ServiceProvider
                     [
                         'label' => 'Straat',
                         'attributes' => [
-                            'irma-demo.nijmegen.address.street'
+                            'irma-demo.nijmegen.address.street',
                         ],
                     ],
                     [
@@ -76,7 +76,7 @@ class GravityFormsServiceProvider extends ServiceProvider
                         ],
                     ],
                     [
-                        'label' => 'Stad',
+                        'label' => 'Woonplaats',
                         'attributes' => [
                             'irma-demo.nijmegen.address.city'
                         ],

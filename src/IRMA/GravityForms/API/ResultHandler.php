@@ -23,7 +23,7 @@ class ResultHandler
             'irma-demo.nijmegen.bsn.bsn' => 'BSN',
             'irma-demo.nijmegen.address.street' => 'Straat',
             'irma-demo.nijmegen.address.houseNumber' => 'Huisnummer',
-            'irma-demo.nijmegen.address.city' => 'Stad',
+            'irma-demo.nijmegen.address.city' => 'Woonplaats',
         ];
 
         $result = array_map(function ($attribute) use ($tmp_label_mapping) {
