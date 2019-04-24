@@ -15,6 +15,7 @@
 				.then(function () {
 					var data = new FormData();
 					data.append('token', session.token);
+					data.append('formId', formId);
 
 					return fetch(irma_gf.handle_url, {
 						method: 'POST',
@@ -23,21 +24,22 @@
 				})
 				.then(function (response) { return response.json() })
 				.then(function (response) {
-					var results = $('#gf_irma_results_' + id);
-					var resultsTable = results.find('table');
+					// var results = $('#gf_irma_results_' + id);
+					// var resultsTable = results.find('table');
 
-					results.prepend("<div class=\"alert alert-success\">IRMA attributen zijn succesvol opgehaald!</div>");
+					// results.prepend("<div class=\"alert alert-success\">IRMA attributen zijn succesvol opgehaald!</div>");
 
 					response.forEach(function (item) {
-						resultsTable.append("<tr><td>" + item.label + "</td><td>" + item.value + "</td></tr>");
+						$('#' + item.input).val(item.value);
+						// resultsTable.append("<tr><td>" + item.label + "</td><td>" + item.value + "</td></tr>");
 					});
 
-					results.css({ height: 'auto' });
-					var height = results.height();
-					results.css({ height: 0 });
+					// results.css({ height: 'auto' });
+					// var height = results.height();
+					// results.css({ height: 0 });
 
-					qrCanvas.hide();
-					results.animate({ height: height });
+					// qrCanvas.hide();
+					// results.animate({ height: height });
 				})
 				.catch(function (response) {
 					console.warn(response);

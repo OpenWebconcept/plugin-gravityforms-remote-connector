@@ -3,6 +3,7 @@
 namespace IRMA\WP\GravityForms;
 
 use GF_Fields;
+use GFAddOn;
 use IRMA\WP\Foundation\ServiceProvider;
 
 class GravityFormsServiceProvider extends ServiceProvider
@@ -19,22 +20,28 @@ class GravityFormsServiceProvider extends ServiceProvider
 
         add_action('wp_head', function () {
             ?>
-			<script type="text/javascript">
-				var irma_ajaxurl = '<?php echo admin_url("admin-ajax.php"); ?>';
-				var irma_ajaxnonce = '<?php echo wp_create_nonce("itr_ajax_nonce"); ?>';
-			</script><?php
+		<script type="text/javascript">
+			var irma_ajaxurl = '<?php echo admin_url("admin-ajax.php"); ?>';
+			var irma_ajaxnonce = '<?php echo wp_create_nonce("itr_ajax_nonce"); ?>';
+		</script>
+	<?php
         });
 
-        // define( 'GF_IRMA_FIELD_ADDON_VERSION', '1.0' );
 
-        // add_action( 'gform_loaded', [IRMAFieldAddOn::class, 'load'], 5 );
         add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
 
         GF_Fields::register(new IrmaAttributeField);
         GF_Fields::register(new IrmaLaunchQR);
-        //    require_once( __DIR__.'/includes/class-IRMAFieldAddOn.php' );
 
-        // \GFAddOn::register( 'GFIrmaFieldAddOn' );
+        define('GF_IRMA_ADDON_VERSION', '1.0');
+        add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
+    }
+
+    public function onGravityFormsLoaded()
+    {
+        require_once(__DIR__ . '/includes/class-IRMAFieldAddOn.php');
+
+        GFAddOn::register('IRMAFieldAddOn');
     }
 
     public function enqueueScripts($form, $is_ajax)
@@ -43,6 +50,55 @@ class GravityFormsServiceProvider extends ServiceProvider
 
         $url = 'https://metrics.privacybydesign.foundation/irmaserver/session';
 
+
+        // $attributes = [
+        // 	[
+        // 		'label' => 'Naam',
+        // 		'attributes' => [
+        // 			'irma-demo.nijmegen.personalData.fullname'
+        // 		]
+        // 	],
+        // 	[
+        // 		'label' => 'BSN',
+        // 		'attributes' => [
+        // 			'irma-demo.nijmegen.bsn.bsn'
+        // 		]
+        // 	],
+        // 	[
+        // 		'label' => 'Straat',
+        // 		'attributes' => [
+        // 			'irma-demo.nijmegen.address.street',
+        // 		],
+        // 	],
+        // 	[
+        // 		'label' => 'Huisnummer',
+        // 		'attributes' => [
+        // 			'irma-demo.nijmegen.address.houseNumber'
+        // 		],
+        // 	],
+        // 	[
+        // 		'label' => 'Woonplaats',
+        // 		'attributes' => [
+        // 			'irma-demo.nijmegen.address.city'
+        // 		],
+        // 	],
+        // ];
+
+        $attributes  = [];
+
+        foreach ($form['fields'] as $field) {
+            if ($field['type'] != 'IRMA-attribute') {
+                continue;
+            }
+
+            $attributes[] = [
+                'label' => $field['label'],
+                'attributes' => [
+                    $field['irmaAttribute']
+                ]
+            ];
+        }
+
         $request = wp_remote_post($url, [
             'method' => 'POST',
             'headers' => [
@@ -50,47 +106,16 @@ class GravityFormsServiceProvider extends ServiceProvider
             ],
             'body' => json_encode([
                 'type' => 'disclosing',
-                'content' => [
-                    [
-                        'label' => 'Naam',
-                        'attributes' => [
-                            'irma-demo.nijmegen.personalData.fullname'
-                        ]
-                    ],
-                    [
-                        'label' => 'BSN',
-                        'attributes' => [
-                            'irma-demo.nijmegen.bsn.bsn'
-                        ]
-                    ],
-                    [
-                        'label' => 'Straat',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.street',
-                        ],
-                    ],
-                    [
-                        'label' => 'Huisnummer',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.houseNumber'
-                        ],
-                    ],
-                    [
-                        'label' => 'Woonplaats',
-                        'attributes' => [
-                            'irma-demo.nijmegen.address.city'
-                        ],
-                    ],
-                ]
+                'content' => $attributes
             ])
         ]);
 
         $body = json_decode(wp_remote_retrieve_body($request));
 
         wp_localize_script('irma-gf-js', 'irma_gf', [
-            'handle_url' => get_rest_url(null, 'irma/v1/gf/handle'),
-            'form_'.$form['id'] => $body
-        ]);
+        'handle_url' => get_rest_url(null, 'irma/v1/gf/handle'),
+        'form_' . $form['id'] => $body
+    ]);
 
         wp_enqueue_script('irma-gf-js');
     }

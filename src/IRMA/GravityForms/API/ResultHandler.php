@@ -6,6 +6,7 @@ class ResultHandler
 {
     public function handle()
     {
+        $formId = $_POST['formId'];
         $token = $_POST['token'];
         $endpoint = "https://metrics.privacybydesign.foundation/irmaserver/session/$token/result";
 
@@ -17,22 +18,28 @@ class ResultHandler
         $disclosed = isset($response->disclosed) ? $response->disclosed : [];
 
         // TEMPORARY!!
+        $attributes = [];
 
-        $tmp_label_mapping = [
-            'irma-demo.nijmegen.personalData.fullname' => 'Naam',
-            'irma-demo.nijmegen.bsn.bsn' => 'BSN',
-            'irma-demo.nijmegen.address.street' => 'Straat',
-            'irma-demo.nijmegen.address.houseNumber' => 'Huisnummer',
-            'irma-demo.nijmegen.address.city' => 'Woonplaats',
-        ];
+        foreach ($disclosed as $attribute) {
+            $attributes[$attribute->id] = $attribute->rawvalue;
+        }
 
-        $result = array_map(function ($attribute) use ($tmp_label_mapping) {
-            return [
-                'label' => $tmp_label_mapping[$attribute->id],
-                'attribute' => $attribute->id,
-                'value' => $attribute->rawvalue
+        $form = \GFAPI::get_form($formId);
+
+        $result = [];
+
+        foreach ($form['fields'] as $field) {
+            if ($field['type'] != 'IRMA-attribute' || ! in_array($field['irmaAttribute'], array_keys($attributes))) {
+                continue;
+            }
+
+            $result[] = [
+                'input' => 'irma_attribute_' . $formId . '_'.$field['id'],
+                'label' => $field['label'],
+                'attribute' => $field['irmaAttribute'],
+                'value' => $attributes[$field['irmaAttribute']]
             ];
-        }, $disclosed);
+        }
 
         return $result;
     }
