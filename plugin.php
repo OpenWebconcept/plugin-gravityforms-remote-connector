@@ -15,11 +15,13 @@
 use IRMA\WP\Autoloader;
 use IRMA\WP\Foundation\Plugin;
 
+define('IRMA_WP_VERSION', '0.0.0');
+
 /**
  * If this file is called directly, abort.
  */
 if (!defined('WPINC')) {
-    die;
+	die;
 }
 
 /**
@@ -30,13 +32,6 @@ require_once __DIR__ . '/autoloader.php';
 $autoloader = new Autoloader();
 
 /**
- * Begin execution of the plugin
- *
- * This hook is called once any activated plugins have been loaded. Is generally used for immediate filter setup, or
- * plugin overrides. The plugins_loaded action hook fires early, and precedes the setup_theme, after_setup_theme, init
- * and wp_loaded action hooks.
+ * Begin execution of the plugin.
  */
 $plugin = (new Plugin(__DIR__))->boot();
-
-// add_action('plugins_loaded', function () {
-// }, 10);

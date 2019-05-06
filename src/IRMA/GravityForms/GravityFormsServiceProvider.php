@@ -4,119 +4,71 @@ namespace IRMA\WP\GravityForms;
 
 use GF_Fields;
 use GFAddOn;
+use GFForms;
 use IRMA\WP\Foundation\ServiceProvider;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        add_action('rest_api_init', function () {
-            register_rest_route('irma/v1', '/gf/handle', [
-                'methods' => 'POST',
-                'callback' => [new API\ResultHandler, 'handle'],
-            ]);
-        });
 
+	public function register()
+	{
+		GF_Fields::register(new IrmaAttributeField);
+		GF_Fields::register(new IrmaLaunchQR);
 
-        add_action('wp_head', function () {
-            ?>
-		<script type="text/javascript">
-			var irma_ajaxurl = '<?php echo admin_url("admin-ajax.php"); ?>';
-			var irma_ajaxnonce = '<?php echo wp_create_nonce("itr_ajax_nonce"); ?>';
-		</script>
-	<?php
-        });
+		add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
 
+		$this->registerRestRoutes();
 
-        add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
+		add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
+	}
 
-        GF_Fields::register(new IrmaAttributeField);
-        GF_Fields::register(new IrmaLaunchQR);
+	/**
+	 * Register routes for the REST API.
+	 *
+	 * @return void
+	 */
+	public function registerRestRoutes()
+	{
+		add_action('rest_api_init', function () {
+			register_rest_route('irma/v1', '/gf/handle', [
+				'methods' => 'POST',
+				'callback' => [new API\ResultHandler, 'handle'],
+			]);
+		});
 
-        define('GF_IRMA_ADDON_VERSION', '1.0');
-        add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
-    }
+		add_action('rest_api_init', function () {
+			register_rest_route('irma/v1', '/gf/session', [
+				'methods' => 'GET',
+				'callback' => [new API\Session, 'handle'],
+			]);
+		});
+	}
 
-    public function onGravityFormsLoaded()
-    {
-        require_once(__DIR__ . '/includes/class-IRMAFieldAddOn.php');
+	/**
+	 * Load the add-on once GravityForms has been loaded.
+	 *
+	 * @return void
+	 */
+	public function onGravityFormsLoaded()
+	{
+		GFForms::include_addon_framework();
+		GFAddOn::register(IrmaAddOn::class);
+	}
 
-        GFAddOn::register('IRMAFieldAddOn');
-    }
+	/**
+	 * @param array $form
+	 * @param bool $is_ajax
+	 * @return void
+	 */
+	public function enqueueScripts($form, $is_ajax)
+	{
+		wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery']);
 
-    public function enqueueScripts($form, $is_ajax)
-    {
-        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery']);
+		wp_localize_script('irma-gf-js', 'irma_gf', [
+			'handle_url' => get_rest_url(null, 'irma/v1/gf/handle'),
+			'session_url' => get_rest_url(null, 'irma/v1/gf/session')
+		]);
 
-        $url = 'https://metrics.privacybydesign.foundation/irmaserver/session';
-
-
-        // $attributes = [
-        // 	[
-        // 		'label' => 'Naam',
-        // 		'attributes' => [
-        // 			'irma-demo.nijmegen.personalData.fullname'
-        // 		]
-        // 	],
-        // 	[
-        // 		'label' => 'BSN',
-        // 		'attributes' => [
-        // 			'irma-demo.nijmegen.bsn.bsn'
-        // 		]
-        // 	],
-        // 	[
-        // 		'label' => 'Straat',
-        // 		'attributes' => [
-        // 			'irma-demo.nijmegen.address.street',
-        // 		],
-        // 	],
-        // 	[
-        // 		'label' => 'Huisnummer',
-        // 		'attributes' => [
-        // 			'irma-demo.nijmegen.address.houseNumber'
-        // 		],
-        // 	],
-        // 	[
-        // 		'label' => 'Woonplaats',
-        // 		'attributes' => [
-        // 			'irma-demo.nijmegen.address.city'
-        // 		],
-        // 	],
-        // ];
-
-        $attributes  = [];
-
-        foreach ($form['fields'] as $field) {
-            if ($field['type'] != 'IRMA-attribute') {
-                continue;
-            }
-
-            $attributes[] = [
-                'label' => $field['label'],
-                'attributes' => [
-                    $field['irmaAttribute']
-                ]
-            ];
-        }
-
-        $request = wp_remote_post($url, [
-            'method' => 'POST',
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ],
-            'body' => json_encode([
-                'type' => 'disclosing',
-                'content' => $attributes
-            ])
-        ]);
-
-        $body = json_decode(wp_remote_retrieve_body($request));
-
-        wp_localize_script('irma-gf-js', 'irma_gf', [
-        'handle_url' => get_rest_url(null, 'irma/v1/gf/handle'),
-        'form_' . $form['id'] => $body
-    ]);
-
-        wp_enqueue_script('irma-gf-js');
-    }
+		wp_enqueue_script('irma-gf-js');
+	}
 }
