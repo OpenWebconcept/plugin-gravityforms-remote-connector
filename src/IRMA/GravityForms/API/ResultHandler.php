@@ -33,7 +33,7 @@ class ResultHandler
 			}
 
 			$result[] = [
-				'input' => 'irma_attribute_' . $formId . '_' . $field['id'],
+				'input' => 'input_' . $formId . '_' . $field['id'],
 				'label' => $field['label'],
 				'attribute' => $field['irmaAttribute'],
 				'value' => $attributes[$field['irmaAttribute']]

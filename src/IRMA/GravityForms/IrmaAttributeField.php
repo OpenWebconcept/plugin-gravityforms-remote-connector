@@ -32,12 +32,11 @@ class IrmaAttributeField extends GF_Field
 		$is_form_editor  = $this->is_form_editor();
 
 		$id            = $this->id;
-		$field_id      = $is_entry_detail || $is_form_editor || $form_id == 0 ? "irma_attribute_$id" : 'irma_attribute_' . $form_id . "_$id";
-		$disabled_text = $is_form_editor ? 'disabled="disabled"' : '';
+		$field_id      = $is_entry_detail || $is_form_editor || $form_id == 0 ? "input_$id" : 'input_' . $form_id . "_$id";
 
-		return sprintf('<div class="ginput_container ginput_container_irma_attributes">
-			<input type="text" id="' . $field_id . '" readonly />
-		</div>');
+		return '<div class="ginput_container ginput_container_irma_attribute">
+			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" readonly/>
+			</div>';
 	}
 
 	public function validate($value, $form)
