@@ -29,10 +29,11 @@ class IrmaLaunchQR extends GF_Field
 			return '<img src="' . plugins_url('resources/img/qr_code.jpg', 'irma-wp/plugin.php') . '"/>';
 		}
 
+		$buttonLabel = empty($this->irmaButtonLabel) ? __('Get IRMA attributes', 'irma-wp') : $this->irmaButtonLabel;
 		$popup = !empty($this->irmaPopup) && $this->irmaPopup;
 
 		$input = '<div class="ginput_container ginput_container_irma_qr" id="gf_irma_container_' . $id . '">' .
-			'<input type="button" value="Haal IRMA attributen op" ' . $this->get_tabindex() . ' class="btn btn-secondary gf_irma_qr" data-id="' . $id . '" data-form-id="' . $form_id . '" data-popup="' . $popup . '">' .
+			'<input type="button" value="' . $buttonLabel . '" ' . $this->get_tabindex() . ' class="btn btn-secondary gf_irma_qr" data-id="' . $id . '" data-form-id="' . $form_id . '" data-popup="' . $popup . '">' .
 			'<canvas id="gf_irma_qr_' . $id . '" class="gf_irma_qr_canvas"></canvas>' .
 			'<input type="hidden" name="input_' . $form_id . '_irma_session_token" id="input_' . $form_id . '_irma_session_token" />' .
 			"</div>";

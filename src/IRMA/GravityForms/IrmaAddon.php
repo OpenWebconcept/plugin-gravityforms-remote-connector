@@ -52,6 +52,7 @@ class IrmaAddOn extends GFAddOn
 				<input type="text" class="irma_attribute_field" onchange="SetFieldProperty('irmaAttribute', this.value);" />
 			</div>
 		</li>
+
 		<li class="irma_qr field_setting">
 			<label class="section_label" for="irma_qr_popup">
 				<?php esc_html_e('QR Code', 'irma-wp'); ?>
@@ -60,6 +61,14 @@ class IrmaAddOn extends GFAddOn
 			<div class="irma_qr_popup_container">
 				<input type="checkbox" id="irma_qr_popup" class="irma_qr_popup" />
 				<label for="irma_qr_popup" class="inline"><?php esc_html_e('Display as pop-up', 'irma-wp'); ?></label>
+			</div>
+			<br>
+			<label class="section_label" for="irma_qr_button_label">
+				<?php esc_html_e('Button label', 'irma-wp'); ?>
+				<?php gform_tooltip('irma_qr') ?>
+			</label>
+			<div class="irma_qr_popup_container">
+				<input type="text" id="irma_qr_button_label" class="irma_qr_button_label" onchange="SetFieldProperty('irmaButtonLabel', this.value);" />
 			</div>
 		</li>
 	<?php
@@ -71,7 +80,7 @@ public function editor_script()
 	?>
 	<script type='text/javascript'>
 		fieldSettings["IRMA-attribute"] += ', .irma_attribute';
-		fieldSettings["IRMA-launch-QR"] += ', .irma_qr_popup';
+		fieldSettings["IRMA-launch-QR"] += ', .irma_qr_popup, .irma_qr_button_label';
 
 		jQuery(document).bind("gform_load_field_settings", function(event, field, form) {
 			jQuery('.irma_qr_popup').change(function(event) {
@@ -80,6 +89,7 @@ public function editor_script()
 
 			setTimeout(function() {
 				jQuery("#field_" + field.id + " .irma_attribute_field").val(field["irmaAttribute"]);
+				jQuery("#field_" + field.id + " .irma_qr_button_label").val(field["irmaButtonLabel"]);
 				jQuery("#field_" + field.id + " .irma_qr_popup").attr('checked', !!field["irmaPopup"]);
 			}, 0);
 		});
