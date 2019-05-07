@@ -67,7 +67,7 @@ class IrmaLaunchQR extends GF_Field
 
 		if (empty($sessionToken)) {
 			$this->failed_validation = true;
-			$this->validation_message = 'Please fetch your IRMA attributes.';
+			$this->validation_message = empty($this->errorMessage) ? 'Please fetch your IRMA attributes.' : $this->errorMessage;
 			return;
 		}
 	}

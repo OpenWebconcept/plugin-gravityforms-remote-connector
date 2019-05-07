@@ -49,7 +49,7 @@ class IrmaAttributeField extends GF_Field
 
 		if (empty($sessionToken) || !$groundTruth) {
 			$this->failed_validation = true;
-			$this->validation_message = 'Please fetch this attribute from IRMA.';
+			$this->validation_message = empty($this->errorMessage) ? 'Please fetch this attribute from IRMA.' : $this->errorMessage;
 			return;
 		}
 
@@ -70,6 +70,7 @@ class IrmaAttributeField extends GF_Field
 			'rules_setting',
 			'irma_attribute_list',
 			'visibility_setting',
+			'error_message_setting'
 		];
 	}
 }
