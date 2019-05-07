@@ -5,7 +5,11 @@
 			var formId = $(this).attr('data-form-id');
 
 			fetch(irma_gf.session_url + '?id=' + formId)
-				.then(function (response) { return response.json() })
+				.then(function (response) {
+					return response.json().then(function (json) {
+						return response.ok ? json : Promise.reject(json);
+					});
+				})
 				.then(function (response) {
 					var session = response;
 					var qrCanvas = $('#gf_irma_qr_' + id);
@@ -35,6 +39,9 @@
 						.catch(function (response) {
 							console.warn(response);
 						});
+				})
+				.catch(function (err) {
+					console.log(err);
 				});
 		});
 	});
