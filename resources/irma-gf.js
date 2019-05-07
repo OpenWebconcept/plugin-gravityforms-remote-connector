@@ -3,6 +3,7 @@
 		$('.gf_irma_qr').click(function () {
 			var id = $(this).attr('data-id');
 			var formId = $(this).attr('data-form-id');
+			var popUp = $(this).attr('data-popup');
 
 			fetch(irma_gf.session_url + '?id=' + formId)
 				.then(function (response) {
@@ -17,7 +18,7 @@
 					qrCanvas.css({ display: 'block' });
 
 					irma.handleSession(session.sessionPtr, {
-						method: 'canvas',
+						method: popUp ? 'popup' : 'canvas',
 						element: 'gf_irma_qr_' + id
 					})
 						.then(function () {
