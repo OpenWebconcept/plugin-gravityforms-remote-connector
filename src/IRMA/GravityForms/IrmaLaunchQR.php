@@ -3,7 +3,6 @@
 namespace IRMA\WP\GravityForms;
 
 use GF_Field;
-use IRMA\WP\Foundation\Plugin;
 
 class IrmaLaunchQR extends GF_Field
 {
@@ -11,28 +10,6 @@ class IrmaLaunchQR extends GF_Field
 	 * @var string
 	 */
 	public $type = 'IRMA-launch-QR';
-
-	/**
-	 * The class names of the settings which should be available on the field in the form editor.
-	 *
-	 * @return array
-	 */
-	public function get_form_editor_field_settings()
-	{
-
-		return array(
-			// 'conditional_logic_field_setting',
-			// 'prepopulate_field_setting',
-			'error_message_setting',
-			'label_setting',
-			// 'admin_label_setting',
-			// 'rules_setting',
-			// 'visibility_setting',
-			// 'description_setting',
-			// 'css_class_setting',
-			// 'select_all_choices_setting',
-		);
-	}
 
 	/**
 	 * Renders the field.
@@ -77,6 +54,21 @@ class IrmaLaunchQR extends GF_Field
 		return [
 			'group' => 'advanced_fields',
 			'text'  => $this->get_form_editor_field_title(),
+		];
+	}
+
+	/**
+	 * The class names of the settings which should be available on the field in the form editor.
+	 *
+	 * @return array
+	 */
+	public function get_form_editor_field_settings()
+	{
+		return [
+			'error_message_setting',
+			'label_setting',
+			'label_placement_setting',
+			'description_setting',
 		];
 	}
 }

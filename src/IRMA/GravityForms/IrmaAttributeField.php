@@ -33,12 +33,13 @@ class IrmaAttributeField extends GF_Field
 
 		$id            = $this->id;
 		$field_id      = $is_entry_detail || $is_form_editor || $form_id == 0 ? "input_$id" : 'input_' . $form_id . "_$id";
+		$placeholder   = $this->get_field_placeholder_attribute();
 
 		$value = is_array($value) ? rgar($value, 0) : $value;
 		$value = esc_attr($value);
 
 		return '<div class="ginput_container ginput_container_irma_attribute">
-			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" value="' . $value . '"/>
+			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" value="' . $value . '" ' . $placeholder . '/>
 			</div>';
 	}
 
@@ -67,10 +68,13 @@ class IrmaAttributeField extends GF_Field
 	{
 		return [
 			'label_setting',
+			'label_placement_setting',
+			'description_setting',
 			'rules_setting',
 			'irma_attribute_list',
 			'visibility_setting',
-			'error_message_setting'
+			'error_message_setting',
+			'placeholder_setting',
 		];
 	}
 }
