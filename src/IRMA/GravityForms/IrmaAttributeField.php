@@ -34,14 +34,33 @@ class IrmaAttributeField extends GF_Field
 		$id            = $this->id;
 		$field_id      = $is_entry_detail || $is_form_editor || $form_id == 0 ? "input_$id" : 'input_' . $form_id . "_$id";
 
+		$value = is_array($value) ? rgar($value, 0) : $value;
+		$value = esc_attr($value);
+
 		return '<div class="ginput_container ginput_container_irma_attribute">
-			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" readonly/>
+			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" value="' . $value . '"/>
 			</div>';
 	}
 
 	public function validate($value, $form)
 	{
-		$this->failed_validation = false;
+		$sessionToken = $this->get_input_value_submission('input_' . $form['id'] . '_irma_session_token');
+		$groundTruth = get_transient('irma_result_' . $sessionToken);
+
+		if (empty($sessionToken) || !$groundTruth) {
+			$this->failed_validation = true;
+			$this->validation_message = 'Please fetch this attribute from IRMA.';
+			return;
+		}
+
+		foreach ($groundTruth as $item) {
+			if ($item['input'] == 'input_' . $form['id'] . '_' . $this->id) {
+				if ($value !== $item['value']) {
+					$this->failed_validation = true;
+				}
+				break;
+			}
+		}
 	}
 
 	public function get_form_editor_field_settings()

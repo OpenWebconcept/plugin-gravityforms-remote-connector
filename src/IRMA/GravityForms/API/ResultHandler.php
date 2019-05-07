@@ -40,6 +40,8 @@ class ResultHandler
 			];
 		}
 
+		set_transient('irma_result_' . $token, $result, WEEK_IN_SECONDS);
+
 		return $result;
 	}
 }

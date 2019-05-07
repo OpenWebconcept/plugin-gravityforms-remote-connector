@@ -9,6 +9,7 @@
 				.then(function (response) {
 					var session = response;
 					var qrCanvas = $('#gf_irma_qr_' + id);
+					$('#input_' + formId + '_irma_session_token').val(session.token);
 					qrCanvas.css({ display: 'block' });
 
 					irma.handleSession(session.sessionPtr, {
