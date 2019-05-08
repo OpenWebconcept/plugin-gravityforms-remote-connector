@@ -8,6 +8,11 @@ class ResultHandler
 	{
 		$formId = $_POST['formId'];
 		$token = $_POST['token'];
+
+		// $meta_value = gform_get_meta($formId, 'endpointIRMA'); // endpoint pakt ie niet?
+
+		// $endpoint = $meta_value . "/irmaserver/session/$token/result";
+
 		$endpoint = "https://metrics.privacybydesign.foundation/irmaserver/session/$token/result";
 
 		$request = wp_remote_post($endpoint, [
