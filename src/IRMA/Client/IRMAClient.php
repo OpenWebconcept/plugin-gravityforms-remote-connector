@@ -22,7 +22,7 @@ class IRMAClient
 	 * @param array $attributes
 	 * @return \stdClass
 	 */
-	public function getSession($attributes)
+	public function getSession(array $attributes)
 	{
 		$response = wp_remote_post($this->endpoint . '/session', [
 			'method' => 'POST',

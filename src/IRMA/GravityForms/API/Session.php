@@ -7,6 +7,7 @@ use GFFormsModel;
 use WP_REST_Request;
 use WP_REST_Response;
 use IRMA\WP\Client\IRMAClient;
+use IRMA\WP\AttributeCollection;
 
 class Session
 {
@@ -45,12 +46,9 @@ class Session
 				continue;
 			}
 
-			$attributes[] = [
-				'label' => $field['label'],
-				'attributes' => [
-					$field['irmaAttribute']
-				]
-			];
+			$attributes[] = AttributeCollection::make()
+				->setLabel($field['label'])
+				->addAttribute($field['irmaAttribute']);
 		}
 
 		return new WP_REST_Response($this->client->setEndpoint($this->getEndpoint($formId))->getSession($attributes));
