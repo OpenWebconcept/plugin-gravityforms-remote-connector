@@ -3,11 +3,24 @@
 namespace IRMA\WP\GravityForms\API;
 
 use GFAPI;
+use GFFormsModel;
 use WP_REST_Request;
 use WP_REST_Response;
+use IRMA\WP\Client\IRMAClient;
 
 class Session
 {
+
+	/**
+	 * @var IRMAClient
+	 */
+	private $client;
+
+	public function __construct(IRMAClient $client)
+	{
+		$this->client = $client;
+	}
+
 	/**
 	 * Create an IRMA session for a specific form.
 	 *
@@ -16,6 +29,7 @@ class Session
 	 */
 	public function handle(WP_REST_Request $request)
 	{
+		$formId = $request->get_param('id');
 		$form = GFAPI::get_form($request->get_param('id'));
 
 		if (!$form) {
@@ -39,17 +53,15 @@ class Session
 			];
 		}
 
-		$request = wp_remote_post('https://metrics.privacybydesign.foundation/irmaserver/session', [
-			'method' => 'POST',
-			'headers' => [
-				'Content-Type' => 'application/json'
-			],
-			'body' => json_encode([
-				'type' => 'disclosing',
-				'content' => $attributes
-			])
-		]);
+		return new WP_REST_Response($this->client->setEndpoint($this->getEndpoint($formId))->getSession($attributes));
+	}
 
-		return new WP_REST_Response(json_decode(wp_remote_retrieve_body($request)));
+	/**
+	 * @param integer|null $formId
+	 * @return string
+	 */
+	public function getEndpoint(int $formId)
+	{
+		return GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'] ?? null;
 	}
 }

@@ -6,6 +6,7 @@ use GF_Fields;
 use GFAddOn;
 use GFForms;
 use IRMA\WP\Foundation\ServiceProvider;
+use IRMA\WP\Client\IRMAClient;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,8 @@ class GravityFormsServiceProvider extends ServiceProvider
 	 */
 	public function registerRestRoutes()
 	{
+		$client = new IRMAClient();
+
 		add_action('rest_api_init', function () {
 			register_rest_route('irma/v1', '/gf/handle', [
 				'methods' => 'POST',
@@ -36,10 +39,10 @@ class GravityFormsServiceProvider extends ServiceProvider
 			]);
 		});
 
-		add_action('rest_api_init', function () {
+		add_action('rest_api_init', function () use ($client) {
 			register_rest_route('irma/v1', '/gf/session', [
 				'methods' => 'GET',
-				'callback' => [new API\Session, 'handle'],
+				'callback' => [new API\Session($client), 'handle'],
 			]);
 		});
 	}
