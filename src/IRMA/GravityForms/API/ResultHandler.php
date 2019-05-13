@@ -8,7 +8,10 @@ class ResultHandler
 	{
 		$formId = $_POST['formId'];
 		$token = $_POST['token'];
-		$endpoint = "https://metrics.privacybydesign.foundation/irmaserver/session/$token/result";
+
+		$meta_value = \GFFormsModel::get_form_meta($formId)['irma-settings-addon']['endpointIRMA'];
+
+		$endpoint = $meta_value . "/irmaserver/session/$token/result";
 
 		$request = wp_remote_post($endpoint, [
 			'method' => 'GET',
