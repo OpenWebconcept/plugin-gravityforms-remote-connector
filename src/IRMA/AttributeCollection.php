@@ -2,17 +2,14 @@
 
 namespace IRMA\WP;
 
-use JsonSerializable;
+use ArrayAccess;
+use InvalidArgumentException;
+use OutOfBoundsException;
 
-class AttributeCollection implements JsonSerializable
+class AttributeCollection implements ArrayAccess
 {
 	/**
-	 * @var string|null
-	 */
-	private $label = null;
-
-	/**
-	 * @var array
+	 * @var Attribute[]
 	 */
 	private $attributes = [];
 
@@ -25,21 +22,10 @@ class AttributeCollection implements JsonSerializable
 	}
 
 	/**
-	 * @param string $value
+	 * @param Attribute $value
 	 * @return AttributeCollection
 	 */
-	public function setLabel($value)
-	{
-		$this->label = $value;
-
-		return $this;
-	}
-
-	/**
-	 * @param string $value
-	 * @return AttributeCollection
-	 */
-	public function addAttribute($value)
+	public function add(Attribute $value)
 	{
 		$this->attributes[] = $value;
 
@@ -49,11 +35,67 @@ class AttributeCollection implements JsonSerializable
 	/**
 	 * @return array
 	 */
-	public function jsonSerialize()
+	public function getIds(): array
 	{
-		return [
-			'label' => $this->label,
-			'attributes' => $this->attributes
-		];
+		return array_map(function (Attribute $attribute) {
+			return $attribute->getId();
+		}, $this->attributes);
+	}
+
+	/**
+	 * Determine if attribute id exists in the collection.
+	 *
+	 * @param mixed $offset
+	 * @return boolean
+	 */
+	public function offsetExists($offset): bool
+	{
+		foreach ($this->attributes as $attribute) {
+			if ($offset == $attribute->getId()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get attribute from collection.
+	 *
+	 * @param mixed $offset
+	 * @return Attribute
+	 */
+	public function offsetGet($offset)
+	{
+		foreach ($this->attributes as $attribute) {
+			if ($offset == $attribute->getId()) {
+				return $attribute;
+			}
+		}
+
+		throw new OutOfBoundsException("Attribute with ID $offset does not exist.");
+	}
+
+	/**
+	 * @param mixed $offset
+	 * @param Attribute $attribute
+	 * @return void
+	 */
+	public function offsetSet($offset, $attribute): void
+	{
+		if (!$attribute instanceof Attribute) {
+			throw new InvalidArgumentException('Attribute must be of type ' . Attribute::class);
+		}
+
+		$this->add($attribute);
+	}
+
+	/**
+	 * @param mixed $offset
+	 * @return void
+	 */
+	public function offsetUnset($offset): void
+	{
+		unset($this->attributes[$offset]);
 	}
 }

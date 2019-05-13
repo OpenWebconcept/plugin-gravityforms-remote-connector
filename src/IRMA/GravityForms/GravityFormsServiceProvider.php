@@ -32,10 +32,10 @@ class GravityFormsServiceProvider extends ServiceProvider
 	{
 		$client = new IRMAClient();
 
-		add_action('rest_api_init', function () {
+		add_action('rest_api_init', function () use ($client) {
 			register_rest_route('irma/v1', '/gf/handle', [
 				'methods' => 'POST',
-				'callback' => [new API\ResultHandler, 'handle'],
+				'callback' => [new API\ResultHandler($client), 'handle'],
 			]);
 		});
 

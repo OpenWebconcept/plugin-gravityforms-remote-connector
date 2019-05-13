@@ -2,36 +2,36 @@
 
 namespace IRMA\WP\GravityForms\API;
 
+use GFFormsModel;
+use IRMA\WP\Client\IRMAClient;
+
 class ResultHandler
 {
+
+	/**
+	 * @var IRMAClient
+	 */
+	private $client;
+
+	public function __construct(IRMAClient $client)
+	{
+		$this->client = $client;
+	}
+
 	public function handle()
 	{
 		$formId = $_POST['formId'];
-		$token = $_POST['token'];
-
-		$meta_value = \GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];
-
-		$endpoint = $meta_value . "/session/$token/result";
-
-		$request = wp_remote_post($endpoint, [
-			'method' => 'GET',
-		]);
-
-		$response = json_decode(wp_remote_retrieve_body($request));
-		$disclosed = isset($response->disclosed) ? $response->disclosed : [];
-
-		$attributes = [];
-
-		foreach ($disclosed as $attribute) {
-			$attributes[$attribute->id] = $attribute->rawvalue;
-		}
-
 		$form = \GFAPI::get_form($formId);
+
+		$token = $_POST['token'];
+		$endpoint = GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];
+
+		$attributes = $this->client->setEndpoint($endpoint)->setToken($token)->getResult();
 
 		$result = [];
 
 		foreach ($form['fields'] as $field) {
-			if ($field['type'] != 'IRMA-attribute' || !in_array($field['irmaAttribute'], array_keys($attributes))) {
+			if ($field['type'] != 'IRMA-attribute' || !in_array($field['irmaAttribute'], $attributes->getIds())) {
 				continue;
 			}
 
@@ -39,7 +39,7 @@ class ResultHandler
 				'input' => 'input_' . $formId . '_' . $field['id'],
 				'label' => $field['label'],
 				'attribute' => $field['irmaAttribute'],
-				'value' => $attributes[$field['irmaAttribute']]
+				'value' => $attributes[$field['irmaAttribute']]->getValue()
 			];
 		}
 
