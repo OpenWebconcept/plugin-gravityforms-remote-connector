@@ -22,7 +22,7 @@ class IrmaLaunchQR extends GF_Field
 	 */
 	public function get_field_input($form, $value = '', $entry = null)
 	{
-		$form_id = $form['id'];
+		$formId = $form['id'];
 		$id = (int)$this->id;
 
 		if ($this->is_form_editor()) {
@@ -32,26 +32,35 @@ class IrmaLaunchQR extends GF_Field
 		$buttonLabel = empty($this->irmaButtonLabel) ? __('Get IRMA attributes', 'irma-wp') : $this->irmaButtonLabel;
 		$popup = !empty($this->irmaPopup) && $this->irmaPopup;
 
-		$input = '<div class="ginput_container ginput_container_irma_qr" id="gf_irma_container_' . $id . '">' .
-			'<input type="button" value="' . $buttonLabel . '" ' . $this->get_tabindex() . ' class="btn btn-secondary gf_irma_qr" data-id="' . $id . '" data-form-id="' . $form_id . '" data-popup="' . $popup . '">' .
-			'<canvas id="gf_irma_qr_' . $id . '" class="gf_irma_qr_canvas"></canvas>' .
-			'<input type="hidden" name="input_' . $form_id . '_irma_session_token" id="input_' . $form_id . '_irma_session_token" />' .
-			"</div>";
+		ob_start();
+		require __DIR__ . '/resources/qr-launch-input.php';
 
-		return $input;
+		return ob_get_clean();
 	}
 
+	/**
+	 * Validate form to ensure that we have a session token.
+	 *
+	 * @param string $value
+	 * @param array $form
+	 * @return void
+	 */
 	public function validate($value, $form)
 	{
 		$sessionToken = $this->get_input_value_submission('input_' . $form['id'] . '_irma_session_token');
 
 		if (empty($sessionToken)) {
 			$this->failed_validation = true;
-			$this->validation_message = empty($this->errorMessage) ? 'Please fetch your IRMA attributes.' : $this->errorMessage;
+			$this->validation_message = empty($this->errorMessage) ? __('Please fetch your IRMA attributes.', 'irma-wp') : $this->errorMessage;
 			return;
 		}
 	}
 
+	/**
+	 * Defines how to display the field in the form editor.
+	 *
+	 * @return void
+	 */
 	public function get_form_editor_button()
 	{
 		return [

@@ -9,9 +9,9 @@ class ResultHandler
 		$formId = $_POST['formId'];
 		$token = $_POST['token'];
 
-		$meta_value = \GFFormsModel::get_form_meta($formId)['irma-settings-addon']['endpointIRMA'];
+		$meta_value = \GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];
 
-		$endpoint = $meta_value . "/irmaserver/session/$token/result";
+		$endpoint = $meta_value . "/session/$token/result";
 
 		$request = wp_remote_post($endpoint, [
 			'method' => 'GET',

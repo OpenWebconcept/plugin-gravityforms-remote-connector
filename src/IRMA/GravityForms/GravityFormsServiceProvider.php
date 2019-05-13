@@ -6,7 +6,6 @@ use GF_Fields;
 use GFAddOn;
 use GFForms;
 use IRMA\WP\Foundation\ServiceProvider;
-use IRMA\WP\GravityForms\IrmaAddOnBootstrap;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
@@ -54,12 +53,12 @@ class GravityFormsServiceProvider extends ServiceProvider
 	{
 		GFForms::include_addon_framework();
 		GFAddOn::register(IrmaAddOn::class);
-		GFAddon::register(GravityFormsIrmaSettingsPage::class);
 	}
 
 	/**
 	 * @param array $form
 	 * @param bool $is_ajax
+	 *
 	 * @return void
 	 */
 	public function enqueueScripts($form, $is_ajax)
