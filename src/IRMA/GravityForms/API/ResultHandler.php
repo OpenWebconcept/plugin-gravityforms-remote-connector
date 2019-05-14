@@ -2,6 +2,7 @@
 
 namespace IRMA\WP\GravityForms\API;
 
+use GFAPI;
 use GFFormsModel;
 use IRMA\WP\Client\IRMAClient;
 
@@ -21,7 +22,7 @@ class ResultHandler
 	public function handle()
 	{
 		$formId = $_POST['formId'];
-		$form = \GFAPI::get_form($formId);
+		$form = GFAPI::get_form($formId);
 
 		$token = $_POST['token'];
 		$endpoint = GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];

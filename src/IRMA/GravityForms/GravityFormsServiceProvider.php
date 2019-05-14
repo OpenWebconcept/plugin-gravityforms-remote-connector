@@ -16,11 +16,27 @@ class GravityFormsServiceProvider extends ServiceProvider
 		GF_Fields::register(new IrmaAttributeField);
 		GF_Fields::register(new IrmaLaunchQR);
 
-		add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
+		$this->registerActions();
+		$this->registerFilters();
 
 		$this->registerRestRoutes();
+	}
 
+	/**
+	 * @return void
+	 */
+	public function registerActions()
+	{
+		add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
 		add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function registerFilters()
+	{
+		add_filter('gform_after_submission', [new Filters\DisableEntryCreation, 'apply'], 10, 3);
 	}
 
 	/**
