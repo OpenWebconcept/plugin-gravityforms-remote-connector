@@ -21,7 +21,7 @@ class IRMAClient
 	/**
 	 * @param string $endpoint
 	 */
-	public function __construct($endpoint = null)
+	public function __construct($endpoint)
 	{
 		$this->endpoint = rtrim($endpoint, '/');
 	}
@@ -50,17 +50,6 @@ class IRMAClient
 		}
 
 		return $collection;
-	}
-
-	/**
-	 * @param string $value
-	 * @return IRMAClient
-	 */
-	public function setEndpoint($value): IRMAClient
-	{
-		$this->endpoint = $value;
-
-		return $this;
 	}
 
 	/**

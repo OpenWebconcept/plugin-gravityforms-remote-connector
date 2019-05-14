@@ -7,10 +7,29 @@ use GFAddOn;
 use GFForms;
 use IRMA\WP\Foundation\ServiceProvider;
 use IRMA\WP\Client\IRMAClient;
+use IRMA\WP\Foundation\Plugin;
+use IRMA\WP\Settings\SettingsManager;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
 
+	/**
+	 * @var SettingsManager
+	 */
+	private $settings;
+
+	public function __construct(Plugin $plugin)
+	{
+		parent::__construct($plugin);
+
+		$this->settings = new SettingsManager;
+	}
+
+	/**
+	 * Register all necessities for GravityForms.
+	 *
+	 * @return void
+	 */
 	public function register()
 	{
 		GF_Fields::register(new IrmaAttributeField);
@@ -46,7 +65,7 @@ class GravityFormsServiceProvider extends ServiceProvider
 	 */
 	public function registerRestRoutes()
 	{
-		$client = new IRMAClient();
+		$client = new IRMAClient($this->settings->getEndpointUrl());
 
 		add_action('rest_api_init', function () use ($client) {
 			register_rest_route('irma/v1', '/gf/handle', [

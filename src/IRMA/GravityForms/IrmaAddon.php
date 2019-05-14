@@ -56,47 +56,4 @@ class IrmaAddOn extends GFAddOn
 	{
 		require __DIR__ . '/resources/editor-script.php';
 	}
-
-	/**
-	 * Fields to be shown on the settings page.
-	 *
-	 * @return array
-	 */
-	public function form_settings_fields($form)
-	{
-		return [
-			[
-				'title'  => esc_html__('IRMA Form Settings', 'irma-wp'),
-				'fields' => [
-					[
-						'label'             => esc_html__('IRMA-server Endpoint', 'irma-wp'),
-						'type'              => 'text',
-						'name'              => 'endpointIRMA',
-						'tooltip'           => esc_html__('URL to the IRMA-server endpoint', 'irma-wp'),
-						'class'             => 'medium',
-						'feedback_callback' => array($this, 'validateEndpoint'),
-					],
-				],
-			]
-		];
-	}
-
-	/**
-	 * Validate if the configured endpoint is a valid IRMA server.
-	 *
-	 * @param string $value
-	 * @return bool
-	 */
-	public function validateEndpoint($value)
-	{
-		$request = wp_remote_post($value, [
-			'method' => 'GET',
-		]);
-
-		if (is_wp_error($request)) {
-			return false;
-		}
-
-		return $request['response']['code'] == 200;
-	}
 }

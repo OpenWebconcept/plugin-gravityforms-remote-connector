@@ -27,7 +27,7 @@ class ResultHandler
 		$token = $_POST['token'];
 		$endpoint = GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];
 
-		$attributes = $this->client->setEndpoint($endpoint)->setToken($token)->getResult();
+		$attributes = $this->client->setToken($token)->getResult();
 
 		$result = [];
 

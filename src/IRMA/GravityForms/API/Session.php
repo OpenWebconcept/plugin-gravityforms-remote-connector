@@ -51,15 +51,6 @@ class Session
 				->add($field['irmaAttribute']);
 		}
 
-		return new WP_REST_Response($this->client->setEndpoint($this->getEndpoint($formId))->getSession($attributes));
-	}
-
-	/**
-	 * @param integer|null $formId
-	 * @return string
-	 */
-	public function getEndpoint(int $formId)
-	{
-		return GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'] ?? null;
+		return new WP_REST_Response($this->client->getSession($attributes));
 	}
 }
