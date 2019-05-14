@@ -8,6 +8,11 @@ class IrmaAttributeField extends GF_Field
 {
 	public $type = 'IRMA-attribute';
 
+	/**
+	 * Configure button for the form editor.
+	 *
+	 * @return array
+	 */
 	public function get_form_editor_button()
 	{
 		return [
@@ -27,24 +32,30 @@ class IrmaAttributeField extends GF_Field
 	 */
 	public function get_field_input($form, $value = '', $entry = null)
 	{
-		$form_id         = absint($form['id']);
-		$is_entry_detail = $this->is_entry_detail();
-		$is_form_editor  = $this->is_form_editor();
-
 		$id            = $this->id;
-		$field_id      = $is_entry_detail || $is_form_editor || $form_id == 0 ? "input_$id" : 'input_' . $form_id . "_$id";
+		$formId         = absint($form['id']);
+		$fieldId      = $this->is_entry_detail() || $this->is_form_editor() || $formId == 0 ? "input_$id" : 'input_' . $formId . "_$id";
 		$placeholder   = $this->get_field_placeholder_attribute();
 
 		$value = is_array($value) ? rgar($value, 0) : $value;
 		$value = esc_attr($value);
 
-		return '<div class="ginput_container ginput_container_irma_attribute">
-			<input type="text" id="' . esc_attr($field_id) . '" name="input_' . $id . '" value="' . $value . '" ' . $placeholder . '/>
-			</div>';
+		ob_start();
+		require __DIR__ . '/resources/irma-attribute-input.php';
+
+		return ob_get_clean();
 	}
 
+	/**
+	 * Validates the IRMA Attribute field.
+	 *
+	 * @param string $value
+	 * @param array $form
+	 * @return void
+	 */
 	public function validate($value, $form)
 	{
+		// Retrieve the session token from the form data.
 		$sessionToken = $this->get_input_value_submission('input_' . $form['id'] . '_irma_session_token');
 		$groundTruth = get_transient('irma_result_' . $sessionToken);
 
@@ -54,6 +65,7 @@ class IrmaAttributeField extends GF_Field
 			return;
 		}
 
+		// Compare submitted value with the true value.
 		foreach ($groundTruth as $item) {
 			if ($item['input'] == 'input_' . $form['id'] . '_' . $this->id) {
 				if ($value !== $item['value']) {
@@ -64,6 +76,11 @@ class IrmaAttributeField extends GF_Field
 		}
 	}
 
+	/**
+	 * Settings which are available to the form field.
+	 *
+	 * @return array
+	 */
 	public function get_form_editor_field_settings()
 	{
 		return [

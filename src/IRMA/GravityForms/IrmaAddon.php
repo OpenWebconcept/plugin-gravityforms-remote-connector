@@ -42,101 +42,61 @@ class IrmaAddOn extends GFAddOn
 	public function field_appearance_settings($position, $formId)
 	{
 		if ($position == 350) {
-			?>
-		<li class="irma_attribute field_setting">
-			<label class="section_label" for="irma_attribute_list_label">
-				<?php esc_html_e('IRMA Attribute', 'irma-wp'); ?>
-				<?php gform_tooltip('irma_attributes') ?>
-			</label>
-			<div class="irma_attribute_list">
-				<input type="text" class="irma_attribute_field" onchange="SetFieldProperty('irmaAttribute', this.value);" />
-			</div>
-		</li>
-
-		<li class="irma_qr field_setting">
-			<label class="section_label" for="irma_qr_popup">
-				<?php esc_html_e('QR Code', 'irma-wp'); ?>
-				<?php gform_tooltip('irma_qr') ?>
-			</label>
-			<div class="irma_qr_popup_container">
-				<input type="checkbox" id="irma_qr_popup" class="irma_qr_popup" />
-				<label for="irma_qr_popup" class="inline"><?php esc_html_e('Display as pop-up', 'irma-wp'); ?></label>
-			</div>
-			<br>
-			<label class="section_label" for="irma_qr_button_label">
-				<?php esc_html_e('Button label', 'irma-wp'); ?>
-				<?php gform_tooltip('irma_qr') ?>
-			</label>
-			<div class="irma_qr_popup_container">
-				<input type="text" id="irma_qr_button_label" class="irma_qr_button_label" onchange="SetFieldProperty('irmaButtonLabel', this.value);" />
-			</div>
-		</li>
-	<?php
-}
-}
-
-public function editor_script()
-{
-	?>
-	<script type='text/javascript'>
-		fieldSettings["IRMA-attribute"] += ', .irma_attribute';
-		fieldSettings["IRMA-launch-QR"] += ', .irma_qr_popup, .irma_qr_button_label';
-
-		jQuery(document).bind("gform_load_field_settings", function(event, field, form) {
-			jQuery('.irma_qr_popup').change(function(event) {
-				SetFieldProperty('irmaPopup', jQuery(this).attr('checked') !== undefined);
-			});
-
-			setTimeout(function() {
-				jQuery("#field_" + field.id + " .irma_attribute_field").val(field["irmaAttribute"]);
-				jQuery("#field_" + field.id + " .irma_qr_button_label").val(field["irmaButtonLabel"]);
-				jQuery("#field_" + field.id + " .irma_qr_popup").attr('checked', !!field["irmaPopup"]);
-			}, 0);
-		});
-	</script>
-<?php
-}
-
-/**
- * Fields to be shown on the settings page.
- *
- * @return array
- */
-public function form_settings_fields($form)
-{
-	return [
-		[
-			'title'  => esc_html__('IRMA Form Settings', 'irma-wp'),
-			'fields' => [
-				[
-					'label'             => esc_html__('IRMA-server Endpoint', 'irma-wp'),
-					'type'              => 'text',
-					'name'              => 'endpointIRMA',
-					'tooltip'           => esc_html__('URL to the IRMA-server endpoint', 'irma-wp'),
-					'class'             => 'medium',
-					'feedback_callback' => array($this, 'validateEndpoint'),
-				],
-			],
-		]
-	];
-}
-
-/**
- * Validate if the configured endpoint is a valid IRMA server.
- *
- * @param string $value
- * @return bool
- */
-public function validateEndpoint($value)
-{
-	$request = wp_remote_post($value, [
-		'method' => 'GET',
-	]);
-
-	if (is_wp_error($request)) {
-		return false;
+			require __DIR__ . '/resources/irma-form-settings.php';
+		}
 	}
 
-	return $request['response']['code'] == 200;
-}
+
+	/**
+	 * Scripting necessary for the form editor.
+	 *
+	 * @return string
+	 */
+	public function editor_script()
+	{
+		require __DIR__ . '/resources/editor-script.php';
+	}
+
+	/**
+	 * Fields to be shown on the settings page.
+	 *
+	 * @return array
+	 */
+	public function form_settings_fields($form)
+	{
+		return [
+			[
+				'title'  => esc_html__('IRMA Form Settings', 'irma-wp'),
+				'fields' => [
+					[
+						'label'             => esc_html__('IRMA-server Endpoint', 'irma-wp'),
+						'type'              => 'text',
+						'name'              => 'endpointIRMA',
+						'tooltip'           => esc_html__('URL to the IRMA-server endpoint', 'irma-wp'),
+						'class'             => 'medium',
+						'feedback_callback' => array($this, 'validateEndpoint'),
+					],
+				],
+			]
+		];
+	}
+
+	/**
+	 * Validate if the configured endpoint is a valid IRMA server.
+	 *
+	 * @param string $value
+	 * @return bool
+	 */
+	public function validateEndpoint($value)
+	{
+		$request = wp_remote_post($value, [
+			'method' => 'GET',
+		]);
+
+		if (is_wp_error($request)) {
+			return false;
+		}
+
+		return $request['response']['code'] == 200;
+	}
 }
