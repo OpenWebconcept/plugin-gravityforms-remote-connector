@@ -15,7 +15,7 @@
 	<form id="irma-settings-form" class="pd-irma-form">
 
 		<div class="pd-irma-block">
-			<label for="irma_server_endpoint_url" class="irma-form-label">IRMA-server Endpoint</label>
+			<label for="irma_server_endpoint_url" class="irma-form-label">Server endpoint</label>
 			<input type="url" name="irma_server_endpoint_url" id="irma_server_endpoint_url" value="<?php echo $settings->getEndpointUrl(); ?>" class="irma-form-input">
 		</div>
 
