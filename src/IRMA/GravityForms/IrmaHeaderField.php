@@ -33,16 +33,20 @@ class IrmaHeaderField extends GF_Field
     public function get_field_input($form, $value = '', $entry = null)
     {
         $id = $this->id;
-        $formId = absint($form['id']);
-        $fieldId = $this->is_entry_detail() || $this->is_form_editor() || $formId == 0 ? "input_$id" : 'input_'.$formId."_$id";
+        $formId = $form['id'];
+        $fieldId = $this->is_entry_detail() || $this->is_form_editor() || $formId == 0 ? "input_$id" : 'input_' . $formId . "_$id";
         $placeholder = $this->get_field_placeholder_attribute();
-        $value = $this->irmaHeader;
-        // $value = is_array($value) ? rgar($value, 0) : $value;
-        // $value = esc_attr($value);
+        $irmaHeaderText = $this->irmaHeaderText;
+        $irmaHeaderButtonLabel = $this->irmaHeaderButtonLabel;
+        $popup = !empty($this->irmaPopup) && $this->irmaPopup;
+
+        // will be used as references to get value of referreds fields
+        $irmaHeaderAttributeFullnameID = 'input_' . $formId . "_" . $this->irmaHeaderAttributeFullnameId;
+        $irmaHeaderAttributeBsnID = 'input_' . $formId . "_" . $this->irmaHeaderAttributeBsnId;
 
         ob_start();
-        $logoUrl = plugins_url('/resources/img/irma_icon.png', 'irma-wp/plugin.php');
-        require __DIR__.'/resources/irma-header-input.php';
+        $logoUrl = plugins_url('/resources/img/irma-logo-new.png', 'irma-wp/plugin.php');
+        require __DIR__ . '/resources/irma-header-input.php';
 
         return ob_get_clean();
     }
@@ -57,7 +61,6 @@ class IrmaHeaderField extends GF_Field
         return [
             'label_setting',
             'label_placement_setting',
-            'rules_setting',
             'irma_header',
             'visibility_setting',
             'error_message_setting',
