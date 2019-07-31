@@ -18,3 +18,17 @@
 	height: auto;
 	padding: 1rem;
 }
+
+/**
+ * Header field
+ */
+.irma-logo {
+	width: 60px;
+}
+
+/**
+ * Buttons
+ */
+.gf_irma_qr {
+	border-radius: .25rem !important;
+}
