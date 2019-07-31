@@ -26,7 +26,6 @@ class ResultHandler
 		$form = GFAPI::get_form($formId);
 
 		$token = $_POST['token'];
-		// $settingsManager = new SettingsManager();
 
 		$attributes = $this->client->setToken($token)->getResult();
 
