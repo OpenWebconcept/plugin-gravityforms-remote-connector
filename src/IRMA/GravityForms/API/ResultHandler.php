@@ -5,6 +5,7 @@ namespace IRMA\WP\GravityForms\API;
 use GFAPI;
 use GFFormsModel;
 use IRMA\WP\Client\IRMAClient;
+use IRMA\WP\Settings\SettingsManager;
 
 class ResultHandler
 {
@@ -25,7 +26,7 @@ class ResultHandler
 		$form = GFAPI::get_form($formId);
 
 		$token = $_POST['token'];
-		$endpoint = GFFormsModel::get_form_meta($formId)['irma-addon']['endpointIRMA'];
+		// $settingsManager = new SettingsManager();
 
 		$attributes = $this->client->setToken($token)->getResult();
 
