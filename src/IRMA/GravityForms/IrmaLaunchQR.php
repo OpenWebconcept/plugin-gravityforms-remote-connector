@@ -23,7 +23,7 @@ class IrmaLaunchQR extends GF_Field
 	public function get_field_input($form, $value = '', $entry = null)
 	{
 		$formId = $form['id'];
-		$id = (int)$this->id;
+		$id = (int) $this->id;
 
 		if ($this->is_form_editor()) {
 			return '<img src="' . plugins_url('resources/img/qr_code.jpg', 'irma-wp/plugin.php') . '"/>';
