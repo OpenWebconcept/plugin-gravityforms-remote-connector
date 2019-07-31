@@ -28,7 +28,7 @@ class IrmaAddOn extends GFAddOn
 	public function init_admin()
 	{
 		parent::init_admin();
-		// add_filter('gform_tooltips', [$this, 'tooltips']);
+		add_filter('gform_tooltips', [$this, 'filter_gform_tooltips'], 10, 1);
 		add_action('gform_field_standard_settings', [$this, 'field_appearance_settings'], 10, 2);
 		add_action('gform_editor_js', [$this, 'editor_script']);
 	}
@@ -55,5 +55,12 @@ class IrmaAddOn extends GFAddOn
 	public function editor_script()
 	{
 		require __DIR__ . '/resources/editor-script.php';
+	}
+
+	function filter_gform_tooltips($tooltips)
+	{
+		$tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname', 'irma-wp');
+		$tooltips['irma_header_attribute_bsn_id'] = esc_html('Fill in the ID of the field used for the BSN', 'irma-wp');
+		return $tooltips;
 	}
 }
