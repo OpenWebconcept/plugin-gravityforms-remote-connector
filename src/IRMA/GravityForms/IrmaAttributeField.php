@@ -92,6 +92,7 @@ class IrmaAttributeField extends GF_Field
 			'visibility_setting',
 			'error_message_setting',
 			'placeholder_setting',
+			'conditional_logic_field_setting',
 		];
 	}
 }
