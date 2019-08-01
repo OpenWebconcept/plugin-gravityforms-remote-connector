@@ -28,6 +28,13 @@
     setInterval(function() {
       newval = bsn.value
       if (oldval !== newval) {
+        if (newval.length != 9) {
+          txt = "Uw BSN is verplicht bij inloggen";
+          document.getElementById("irma-login-text").innerHTML = txt;
+
+          return;
+        }
+
         txt = "Ingelogd als " + document.getElementById(attributeFullnameID).value;
         txt += " (BSN " + newval + ")";
         document.getElementById("irma-login-text").innerHTML = txt;
