@@ -17,7 +17,7 @@
 					$("#input_" + formId + "_irma_session_token").val(
 						session.token
 					);
-					qrCanvas.css({ display: "block" });
+					qrCanvas.css({ display: "block", position: "absolute" });
 
 					irma.handleSession(session.sessionPtr, {
 						method: popUp ? "popup" : "canvas",
@@ -38,6 +38,7 @@
 						})
 						.then(function(response) {
 							response.forEach(function(item) {
+								localStorage.setItem(item.input, item.value);
 								$("#" + item.input).val(item.value);
 							});
 						})

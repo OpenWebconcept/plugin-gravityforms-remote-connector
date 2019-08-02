@@ -2,9 +2,9 @@
 
 namespace IRMA\WP\GravityForms;
 
-use GF_Field;
+use IRMA\WP\GravityForms\IrmaField;
 
-class IrmaLaunchQR extends GF_Field
+class IrmaLaunchQR extends IrmaField
 {
 	/**
 	 * @var string
@@ -29,13 +29,15 @@ class IrmaLaunchQR extends GF_Field
 			return '<img src="' . plugins_url('resources/img/qr_code.jpg', 'irma-wp/plugin.php') . '"/>';
 		}
 
-		$buttonLabel = empty($this->irmaButtonLabel) ? __('Get IRMA attributes', 'irma-wp') : $this->irmaButtonLabel;
-		$popup = !empty($this->irmaPopup) && $this->irmaPopup;
+		$args = [
+			'id'			=> $id,
+			'formId'		=> $formId,
+			'buttonLabel'	=> empty($this->irmaButtonLabel) ? __('Get IRMA attributes', 'irma-wp') : $this->irmaButtonLabel,
+			'popup' 		=> !empty($this->irmaPopup) && $this->irmaPopup,
+		];
 
-		ob_start();
-		require __DIR__ . '/resources/qr-launch-input.php';
-
-		return ob_get_clean();
+		$name = 'qr-launch-input';
+		return $this->renderView($name, $args);
 	}
 
 	/**

@@ -2,9 +2,9 @@
 
 namespace IRMA\WP\GravityForms;
 
-use GF_Field;
+use IRMA\WP\GravityForms\IrmaField;
 
-class IrmaHeaderField extends GF_Field
+class IrmaHeaderField extends IrmaField
 {
     public $type = 'IRMA-header';
 
@@ -33,22 +33,24 @@ class IrmaHeaderField extends GF_Field
     public function get_field_input($form, $value = '', $entry = null)
     {
         $id = $this->id;
-        $formId = $form['id'];
-        $fieldId = $this->is_entry_detail() || $this->is_form_editor() || $formId == 0 ? "input_$id" : 'input_' . $formId . "_$id";
-        $placeholder = $this->get_field_placeholder_attribute();
-        $irmaHeaderText = $this->irmaHeaderText;
-        $irmaHeaderButtonLabel = $this->irmaHeaderButtonLabel;
-        $popup = !empty($this->irmaPopup) && $this->irmaPopup;
 
-        // will be used as references to get value of referreds fields
-        $irmaHeaderAttributeFullnameID = 'input_' . $formId . "_" . $this->irmaHeaderAttributeFullnameId;
-        $irmaHeaderAttributeBsnID = 'input_' . $formId . "_" . $this->irmaHeaderAttributeBsnId;
+        $args = [
+            'id' => $id,
+            'formId' => $form['id'],
+            'fieldId' => $this->is_entry_detail() || $this->is_form_editor() || $form['id'] == 0 ? "input_$id" : 'input_' . $form['id'] . "_$id",
+            'placeholder' => $this->get_field_placeholder_attribute(),
+            'text' => $this->text,
+            'buttonLabel' => $this->buttonLabel,
+            'popup' => !empty($this->irmaPopup) && $this->irmaPopup,
 
-        ob_start();
-        $logoUrl = plugins_url('/resources/img/irma-logo-new.png', 'irma-wp/plugin.php');
-        require __DIR__ . '/resources/irma-header-input.php';
+            // will be used as references to get value of referreds fields
+            'irmaHeaderAttributeFullnameID' => 'input_' . $form['id'] . '_' . $this->irmaHeaderAttributeFullnameId,
+            'irmaHeaderAttributeBsnID' => 'input_' . $form['id'] . '_' . $this->irmaHeaderAttributeBsnId,
+            'logoUrl' => plugins_url('/resources/img/irma-logo-new.png', 'irma-wp/plugin.php'),
+        ];
 
-        return ob_get_clean();
+        $name = 'irma-header-input';
+        return $this->renderView($name, $args);
     }
 
     /**

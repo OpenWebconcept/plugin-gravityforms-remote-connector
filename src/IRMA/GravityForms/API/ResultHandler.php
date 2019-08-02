@@ -3,9 +3,7 @@
 namespace IRMA\WP\GravityForms\API;
 
 use GFAPI;
-use GFFormsModel;
 use IRMA\WP\Client\IRMAClient;
-use IRMA\WP\Settings\SettingsManager;
 
 class ResultHandler
 {

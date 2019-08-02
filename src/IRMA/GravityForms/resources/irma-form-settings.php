@@ -13,7 +13,7 @@
 		<?php esc_html_e('IRMA Header text', 'irma-wp'); ?>
 	</label>
 	<div class="irma_header_list">
-		<input type="text" class="irma_header_field" onchange="SetFieldProperty('irmaHeaderText', this.value);" />
+		<input type="text" class="irma_header_field" onchange="SetFieldProperty('text', this.value);" />
 	</div>
 	<br />
 	<div class="irma_qr_popup_container">
@@ -30,7 +30,7 @@
 		<?php esc_html_e('Button label', 'irma-wp'); ?>
 	</label>
 	<div class="irma_qr_popup_container">
-		<input type="text" id="irma_header_button_label" class="irma_header_button_label" onchange="SetFieldProperty('irmaHeaderButtonLabel', this.value);" />
+		<input type="text" id="irma_header_button_label" class="irma_header_button_label" onchange="SetFieldProperty('buttonLabel', this.value);" />
 	</div>
 	<br />
 	<label class="section_label" for="irma_header_attribute_fullname_id_label">
