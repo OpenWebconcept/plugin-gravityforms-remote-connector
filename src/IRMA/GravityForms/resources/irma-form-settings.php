@@ -22,7 +22,7 @@
 		</label>
 		<input type="checkbox" id="irma_header_qr_popup" class="irma_header_qr_popup" />
 		<label for="irma_header_qr_popup" class="inline">
-			<?php esc_html_e('Display as pop-up', 'irma-wp'); ?>
+			<?php esc_html_e('Display as pop-up?', 'irma-wp'); ?>
 		</label>
 	</div>
 	<br />
@@ -47,6 +47,26 @@
 	</label>
 	<div class="irma_header_attribute_bsn_id">
 		<input type="text" class="irma_header_attribute_bsn_id" onchange="SetFieldProperty('irmaHeaderAttributeBsnId', this.value);" />
+	</div>
+	<br />
+	<div class="irma_header_city_id_container">
+		<label class="section_label" for="irma_header_city_id_label">
+			<?php esc_html_e('ID attribute city', 'irma-wp'); ?>
+			<?php gform_tooltip('irma_header_city_id'); ?>
+		</label>
+		<div class="irma_header_city_id">
+			<input type="text" class="irma_header_city_id" onchange="SetFieldProperty('irmaHeaderAttributeCity', this.value);" />
+		</div>
+	</div>
+	<br />
+	<div class="irma_header_city_container">
+		<label class="section_label" for="irma_header_city_label">
+			<?php esc_html_e('City to check', 'irma-wp'); ?>
+			<?php gform_tooltip('irma_header_city'); ?>
+		</label>
+		<div class="irma_header_city">
+			<input type="text" class="irma_header_city" onchange="SetFieldProperty('irmaHeaderCity', this.value);" />
+		</div>
 	</div>
 </li>
 

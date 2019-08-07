@@ -78,6 +78,11 @@ class IrmaAttributeField extends IrmaField
 		}
 	}
 
+	public function is_conditional_logic_supported()
+	{
+		return true;
+	}
+
 	/**
 	 * Settings which are available to the form field.
 	 *

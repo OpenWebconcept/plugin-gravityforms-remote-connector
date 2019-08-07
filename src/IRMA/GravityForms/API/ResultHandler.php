@@ -7,43 +7,80 @@ use IRMA\WP\Client\IRMAClient;
 
 class ResultHandler
 {
+    /**
+     * @var IRMAClient
+     */
+    private $client;
 
-	/**
-	 * @var IRMAClient
-	 */
-	private $client;
+    public function __construct(IRMAClient $client)
+    {
+        $this->client = $client;
+    }
 
-	public function __construct(IRMAClient $client)
-	{
-		$this->client = $client;
-	}
+    public function handle()
+    {
+        $formId = $_POST['formId'];
+        $form = GFAPI::get_form($formId);
 
-	public function handle()
-	{
-		$formId = $_POST['formId'];
-		$form = GFAPI::get_form($formId);
+        $token = $_POST['token'];
 
-		$token = $_POST['token'];
+        $attributes = $this->client->setToken($token)->getResult();
 
-		$attributes = $this->client->setToken($token)->getResult();
+        $result = [];
 
-		$result = [];
+        foreach ($form['fields'] as $field) {
+            if (($field['type'] != 'IRMA-attribute' || !in_array($field['irmaAttribute'], $attributes->getIds())) && ($field['type'] != 'IRMA-header')) {
+                continue;
+            }
 
-		foreach ($form['fields'] as $field) {
-			if ($field['type'] != 'IRMA-attribute' || !in_array($field['irmaAttribute'], $attributes->getIds())) {
-				continue;
-			}
+            switch ($field['type']) {
+                case 'IRMA-attribute':
+                    $result[] = [
+                        'input' => 'input_'.$formId.'_'.$field['id'],
+                        'label' => $field['label'],
+                        'attribute' => $field['irmaAttribute'],
+                        'value' => $attributes[$field['irmaAttribute']]->getValue(),
+                    ];
+                    break;
+                case 'IRMA-header':
+                    $result[] = [
+                        'input' => 'input_'.$formId.'_'.$field['id'],
+                        'label' => 'irmaHeaderAttributeFullnameId',
+                        'attribute' => $field['irmaHeaderAttributeFullnameId'],
+                        'value' => $attributes[$field['irmaHeaderAttributeFullnameId']]->getValue(),
+                    ];
 
-			$result[] = [
-				'input' => 'input_' . $formId . '_' . $field['id'],
-				'label' => $field['label'],
-				'attribute' => $field['irmaAttribute'],
-				'value' => $attributes[$field['irmaAttribute']]->getValue()
-			];
-		}
+                    $result[] = [
+                        'input' => 'input_'.$formId.'_'.$field['id'],
+                        'label' => 'irmaHeaderAttributeBsnId',
+                        'attribute' => $field['irmaHeaderAttributeBsnId'],
+                        'value' => $attributes[$field['irmaHeaderAttributeBsnId']]->getValue(),
+                    ];
 
-		set_transient('irma_result_' . $token, $result, WEEK_IN_SECONDS);
+                    if (!empty($field['irmaHeaderAttributeCity'])) {
+                        $result[] = [
+                            'input' => 'input_'.$formId.'_'.$field['id'],
+                            'label' => 'irmaHeaderAttributeCity',
+                            'attribute' => $field['irmaHeaderAttributeCity'],
+                            'value' => $attributes[$field['irmaHeaderAttributeCity']]->getValue(),
+                        ];
+                    }
 
-		return $result;
-	}
+                    if (!empty($field['irmaHeaderCity'])) {
+                        $result[] = [
+                            'input' => 'input_'.$formId.'_'.$field['id'],
+                            'label' => 'irmaHeaderCity',
+                            'attribute' => $field['irmaHeaderCity'],
+                            'value' => $attributes[$field['irmaHeaderCity']]->getValue(),
+                        ];
+                    }
+
+                    break;
+            }
+        }
+
+        set_transient('irma_result_'.$token, $result, WEEK_IN_SECONDS);
+
+        return $result;
+    }
 }

@@ -17,6 +17,7 @@
 					$("#input_" + formId + "_irma_session_token").val(
 						session.token
 					);
+
 					qrCanvas.css({ display: "block", position: "absolute" });
 
 					irma.handleSession(session.sessionPtr, {
@@ -34,12 +35,18 @@
 							});
 						})
 						.then(function(response) {
+							sessionStorage.setItem("startIRMA", session.token);
 							return response.json();
 						})
 						.then(function(response) {
 							response.forEach(function(item) {
-								localStorage.setItem(item.input, item.value);
-								$("#" + item.input).val(item.value);
+								sessionStorage.setItem(
+									item.attribute,
+									item.value
+								);
+								$("#" + item.input)
+									.val(item.value)
+									.change();
 							});
 						})
 						.catch(function(response) {

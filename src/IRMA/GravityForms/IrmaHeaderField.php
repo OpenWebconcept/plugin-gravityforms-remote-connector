@@ -2,8 +2,6 @@
 
 namespace IRMA\WP\GravityForms;
 
-use IRMA\WP\GravityForms\IrmaField;
-
 class IrmaHeaderField extends IrmaField
 {
     public $type = 'IRMA-header';
@@ -32,25 +30,66 @@ class IrmaHeaderField extends IrmaField
      */
     public function get_field_input($form, $value = '', $entry = null)
     {
+        $value = is_array($value) ? rgar($value, 0) : $value;
+        $value = esc_attr($value);
         $id = $this->id;
 
         $args = [
             'id' => $id,
             'formId' => $form['id'],
-            'fieldId' => $this->is_entry_detail() || $this->is_form_editor() || $form['id'] == 0 ? "input_$id" : 'input_' . $form['id'] . "_$id",
+            'fieldId' => $this->is_entry_detail() || $this->is_form_editor() || $form['id'] == 0 ? "input_$id" : 'input_'.$form['id']."_$id",
             'placeholder' => $this->get_field_placeholder_attribute(),
+            'value' => $value,
             'text' => $this->text,
             'buttonLabel' => $this->buttonLabel,
             'popup' => !empty($this->irmaPopup) && $this->irmaPopup,
 
             // will be used as references to get value of referreds fields
-            'irmaHeaderAttributeFullnameID' => 'input_' . $form['id'] . '_' . $this->irmaHeaderAttributeFullnameId,
-            'irmaHeaderAttributeBsnID' => 'input_' . $form['id'] . '_' . $this->irmaHeaderAttributeBsnId,
+            'irmaHeaderAttributeFullnameID' => $this->irmaHeaderAttributeFullnameId,
+            'irmaHeaderAttributeBsnID' => $this->irmaHeaderAttributeBsnId,
+            'irmaHeaderAttributeCity' => $this->irmaHeaderAttributeCity,
+            'irmaHeaderCity' => $this->irmaHeaderCity,
             'logoUrl' => plugins_url('/resources/img/irma-logo-new.png', 'irma-wp/plugin.php'),
         ];
 
+        add_action('gform_enqueue_scripts', function () use ($args) {
+            wp_register_script('irma-header-js', 'irma_header');
+            wp_localize_script('irma-header-js', 'irma_header', $args);
+            wp_enqueue_script('irma-header-js');
+        });
+
         $name = 'irma-header-input';
+
         return $this->renderView($name, $args);
+    }
+
+    public function validate($value, $form)
+    {
+        // Retrieve the session token from the form data.
+        $sessionToken = $this->get_input_value_submission('input_'.$form['id'].'_irma_session_token');
+        $groundTruth = get_transient('irma_result_'.$sessionToken);
+
+        if (empty($sessionToken) || !$groundTruth) {
+            $this->failed_validation = true;
+            $this->validation_message = '';
+
+            return;
+        }
+
+        // Compare submitted value with the true value.
+        foreach ($groundTruth as $item) {
+            if ($item['input'] == 'input_'.$form['id'].'_'.$this->id) {
+                if ($value !== $item['value']) {
+                    $this->failed_validation = true;
+                }
+                break;
+            }
+        }
+    }
+
+    public function is_conditional_logic_supported()
+    {
+        return true;
     }
 
     /**
@@ -67,6 +106,8 @@ class IrmaHeaderField extends IrmaField
             'visibility_setting',
             'error_message_setting',
             'placeholder_setting',
+            'conditional_logic_field_setting',
+            'prepopulate_field_setting',
         ];
     }
 }
