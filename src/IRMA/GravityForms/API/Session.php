@@ -61,11 +61,6 @@ class Session
                             ->setLabel('irmaHeaderAttributeCity')
                             ->add($field['irmaHeaderAttributeCity']);
                     }
-                    if (!empty($field['irmaHeaderCity'])) {
-                        $attributes[] = SessionAttributeCollection::make()
-                            ->setLabel('irmaHeaderCity')
-                            ->add($field['irmaHeaderCity']);
-                    }
                     break;
             }
         }

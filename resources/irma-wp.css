@@ -26,9 +26,68 @@
 	width: 60px;
 }
 
+.irma-navbar {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	padding: .5rem 1rem;
+	justify-content: space-between;
+}
+
 /**
  * Buttons
  */
 .gf_irma_qr {
 	border-radius: .25rem !important;
+}
+
+.irma-btn {
+	padding: 0.6rem 1rem !important;
+	width: inherit !important;
+	height: 45px;
+}
+
+.irma-btn-succes{
+	color: #fff !important;
+	background-color: #28a745 !important;
+	border-color: #28a745 !important;
+	cursor: pointer;
+}
+
+.irma-btn-succes:hover {
+	background-color: #218838 !important;
+	border-color: #1e7e34 !important;
+}
+
+.irma-btn-secondary {
+	color: #fff !important;
+	background-color: #6c757d !important;
+	border-color: #6c757d !important;
+	cursor: pointer;
+}
+
+.irma-btn-secondary:hover {
+	background-color: #5a6268 !important;
+	border-color: #545b62 !important;
+}
+
+.alert {
+	position: relative !important;
+	padding: .4rem 1.25rem !important;
+	margin-bottom: 0rem !important;
+	border: 1px solid transparent !important;
+	border-radius: .25rem !important;
+	max-height: 50px;
+}
+
+.alert-warning {
+	color: #856404;
+	background-color: #fff3cd !important;
+	border-color: #ffeeba !important;
+}
+
+.alert-danger {
+	color: #721c24;
+	background-color: #f8d7da !important;
+	border-color: #f5c6cb !important;
 }

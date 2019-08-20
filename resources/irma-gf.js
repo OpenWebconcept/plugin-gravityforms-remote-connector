@@ -59,3 +59,13 @@
 		});
 	});
 })(jQuery);
+
+/**
+ * Clear the BSN field and add event: change
+ * @param string fieldId
+ */
+function clearFieldBSN(fieldId) {
+	jQuery("#" + fieldId)
+		.val("")
+		.change();
+}
