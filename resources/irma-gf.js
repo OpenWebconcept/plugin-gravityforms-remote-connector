@@ -1,17 +1,17 @@
-(function($) {
-	$(document).on("gform_post_render", function() {
-		$(".gf_irma_qr").click(function() {
+(function ($) {
+	$(document).on("gform_post_render", function () {
+		$(".gf_irma_qr").click(function () {
 			var id = $(this).attr("data-id");
 			var formId = $(this).attr("data-form-id");
 			var popUp = $(this).attr("data-popup");
 
 			fetch(irma_gf.session_url + "?id=" + formId)
-				.then(function(response) {
-					return response.json().then(function(json) {
+				.then(function (response) {
+					return response.json().then(function (json) {
 						return response.ok ? json : Promise.reject(json);
 					});
 				})
-				.then(function(response) {
+				.then(function (response) {
 					var session = response;
 					var qrCanvas = $("#gf_irma_qr_" + id);
 					$("#input_" + formId + "_irma_session_token").val(
@@ -24,7 +24,7 @@
 						method: popUp ? "popup" : "canvas",
 						element: "gf_irma_qr_" + id
 					})
-						.then(function() {
+						.then(function () {
 							var data = new FormData();
 							data.append("token", session.token);
 							data.append("formId", formId);
@@ -34,12 +34,12 @@
 								body: data
 							});
 						})
-						.then(function(response) {
+						.then(function (response) {
 							sessionStorage.setItem("startIRMA", session.token);
 							return response.json();
 						})
-						.then(function(response) {
-							response.forEach(function(item) {
+						.then(function (response) {
+							response.forEach(function (item) {
 								sessionStorage.setItem(
 									item.attribute,
 									item.value
@@ -49,11 +49,11 @@
 									.change();
 							});
 						})
-						.catch(function(response) {
+						.catch(function (response) {
 							console.warn(response);
 						});
 				})
-				.catch(function(err) {
+				.catch(function (err) {
 					console.log(err);
 				});
 		});

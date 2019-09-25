@@ -155,4 +155,18 @@ class Plugin
 			$service->register();
 		}
 	}
+
+	/**
+	 * Get case properties from config
+	 *
+	 * @param string $key
+	 * @return string
+	 */
+	public function getConfigCaseProperty($key): ?string
+	{
+		$this->config = new Config($this->rootPath . '/config');
+		$this->config->boot();
+
+		return $this->config->get('core.caseProperties.' . $key);
+	}
 }

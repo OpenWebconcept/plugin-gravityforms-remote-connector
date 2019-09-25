@@ -58,7 +58,7 @@ class Config
      */
     public function get($setting)
     {
-        if (! $setting) {
+        if (!$setting) {
             return $this->all();
         }
 
@@ -83,7 +83,7 @@ class Config
      */
     public function set($key, $value = null)
     {
-        $keys = is_array($key) ? $key : [ $key => $value ];
+        $keys = is_array($key) ? $key : [$key => $value];
 
         $tempItems = &$this->items;
 
@@ -98,7 +98,7 @@ class Config
                 // If the key doesn't exist at this depth, we will just create an empty array
                 // to hold the next value, allowing us to create the arrays to hold final
                 // values at the correct depth. Then we'll keep digging into the array.
-                if (! isset($tempItems[$part]) || ! is_array($tempItems[$part])) {
+                if (!isset($tempItems[$part]) || !is_array($tempItems[$part])) {
                     $tempItems[$part] = [];
                 }
                 $tempItems = &$tempItems[$part];
@@ -151,11 +151,10 @@ class Config
      */
     private function scanDirectory($path)
     {
-        $files = glob($path.'/*', GLOB_NOSORT);
+        $files = glob($path . '/*', GLOB_NOSORT);
 
         foreach ($files as $file) {
             $fileType = filetype($file);
-
             if ($fileType == "dir") {
                 $this->scanDirectory($file);
             } else {
@@ -169,13 +168,13 @@ class Config
                 }
 
                 // Get the path from the starting path.
-                $path = str_replace($this->path.'/', '', $path);
+                $path = str_replace($this->path . '/', '', $path);
 
                 // Build an array from the path.
                 $items = [];
                 $items[$name] = $value;
                 foreach (array_reverse(explode('/', $path)) as $key) {
-                    $items = [ $key => $items ];
+                    $items = [$key => $items];
                 }
 
                 // Merge it recursively into items

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: IRMA for WordPress
  * Plugin URI: https://privacybydesign.foundation/
@@ -13,9 +14,12 @@
  */
 
 use IRMA\WP\Autoloader;
+use IRMA\WP\Actions;
 use IRMA\WP\Foundation\Plugin;
 
 define('IRMA_WP_VERSION', '0.0.0');
+define('IRMA_WP__PLUGIN_URL', __DIR__);
+define('IRMA_WP_RSIN_BUREN', '807287684');
 
 /**
  * If this file is called directly, abort.
@@ -30,6 +34,13 @@ if (!defined('WPINC')) {
 require_once __DIR__ . '/autoloader.php';
 
 $autoloader = new Autoloader();
+
+/**
+ * Manual loaded file: actions.
+ */
+require_once __DIR__ . '/Actions.php';
+
+$actions = new Actions();
 
 /**
  * Begin execution of the plugin.
