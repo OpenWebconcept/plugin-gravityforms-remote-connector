@@ -2,9 +2,9 @@
 
 namespace IRMA\WP\GravityForms;
 
-use GF_Field;
+use IRMA\WP\GravityForms\IrmaField;
 
-class IrmaAttributeField extends GF_Field
+class IrmaAttributeField extends IrmaField
 {
 	public $type = 'IRMA-attribute';
 
@@ -32,18 +32,20 @@ class IrmaAttributeField extends GF_Field
 	 */
 	public function get_field_input($form, $value = '', $entry = null)
 	{
-		$id            = $this->id;
-		$formId         = absint($form['id']);
-		$fieldId      = $this->is_entry_detail() || $this->is_form_editor() || $formId == 0 ? "input_$id" : 'input_' . $formId . "_$id";
-		$placeholder   = $this->get_field_placeholder_attribute();
-
 		$value = is_array($value) ? rgar($value, 0) : $value;
 		$value = esc_attr($value);
+		$id = $this->id;
 
-		ob_start();
-		require __DIR__ . '/resources/irma-attribute-input.php';
+		$args = [
+			'id'            => $id,
+			'formId'        => absint($form['id']),
+			'fieldId'      	=> $this->is_entry_detail() || $this->is_form_editor() || $form['id'] == 0 ? "input_$id" : 'input_' . $form['id'] . "_$id",
+			'placeholder'	=> $this->get_field_placeholder_attribute(),
+			'value'			=> $value,
+		];
 
-		return ob_get_clean();
+		$name = 'irma-attribute-input';
+		return $this->renderView($name, $args);
 	}
 
 	/**
@@ -76,6 +78,11 @@ class IrmaAttributeField extends GF_Field
 		}
 	}
 
+	public function is_conditional_logic_supported()
+	{
+		return true;
+	}
+
 	/**
 	 * Settings which are available to the form field.
 	 *
@@ -92,6 +99,7 @@ class IrmaAttributeField extends GF_Field
 			'visibility_setting',
 			'error_message_setting',
 			'placeholder_setting',
+			'conditional_logic_field_setting',
 		];
 	}
 }

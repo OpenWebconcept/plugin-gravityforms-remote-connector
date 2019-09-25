@@ -51,6 +51,10 @@
 	margin-top: 2rem;
 }
 
+.irma-logo {
+	width: 60px;
+}
+
 /**
  * Elements
  */
@@ -83,6 +87,10 @@
 .pd-irma-form .irma-form-input:focus {
 	box-shadow: none;
 	border-bottom: 2px solid var(--pd-irma-primary);
+}
+
+.gf-irma-qr {
+	border-radius: .25rem !important;
 }
 
 /**

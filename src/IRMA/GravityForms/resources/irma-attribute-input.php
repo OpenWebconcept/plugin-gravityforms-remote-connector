@@ -1,7 +1,8 @@
 <?php
+
 /**
- * @var int $fieldId
- * @var int $id
+ * @var int
+ * @var int    $id
  * @var string $value
  * @var string $placeholder
  */

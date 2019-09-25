@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \IRMA\WP\GravityForms\IrmaLaunchQR $this
  * @var int $id
