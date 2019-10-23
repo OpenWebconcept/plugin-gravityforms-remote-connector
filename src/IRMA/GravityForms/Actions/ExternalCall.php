@@ -4,28 +4,31 @@ namespace IRMA\WP\GravityForms\Actions;
 
 use Exception;
 use GuzzleHttp\Client;
-use IRMA\WP\Foundation\Plugin;
+use IRMA\WP\Settings\SettingsManager;
 
 class ExternalCall
 {
+    public function __construct()
+    {
+        $this->settingsManager = new SettingsManager();
+    }
+
     /**
-     * Prepare external call
+     * Prepare external call.
      *
      * @param array $entry
      * @param array $form
+     *
      * @return array
      */
     public function externalCall($entry, array $form)
     {
         $formID = $form['fields'][0]['formId'];
+        $formEntries = [];
 
-        $formEntries = [
-            'bsn'                   => rgar($entry, '21'),
-            'sourceURL'             => rgar($entry, 'source_url'),
-            'purchaseDateFirstDog'  => rgar($entry, '9'),
-            'totalDogsAfter'        => rgar($entry, '20'),
-            'hokRate'               => rgar($entry, '10'),
-        ];
+        foreach ($form['fields'] as $field) {
+            array_push($formEntries, ['casePropertyValue' => trim(rgar($entry, (string) $field['id'])), 'casePropertyName' => trim($field['casePropertyName'])]);
+        }
 
         $authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJZYXJkIn0.MsPgx9cTjz6xE7HIoqtYYvpK5W3KrKlvIMGhdtGQE8U';
 
@@ -38,30 +41,29 @@ class ExternalCall
             $caseID = str_replace('-', '', $caseInstance['identificatie']);
 
             $createdCaseObjectJSON = $this->createCaseObjectJSON($caseURLwithID, $formEntries);
-            $this->createCaseObject($createdCaseObjectJSON, $authorization);
 
+            $this->createCaseObject($createdCaseObjectJSON, $authorization);
             $this->createCaseProperties($caseURLwithID, $caseID, $formEntries, $authorization);
         } catch (Exception $e) {
-            require(__DIR__ . '/../Views/FormSubmissionError.php');
+            require __DIR__ . '/../Views/FormSubmissionError.php';
             exit;
         }
-
-        // return $casePropertyInstance;
     }
 
     /**
-     * Create the JSON content
+     * Create the JSON content.
      *
      * @param array $dataForJSON
-     * @param int $formID
+     * @param int   $formID
+     *
      * @return string
      */
     public function createCaseJSON($dataForJSON, $formID): string
     {
         return  '{
-            "bronorganisatie": "' . IRMA_WP_RSIN_BUREN . '",
+            "bronorganisatie": "' . $this->settingsManager->getRISN() . '",
             "zaaktype": "https://ztcapi.zaaktypen.nl/f36b4854-5521-4923-af5d-3a119700c911",
-            "verantwoordelijkeOrganisatie": "' . IRMA_WP_RSIN_BUREN . '",
+            "verantwoordelijkeOrganisatie": "' . $this->settingsManager->getRISN() . '",
             "startdatum": "' . date('Y-m-d') . '",
             "omschrijving": "Aanmelding hondenbelasting", 
             "toelichting": "Remarks",
@@ -76,31 +78,45 @@ class ExternalCall
     }
 
     /**
-     * Create the JSON for a case object  
+     * Create the JSON for a case object.
      *
      * @param string $caseURLwithID
-     * @param array $formEntries
+     * @param array  $formEntries
+     *
      * @return string
      */
     public function createCaseObjectJSON($caseURLwithID, $formEntries): string
     {
         $caseURL = preg_replace('/(?!.*\/).*/', '', $caseURLwithID);
 
-        // $formEntries['bsn'] = '100148554';
+        $BSN = '';
+
+        foreach ($formEntries as $formEntry) {
+            if ($formEntry['casePropertyName'] === 'BSN') {
+                $BSN = $formEntry['casePropertyValue'] ?? false;
+
+                continue;
+            }
+        }
+
+        if (!$BSN) {
+            throw new Exception('The BSN is not present');
+        }
 
         return '{
             "zaak": "' . $caseURLwithID . '",
-            "object": "' . $caseURL . $formEntries['bsn'] . '",
+            "object": "' . $caseURL . $BSN . '",
             "objectType": "natuurlijkPersoon"
         }';
     }
 
     /**
-     * Create the JSON content for a case property 
+     * Create the JSON content for a case property.
      *
      * @param string $caseURLwithID
      * @param string $propertyReference
      * @param string $caseValue
+     *
      * @return string
      */
     public function createCasePropertyJSON($caseURLwithID, $propertyReference, $caseValue): string
@@ -109,23 +125,23 @@ class ExternalCall
 
         return '{
             "zaak": "' . $caseURLwithID . '",
-            "eigenschap": "' . $caseURL . $propertyReference . '", // needs url in front of it
+            "eigenschap": "' . $caseURL . $propertyReference . '",
             "waarde": "' . $caseValue . '"
         }';
     }
 
     /**
-     * Execute the request and create a case
+     * Execute the request and create a case.
      *
      * @param string $JSON
+     *
      * @return array
      */
     public function createCase($JSON, $authorization): array
     {
         $client = new Client();
 
-        // $response = $client->request('POST', 'https://zgwapi.decos.com/api/v1/zaken', [
-        $response = $client->request('POST', 'https://buren-nlx-outway.yard.nl/Gemeente-Buren/DecosJoinV2/zaken', [
+        $response = $client->request('POST', $this->settingsManager->createCaseURL(), [
             'verify' => false,
             'body' => $JSON,
             'headers' => [
@@ -142,17 +158,17 @@ class ExternalCall
     }
 
     /**
-     * Execute the request and create a case object
+     * Execute the request and create a case object.
      *
      * @param string $createdCaseObjectJSON
+     *
      * @return bool
      */
     public function createCaseObject($createdCaseObjectJSON, $authorization): bool
     {
         $client = new Client();
 
-        // $response = $client->request('POST', 'https://zgwapi.decos.com/api/v1/zaakobjecten', [
-        $response = $client->request('POST', 'https://buren-nlx-outway.yard.nl/Gemeente-Buren/DecosJoinV2/zaakobjecten', [
+        $response = $client->request('POST', $this->settingsManager->createCaseObjectURL(), [
             'verify' => false,
             'body' => $createdCaseObjectJSON,
             'headers' => [
@@ -169,17 +185,18 @@ class ExternalCall
     }
 
     /**
-     * Execute the request and create a case object
+     * Execute the request and create a case object.
      *
      * @param string $createdCaseObjectJSON
+     *
      * @return bool
      */
     public function createCaseProperty($createdCasePropertyJSON, $caseID, $authorization): bool
     {
         $client = new Client();
+        $createCasePropertyURL = str_replace('caseID', $caseID, $this->settingsManager->createCasePropertyURL());
 
-        // $response = $client->request('POST', 'https://zgwapi.decos.com/api/v1/zaken/' . $caseID . '/zaakeigenschappen', [
-        $response = $client->request('POST', 'https://buren-nlx-outway.yard.nl/Gemeente-Buren/DecosJoinV2/zaken/' . $caseID . '/zaakeigenschappen', [
+        $response = $client->request('POST', $createCasePropertyURL, [
             'verify' => false,
             'body' => $createdCasePropertyJSON,
             'headers' => [
@@ -193,30 +210,23 @@ class ExternalCall
         }
 
         return true;
-        // $result = json_decode($response->getBody()->getContents(), true);
     }
 
+    /**
+     * Create JSON object and create a case from the JSON object.
+     *
+     * @param string $caseURLwithID
+     * @param string $caseID
+     * @param array  $formEntries
+     * @param string $authorization
+     */
     public function createCaseProperties($caseURLwithID, $caseID, $formEntries, $authorization)
     {
-        $pluginObject = (new Plugin(IRMA_WP__PLUGIN_URL));
-
-        foreach ($formEntries as $key => $formEntry) {
-            switch ($key) {
-                case 'purchaseDateFirstDog':
-                    $propertyReference = $pluginObject->getConfigCaseProperty('purchaseDateFirstDog');
-                    $createdCasePropertyJSON = $this->createCasePropertyJSON($caseURLwithID, $propertyReference, $formEntry);
-                    $this->createCaseProperty($createdCasePropertyJSON, $caseID, $authorization);
-                    break;
-                case 'hokRate':
-                    $propertyReference = $pluginObject->getConfigCaseProperty('hokRate');
-                    $createdCasePropertyJSON = $this->createCasePropertyJSON($caseURLwithID, $propertyReference, $formEntry);
-                    $this->createCaseProperty($createdCasePropertyJSON, $caseID, $authorization);
-                    break;
-                case 'totalDogsAfter':
-                    $propertyReference = $pluginObject->getConfigCaseProperty('totalDogsAfter');
-                    $createdCasePropertyJSON = $this->createCasePropertyJSON($caseURLwithID, $propertyReference, $formEntry);
-                    $this->createCaseProperty($createdCasePropertyJSON, $caseID, $authorization);
-                    break;
+        // create caseProperties separately for every form field
+        foreach ($formEntries as $formEntry) {
+            if (!empty($formEntry['casePropertyName']) && $formEntry['casePropertyName'] !== 'BSN') {
+                $createdCasePropertyJSON = $this->createCasePropertyJSON($caseURLwithID, $formEntry['casePropertyName'], $formEntry['casePropertyValue']);
+                $this->createCaseProperty($createdCasePropertyJSON, $caseID, $authorization);
             }
         }
     }

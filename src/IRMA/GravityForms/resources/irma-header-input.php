@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var int    $id
+ * @var int
  * @var string $value
  * @var string $placeholder
  * @var string $logoUrl
@@ -12,7 +12,7 @@
 <div class="ginput_container ginput_container_irma_header">
   <input type="hidden" id="<?php echo esc_attr($fieldId); ?>" name="input_<?php echo $id; ?>" value="<?php echo $value; ?>" />
   <nav class="irma-navbar">
-    <img alt="irma-logo-new" class="irma-logo" src="<?php echo $logoUrl; ?>" />
+    <img alt="irma-logo-new" class="irma-logo" src="<?php echo $logoUrl; ?>" style="height: 60px;" />
     <div id="irma-login-text"><?php echo $text; ?></div>
     <input type="button" id="irma-irma-log-in" <?php echo $this->get_tabindex(); ?> class="irma-btn irma-btn-succes gf_irma_qr" data-id="<?php echo $id; ?>" data-form-id="<?php echo $formId; ?>" data-popup="<?php echo $popup; ?>" value="<?php echo $buttonLabel; ?>" />
     <canvas id="gf_irma_qr_<?php echo $id; ?>" class="gf_irma_qr_canvas"></canvas>

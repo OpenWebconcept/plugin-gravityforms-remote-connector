@@ -43,6 +43,8 @@ class GravityFormsServiceProvider extends ServiceProvider
     {
         add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
         add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
+        add_action('gform_field_standard_settings', [$this, 'irma_wp_custom_field_case_property'], 10, 2);
+        add_action('gform_editor_js', array($this, 'irma_wp_custom_field_case_property_editor_script'), 11, 2);
     }
 
     public function registerFilters()
@@ -55,7 +57,7 @@ class GravityFormsServiceProvider extends ServiceProvider
      */
     public function registerRestRoutes()
     {
-        $client = new IRMAClient($this->settings->getEndpointUrl());
+        $client = new IRMAClient($this->settings->getEndpointUrl(), $this->settings->getEndpointToken());
 
         add_action('rest_api_init', function () use ($client) {
             register_rest_route('irma/v1', '/gf/handle', [
@@ -95,5 +97,52 @@ class GravityFormsServiceProvider extends ServiceProvider
         ]);
 
         wp_enqueue_script('irma-gf-js');
+    }
+
+    public function irma_wp_custom_field_case_property($position, $form_id)
+    {
+        if ($position == 0) {
+            ?>
+
+        <li style="display: list-item;">
+            <label for="case_property" class="section_label"><?php _e('Case eigenschap', 'irma_wp'); ?></label>
+            <select id="case_property" onchange="SetFieldProperty('casePropertyName', this.value);">
+                <option value=""><?php _e('Kies attribuut', 'irma_wp'); ?></option>
+                <?php
+                foreach ($this->settings->getAttributeDecos() as $caseProperty) {
+                    echo '<option value="'.$caseProperty['casePropertyValue'].'">'.$caseProperty['caseProperty'].'</option>';
+                } ?>
+            </select>
+
+            <!-- <input type="text" id="case_property" onchange="SetFieldProperty('caseProperty', this.value);"> -->
+        </li>
+
+       <?php
+        }
+    }
+
+    public function irma_wp_custom_field_case_property_editor_script()
+    {
+        ?>
+
+   <script type='text/javascript'>
+
+    // To display custom field under each type of Gravity Forms field
+    jQuery.each(fieldSettings, function(index, value) {
+        fieldSettings[index] += ", .highlight_setting";
+    });
+
+    // store the custom field with associated Gravity Forms field
+    jQuery(document).bind("gform_load_field_settings", function(event, field, form){
+     
+    // save field value: Start Section B
+    jQuery("#case_property").val(field["casePropertyName"]);
+    // End Section B
+
+    });
+
+   </script>
+
+   <?php
     }
 }

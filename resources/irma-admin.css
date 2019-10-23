@@ -4,7 +4,7 @@
 	--pd-irma-green: #42c75a;
 	--pd-irma-red: #c74242;
 	--pd-irma-border-radius: 8px;
-	--pd-irma-box-shadow: 0 4px 15px 0 rgba(40,44,53,.06), 0 2px 2px 0 rgba(40,44,53,.08);
+	--pd-irma-box-shadow: 0 4px 15px 0 rgba(40,44,53,.06), 4px 4px 0px 2px rgba(40,44,53,.08);
 }
 
 .pd-irma-header {
@@ -28,17 +28,18 @@
 
 .pd-irma-block {
 	width: 100%;
-	max-width: 500px;
+	/* max-width: 500px; */
 	padding: 2em;
 	background: #FFF;
 	border-radius: var(--pd-irma-border-radius);
 	box-shadow: var(--pd-irma-box-shadow);
+	margin-bottom: 1rem;
 }
 
 /**
  * Form
  */
-.pd-irma-form .irma-form-label {
+.irma-form-label {
 	display: block;
 	margin-bottom: 0.5rem;
 	font-size: 1.1em;
@@ -49,10 +50,15 @@
 .pd-irma-form__footer {
 	display: block;
 	margin-top: 2rem;
+	margin-bottom:  2rem;
 }
 
 .irma-logo {
-	width: 60px;
+	width: 60px !important;
+}
+
+.input-empty{
+	border-bottom: 2px solid red !important;
 }
 
 /**
@@ -96,7 +102,7 @@
 /**
  * Notifications
  */
- #pd-irma-form-notification {
+ #pd-irma-form-notification, #pd-irma-form-decos-attributes-notification {
 	display: inline-block;
 }
 
@@ -112,4 +118,16 @@
 
 .pd-irma-notice--error {
 	color: var(--pd-irma-red);
+}
+
+/**
+ *	Table
+ */
+#decos-attributes-overview {
+	font-size: 1rem;
+}
+
+.delete-decos-attribute{
+	cursor: pointer;
+	text-align: center;;
 }
