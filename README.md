@@ -21,7 +21,7 @@
 
     Fields without a casePropertyName will not be used in the API call.
 
-    2e. (IMPORTANT) If you are using a validation field like the IRMA-header or IRMA-attribute you MUST fill in 'BSN' as the value for the caseProperty(EN)/Case eigenschap(NL) field.
+    2e. (IMPORTANT) If you are using a validation field like the IRMA-header or IRMA-attribute you MUST fill in 'BSN' as the casePropertyName and as the value for the caseProperty(EN)/Case eigenschap(NL) field.
 
 3. There a 2 ways to setup a form with IRMA implementation
    3a. While creating a form go to the metabox 'Advanced fields' and pick the fields 'IRMA-attribute' & 'IRMA-launch-QR'.
@@ -33,7 +33,7 @@
 
 # Need for help?
 
--   If you're stuck with setting up a form or did you find a bug you can contact Yard Internet via mike@yard.nl
+-   If you're stuck with setting up a form or did you find a bug? Please contact Yard Internet via mike@yard.nl
 
 # To-do/issues
 

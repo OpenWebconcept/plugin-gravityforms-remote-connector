@@ -10,7 +10,8 @@
 	height: 0;
 	margin: 1.5rem 0;
 	transition: all 0.3s ease;
-	box-shadow: 0 4px 15px 0 rgba(40,44,53,.06), 0 2px 2px 0 rgba(40,44,53,.08);
+	box-shadow: 0 4px 15px 0 rgba(40, 44, 53, 0.06),
+		0 2px 2px 0 rgba(40, 44, 53, 0.08);
 }
 
 .irma_wp_card {
@@ -23,14 +24,14 @@
  * Header field
  */
 .irma-logo {
-	width: 60px;
+	height: 60px;
 }
 
 .irma-navbar {
 	position: relative;
 	display: flex;
 	flex-direction: row;
-	padding: .5rem 1rem;
+	padding: 0.5rem 1rem;
 	justify-content: space-between;
 }
 
@@ -38,7 +39,7 @@
  * Buttons
  */
 .gf_irma_qr {
-	border-radius: .25rem !important;
+	border-radius: 0.25rem !important;
 }
 
 .irma-btn {
@@ -47,7 +48,7 @@
 	height: 45px;
 }
 
-.irma-btn-succes{
+.irma-btn-succes {
 	color: #fff !important;
 	background-color: #28a745 !important;
 	border-color: #28a745 !important;
@@ -73,10 +74,10 @@
 
 .alert {
 	position: relative !important;
-	padding: .4rem 1.25rem !important;
+	padding: 0.4rem 1.25rem !important;
 	margin-bottom: 0rem !important;
 	border: 1px solid transparent !important;
-	border-radius: .25rem !important;
+	border-radius: 0.25rem !important;
 	max-height: 50px;
 }
 
