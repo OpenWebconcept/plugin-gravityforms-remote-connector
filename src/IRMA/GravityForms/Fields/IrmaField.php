@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\GravityForms;
+namespace Yard\IRMA\GravityForms\Fields;
 
 use GF_Field;
 

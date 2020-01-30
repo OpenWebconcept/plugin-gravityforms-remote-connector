@@ -18,7 +18,7 @@ class Plugin
      *
      * @var string
      */
-    const VERSION = '0.0.0';
+    const VERSION = '0.0.4';
 
     /**
      * Path to the root of the plugin.
@@ -62,11 +62,11 @@ class Plugin
         $this->config->boot();
 
         $this->loader = Loader::getInstance();
-        $this->loader->addAction('wp_enqueue_scripts', $this, 'enqueueScripts');
-        $this->loader->addAction('admin_enqueue_scripts', $this, 'enqueueAdminScripts');
 
         $this->bootServiceProviders();
 
+        $this->loader->addAction('wp_enqueue_scripts', $this, 'enqueueScripts');
+        $this->loader->addAction('admin_enqueue_scripts', $this, 'enqueueAdminScripts');
         $this->loader->register();
     }
 
@@ -87,7 +87,7 @@ class Plugin
         wp_enqueue_style('irma-admin-wp', $this->resourceUrl('irma-admin.css'), false);
 
         // only allow bootstrap on the IRMA settings page
-        if (isset($_GET['page']) && $_GET['page'] == 'irma') {
+        if (isset($_GET['page']) && 'irma' == $_GET['page']) {
             // CSS Bootstrap
             wp_register_style('irma-wp_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
             wp_enqueue_style('irma-wp_bootstrap');

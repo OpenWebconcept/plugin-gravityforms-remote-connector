@@ -29,7 +29,7 @@ class Loader
     public static function getInstance()
     {
         static $inst = null;
-        if ($inst === null) {
+        if (null === $inst) {
             $inst = new Loader();
         }
 

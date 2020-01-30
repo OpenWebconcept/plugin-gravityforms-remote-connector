@@ -31,20 +31,9 @@ if (!defined('WPINC')) {
 require_once __DIR__.'/autoloader.php';
 
 $autoloader = new Autoloader();
-$actions = new Actions();
-
-// If Gravity Forms cannot be found, exit.
-if (! class_exists('GFForms')) {
-    die();
-}
-
-// Load Add-On Framework.
-GFForms::include_addon_framework();
-
+$actions    = new Actions();
 
 /**
  * Begin execution of the plugin.
  */
-add_action('plugins_loaded', function () {
-    $plugin = (new Plugin(__DIR__))->boot();
-}, 10);
+$plugin = (new Plugin(__DIR__))->boot();

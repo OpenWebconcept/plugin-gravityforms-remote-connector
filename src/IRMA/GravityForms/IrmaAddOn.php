@@ -6,19 +6,65 @@ use GFAddOn;
 
 class IrmaAddOn extends GFAddOn
 {
+    /**
+     * Version number.
+     *
+     * @var string
+     */
     protected $_version = IRMA_WP_VERSION;
-    protected $_min_gravityforms_version = '1.9';
-    protected $_slug = 'irma-addon';
-    protected $_path = 'irma-wp/plugin.php';
-    protected $_full_path = __FILE__;
-    protected $_title = 'GravityForms IRMA Add-On';
-    protected $_short_title = 'IRMA Add-On';
 
+    /**
+     * Minimal required GF version.
+     *
+     * @var string
+     */
+    protected $_min_gravityforms_version = '1.9';
+
+    /**
+     * Subview slug.
+     *
+     * @var string
+     */
+    protected $_slug = 'irma-addon';
+
+    /**
+     * Relative path to the plugin from the plugins folder.
+     *
+     * @var string
+     */
+    protected $_path = 'irma-wp/plugin.php';
+
+    /**
+     * The physical path to the main plugin file.
+     *
+     * @var string
+     */
+    protected $_full_path = __FILE__;
+
+    /**
+     * The complete title of the Add-On.
+     *
+     * @var string
+     */
+    protected $_title = 'GravityForms IRMA';
+
+    /**
+     * The short title of the Add-On to be used in limited spaces.
+     *
+     * @var string
+     */
+    protected $_short_title = 'IRMA';
+
+    /**
+     * Instance object
+     *
+     * @var self
+     */
     private static $_instance = null;
 
     public static function get_instance()
     {
-        if (self::$_instance == null) {
+        if (null == self::$_instance) {
             self::$_instance = new self();
         }
 
@@ -41,8 +87,8 @@ class IrmaAddOn extends GFAddOn
      */
     public function field_appearance_settings($position, $formId)
     {
-        if ($position == 350) {
-            require __DIR__.'/resources/irma-form-settings.php';
+        if (350 == $position) {
+            require __DIR__.'/Fields/resources/irma-form-settings.php';
         }
     }
 
@@ -53,16 +99,57 @@ class IrmaAddOn extends GFAddOn
      */
     public function editor_script()
     {
-        require __DIR__.'/resources/editor-script.php';
+        require __DIR__.'/Fields/resources/editor-script.php';
     }
 
     public function filter_gform_tooltips($tooltips)
     {
         $tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname.', 'irma-wp');
-        $tooltips['irma_header_attribute_bsn_id'] = esc_html('Fill in the ID of the field used for the BSN.', 'irma-wp');
-        $tooltips['irma_header_city_id'] = esc_html('Fill in the ID of the field used for the city.', 'irma-wp');
-        $tooltips['irma_header_city'] = esc_html('Fill in the city that you would like to check on.', 'irma-wp');
+        $tooltips['irma_header_attribute_bsn_id']      = esc_html('Fill in the ID of the field used for the BSN.', 'irma-wp');
+        $tooltips['irma_header_city_id']               = esc_html('Fill in the ID of the field used for the city.', 'irma-wp');
+        $tooltips['irma_header_city']                  = esc_html('Fill in the city that you would like to check on.', 'irma-wp');
 
         return $tooltips;
+    }
+
+    public function plugin_settings_fields()
+    {
+        return [
+            [
+                'title'  => esc_html__('Irma Settings', 'irma'),
+                'fields' => [
+                    [
+                        'name'              => 'irma_server_endpoint',
+                        'tooltip'           => esc_html__('Server endpoint', 'irma'),
+                        'label'             => esc_html__('Server endpoint', 'irma'),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'feedback_callback' => [
+                            $this, 'is_valid_setting'
+                        ],
+                    ],
+                    [
+                        'name'              => 'irma_server_token',
+                        'tooltip'           => esc_html__('Server token', 'irma'),
+                        'label'             => esc_html__('Server token', 'irma'),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'feedback_callback' => [
+                            $this, 'is_valid_setting'
+                        ],
+                    ],
+                    [
+                        'name'              => 'irma_bsn_attribute_field_name',
+                        'tooltip'           => esc_html__('BSN attribute veldnaam', 'irma'),
+                        'label'             => esc_html__('BSN attribute veldnaam', 'irma'),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'feedback_callback' => [
+                            $this, 'is_valid_setting'
+                        ],
+                    ]
+                ]
+            ]
+        ];
     }
 }

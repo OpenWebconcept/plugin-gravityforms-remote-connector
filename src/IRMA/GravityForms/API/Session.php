@@ -28,7 +28,7 @@ class Session
     public function handle(WP_REST_Request $request)
     {
         $formId = $request->get_param('id');
-        $form = GFAPI::get_form($request->get_param('id'));
+        $form   = GFAPI::get_form($request->get_param('id'));
 
         if (!$form) {
             return new WP_REST_Response([
@@ -39,7 +39,7 @@ class Session
         $attributes = [];
 
         foreach ($form['fields'] as $field) {
-            if ($field['type'] != 'IRMA-attribute' && $field['type'] != 'IRMA-header') {
+            if ('IRMA-attribute' != $field['type'] && 'IRMA-header' != $field['type']) {
                 continue;
             }
 

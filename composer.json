@@ -11,16 +11,18 @@
     "mockery/mockery": "1.0.*",
     "phpunit/phpunit": "~7.0",
     "10up/wp_mock": "dev-master",
-    "squizlabs/php_codesniffer": "^3.0.2"
+    "squizlabs/php_codesniffer": "^3.0.2",
+    "phpstan/phpstan": "^0.11.1",
+    "friendsofphp/php-cs-fixer": "^2.14"
   },
   "autoload": {
     "psr-4": {
-      "IRMA\\WP\\": "./src/WP"
+      "Yard\\IRMA\\": "./src/IRMA"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "IRMA\\WP\\Tests\\": "./tests"
+      "IRMA\\Tests\\": "./tests"
     }
   },
   "scripts": {

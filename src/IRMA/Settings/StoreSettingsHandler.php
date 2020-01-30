@@ -118,7 +118,7 @@ class StoreSettingsHandler
         $settings = array_values($settings);
 
         return wp_send_json_success([
-            'message' => 'IRMA Decos configuration has been updated!',
+            'message'         => 'IRMA Decos configuration has been updated!',
             'decosAttributes' => $settings,
         ]);
     }

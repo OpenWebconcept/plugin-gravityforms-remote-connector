@@ -2,8 +2,8 @@
 
 namespace Yard\IRMA\Client;
 
-use Yard\IRMA\AttributeCollection;
 use Yard\IRMA\Attribute;
+use Yard\IRMA\AttributeCollection;
 
 class IRMAClient
 {
@@ -23,7 +23,7 @@ class IRMAClient
     public function __construct($endpoint, $token)
     {
         $this->endpoint = rtrim($endpoint, '/');
-        $this->token = rtrim($token);
+        $this->token    = rtrim($token);
     }
 
     /**
@@ -34,7 +34,7 @@ class IRMAClient
     public function getSession(array $attributes): array
     {
         return $this->post('session', $this->token, [
-            'type' => 'disclosing',
+            'type'    => 'disclosing',
             'content' => $attributes,
         ]);
     }
@@ -85,7 +85,7 @@ class IRMAClient
             $postArgs = [
                 'headers' => [
                     'Authorization' => 'Bearer '.$token,
-                    'Content-Type' => 'application/json',
+                    'Content-Type'  => 'application/json',
                 ],
                 'body' => json_encode($payload),
             ];

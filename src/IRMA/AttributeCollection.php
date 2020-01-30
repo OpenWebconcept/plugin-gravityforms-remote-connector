@@ -51,7 +51,7 @@ class AttributeCollection implements ArrayAccess
     public function offsetExists($offset): bool
     {
         foreach ($this->attributes as $attribute) {
-            if ($offset == $attribute->getId()) {
+            if ($attribute->getId() == $offset) {
                 return true;
             }
         }
@@ -68,7 +68,7 @@ class AttributeCollection implements ArrayAccess
     public function offsetGet($offset)
     {
         foreach ($this->attributes as $attribute) {
-            if ($offset == $attribute->getId()) {
+            if ($attribute->getId() == $offset) {
                 return $attribute;
             }
         }

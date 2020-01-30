@@ -26,10 +26,10 @@ class Attribute
 
     public function __construct(string $id, string $rawValue, array $value, string $status)
     {
-        $this->id = $id;
+        $this->id       = $id;
         $this->rawValue = $rawValue;
-        $this->value = $value;
-        $this->status = $status;
+        $this->value    = $value;
+        $this->status   = $status;
     }
 
     public function getId(): ?string

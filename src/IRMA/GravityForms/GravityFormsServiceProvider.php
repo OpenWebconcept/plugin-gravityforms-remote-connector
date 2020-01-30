@@ -2,12 +2,16 @@
 
 namespace Yard\IRMA\GravityForms;
 
+use GF_Fields;
 use GFAddOn;
 use GFForms;
-use GF_Fields;
 use Yard\IRMA\Client\IRMAClient;
-use Yard\IRMA\Foundation\Plugin;
 use Yard\IRMA\Foundation\ServiceProvider;
+use Yard\IRMA\GravityForms\Fields\IrmaAttributeField;
+use Yard\IRMA\GravityForms\Fields\IrmaHeaderField;
+use Yard\IRMA\GravityForms\Fields\IrmaLaunchQR;
+use Yard\IRMA\GravityForms\OpenZaak\OpenZaakAddon;
+use Yard\IRMA\GravityForms\OpenZaak\Settings;
 use Yard\IRMA\Settings\SettingsManager;
 
 class GravityFormsServiceProvider extends ServiceProvider
@@ -17,34 +21,57 @@ class GravityFormsServiceProvider extends ServiceProvider
      */
     private $settings;
 
-    public function __construct(Plugin $plugin)
-    {
-        parent::__construct($plugin);
-
-        $this->settings = new SettingsManager();
-    }
-
     /**
      * Register all necessities for GravityForms.
      */
     public function register()
     {
-        GF_Fields::register(new IrmaAttributeField());
-        GF_Fields::register(new IrmaLaunchQR());
-        GF_Fields::register(new IrmaHeaderField());
+        $this->settings = new SettingsManager();
 
         $this->registerActions();
         $this->registerFilters();
-
         $this->registerRestRoutes();
     }
 
     public function registerActions()
     {
-        add_action('gform_loaded', [$this, 'onGravityFormsLoaded'], 5);
+        if (! method_exists('\GFForms', 'include_addon_framework')) {
+            return;
+        }
+
+        GFForms::include_addon_framework();
+
+        add_action('gform_loaded', [$this, 'loadIRMAAddon'], 5);
+        add_action('gform_loaded', [$this, 'loadOpenZaak'], 5);
         add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
         add_action('gform_field_standard_settings', [$this, 'irma_wp_custom_field_case_property'], 10, 2);
-        add_action('gform_editor_js', array($this, 'irma_wp_custom_field_case_property_editor_script'), 11, 2);
+        add_action('gform_editor_js', [$this, 'irma_wp_custom_field_case_property_editor_script'], 11, 2);
+    }
+
+    /**
+     * Load IRMA fields.
+     *
+     * @return void
+     */
+    public static function loadIRMAAddon()
+    {
+        GF_Fields::register(new IrmaAttributeField());
+        GF_Fields::register(new IrmaLaunchQR());
+        GF_Fields::register(new IrmaHeaderField());
+
+        GFAddOn::register('Yard\IRMA\GravityForms\IrmaAddOn');
+    }
+
+    /**
+     * Load OpenZaak fields & settings.
+     *
+     * @return void
+     */
+    public function loadOpenZaak()
+    {
+        GFAddOn::register('Yard\IRMA\GravityForms\OpenZaak\OpenZaakAddon');
+
+        OpenZaakAddon::get_instance();
     }
 
     public function registerFilters()
@@ -61,26 +88,17 @@ class GravityFormsServiceProvider extends ServiceProvider
 
         add_action('rest_api_init', function () use ($client) {
             register_rest_route('irma/v1', '/gf/handle', [
-                'methods' => 'POST',
+                'methods'  => 'POST',
                 'callback' => [new API\ResultHandler($client), 'handle'],
             ]);
         });
 
         add_action('rest_api_init', function () use ($client) {
             register_rest_route('irma/v1', '/gf/session', [
-                'methods' => 'GET',
+                'methods'  => 'GET',
                 'callback' => [new API\Session($client), 'handle'],
             ]);
         });
-    }
-
-    /**
-     * Load the add-on once GravityForms has been loaded.
-     */
-    public function onGravityFormsLoaded()
-    {
-        GFForms::include_addon_framework();
-        GFAddOn::register(IrmaAddOn::class);
     }
 
     /**
@@ -92,7 +110,7 @@ class GravityFormsServiceProvider extends ServiceProvider
         wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery'], false, true);
 
         wp_localize_script('irma-gf-js', 'irma_gf', [
-            'handle_url' => get_rest_url(null, 'irma/v1/gf/handle'),
+            'handle_url'  => get_rest_url(null, 'irma/v1/gf/handle'),
             'session_url' => get_rest_url(null, 'irma/v1/gf/session'),
         ]);
 
@@ -101,7 +119,7 @@ class GravityFormsServiceProvider extends ServiceProvider
 
     public function irma_wp_custom_field_case_property($position, $form_id)
     {
-        if ($position == 0) {
+        if (0 == $position) {
             ?>
 
 <li style="display: list-item;">

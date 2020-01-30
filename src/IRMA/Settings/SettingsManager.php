@@ -16,7 +16,7 @@ class SettingsManager
 
     public function __construct()
     {
-        $this->settings = get_option('irma_settings', []);
+        $this->settings      = get_option('irma_settings', []);
         $this->settingsDecos = get_option('irma_settings_decos', []);
     }
 
