@@ -1,8 +1,8 @@
 <?php
 
-namespace IRMA\WP\GravityForms;
+namespace Yard\IRMA\GravityForms;
 
-use IRMA\WP\Settings\SettingsManager;
+use Yard\IRMA\Settings\SettingsManager;
 
 class IrmaHeaderField extends IrmaField
 {

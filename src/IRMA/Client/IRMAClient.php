@@ -1,9 +1,9 @@
 <?php
 
-namespace IRMA\WP\Client;
+namespace Yard\IRMA\Client;
 
-use IRMA\WP\AttributeCollection;
-use IRMA\WP\Attribute;
+use Yard\IRMA\AttributeCollection;
+use Yard\IRMA\Attribute;
 
 class IRMAClient
 {

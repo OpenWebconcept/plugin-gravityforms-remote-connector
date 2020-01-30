@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \IRMA\WP\GravityForms\IrmaLaunchQR $this
+ * @var \Yard\IRMA\GravityForms\IrmaLaunchQR $this
  * @var int $id
  * @var int $formId
  * @var string $buttonLabel

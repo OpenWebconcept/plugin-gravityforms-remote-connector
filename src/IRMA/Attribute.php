@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP;
+namespace Yard\IRMA;
 
 class Attribute
 {

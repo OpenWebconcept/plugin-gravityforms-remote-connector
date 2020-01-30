@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: IRMA for WordPress
  * Plugin URI: https://privacybydesign.foundation/
@@ -12,9 +11,9 @@
  * Text Domain: irma-wp
  * Domain Path: /languages.
  */
-use IRMA\WP\Autoloader;
-use IRMA\WP\Actions;
-use IRMA\WP\Foundation\Plugin;
+use Yard\IRMA\Actions;
+use Yard\IRMA\Autoloader;
+use Yard\IRMA\Foundation\Plugin;
 
 define('IRMA_WP_VERSION', '0.4');
 define('IRMA_WP__PLUGIN_URL', __DIR__);
@@ -32,15 +31,20 @@ if (!defined('WPINC')) {
 require_once __DIR__.'/autoloader.php';
 
 $autoloader = new Autoloader();
-
-/**
- * Manual loaded file: actions.
- */
-require_once __DIR__.'/Actions.php';
-
 $actions = new Actions();
+
+// If Gravity Forms cannot be found, exit.
+if (! class_exists('GFForms')) {
+    die();
+}
+
+// Load Add-On Framework.
+GFForms::include_addon_framework();
+
 
 /**
  * Begin execution of the plugin.
  */
-$plugin = (new Plugin(__DIR__))->boot();
+add_action('plugins_loaded', function () {
+    $plugin = (new Plugin(__DIR__))->boot();
+}, 10);

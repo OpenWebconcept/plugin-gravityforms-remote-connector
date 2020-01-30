@@ -1,10 +1,10 @@
 <?php
 
-namespace IRMA\WP\GravityForms\Actions;
+namespace Yard\IRMA\GravityForms\Actions;
 
 use Exception;
 use GuzzleHttp\Client;
-use IRMA\WP\Settings\SettingsManager;
+use Yard\IRMA\Settings\SettingsManager;
 
 class ExternalCall
 {
@@ -65,7 +65,7 @@ class ExternalCall
             "zaaktype": "https://ztcapi.zaaktypen.nl/f36b4854-5521-4923-af5d-3a119700c911",
             "verantwoordelijkeOrganisatie": "' . $this->settingsManager->getRISN() . '",
             "startdatum": "' . date('Y-m-d') . '",
-            "omschrijving": "Aanmelding hondenbelasting", 
+            "omschrijving": "Aanmelding hondenbelasting",
             "toelichting": "Remarks",
             "publicatiedatum": "' . date('Y-m-d') . '",
             "vertrouwelijkheidaanduiding": "openbaar",

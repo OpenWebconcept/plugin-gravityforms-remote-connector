@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \IRMA\WP\Settings\SettingsManager
+ * @var \Yard\IRMA\Settings\SettingsManager
  * @var string                            irmaLogoUrl
  */
 ?>

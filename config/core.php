@@ -5,8 +5,8 @@ return [
      * Service Providers.
      */
     'providers' => [
-        IRMA\WP\GravityForms\GravityFormsServiceProvider::class,
-        IRMA\WP\Settings\SettingsServiceProvider::class,
+        Yard\IRMA\GravityForms\GravityFormsServiceProvider::class,
+        Yard\IRMA\Settings\SettingsServiceProvider::class,
     ],
 
     'text_domain' => 'irma_wp',

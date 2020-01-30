@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP\GravityForms;
+namespace Yard\IRMA\GravityForms;
 
 use GFAddOn;
 

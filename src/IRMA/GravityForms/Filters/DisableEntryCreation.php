@@ -1,9 +1,9 @@
 <?php
 
-namespace IRMA\WP\GravityForms\Filters;
+namespace Yard\IRMA\GravityForms\Filters;
 
 use GFAPI;
-use IRMA\WP\GravityForms\IrmaAttributeField;
+use Yard\IRMA\GravityForms\IrmaAttributeField;
 
 class DisableEntryCreation
 {

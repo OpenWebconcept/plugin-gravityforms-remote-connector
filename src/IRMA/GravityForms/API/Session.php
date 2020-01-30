@@ -1,12 +1,12 @@
 <?php
 
-namespace IRMA\WP\GravityForms\API;
+namespace Yard\IRMA\GravityForms\API;
 
 use GFAPI;
 use WP_REST_Request;
 use WP_REST_Response;
-use IRMA\WP\Client\IRMAClient;
-use IRMA\WP\Client\SessionAttributeCollection;
+use Yard\IRMA\Client\IRMAClient;
+use Yard\IRMA\Client\SessionAttributeCollection;
 
 class Session
 {

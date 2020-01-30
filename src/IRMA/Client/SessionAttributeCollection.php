@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP\Client;
+namespace Yard\IRMA\Client;
 
 use JsonSerializable;
 

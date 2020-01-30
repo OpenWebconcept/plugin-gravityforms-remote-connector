@@ -1,8 +1,8 @@
 <?php
 
-namespace IRMA\WP\GravityForms;
+namespace Yard\IRMA\GravityForms;
 
-use IRMA\WP\GravityForms\IrmaField;
+use Yard\IRMA\GravityForms\IrmaField;
 
 class IrmaLaunchQR extends IrmaField
 {

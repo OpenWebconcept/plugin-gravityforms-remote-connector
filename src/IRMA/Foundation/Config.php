@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP\Foundation;
+namespace Yard\IRMA\Foundation;
 
 class Config
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace IRMA\WP\GravityForms;
+namespace Yard\IRMA\GravityForms;
 
-use GF_Fields;
 use GFAddOn;
 use GFForms;
-use IRMA\WP\Foundation\ServiceProvider;
-use IRMA\WP\Client\IRMAClient;
-use IRMA\WP\Foundation\Plugin;
-use IRMA\WP\Settings\SettingsManager;
+use GF_Fields;
+use Yard\IRMA\Client\IRMAClient;
+use Yard\IRMA\Foundation\Plugin;
+use Yard\IRMA\Foundation\ServiceProvider;
+use Yard\IRMA\Settings\SettingsManager;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
@@ -104,20 +104,21 @@ class GravityFormsServiceProvider extends ServiceProvider
         if ($position == 0) {
             ?>
 
-        <li style="display: list-item;">
-            <label for="case_property" class="section_label"><?php _e('Case eigenschap', 'irma_wp'); ?></label>
-            <select id="case_property" onchange="SetFieldProperty('casePropertyName', this.value);">
-                <option value=""><?php _e('Kies attribuut', 'irma_wp'); ?></option>
-                <?php
+<li style="display: list-item;">
+	<label for="case_property" class="section_label"><?php _e('Case eigenschap', 'irma_wp'); ?></label>
+	<select id="case_property" onchange="SetFieldProperty('casePropertyName', this.value);">
+		<option value=""><?php _e('Kies attribuut', 'irma_wp'); ?>
+		</option>
+		<?php
                 foreach ($this->settings->getAttributeDecos() as $caseProperty) {
                     echo '<option value="'.$caseProperty['casePropertyValue'].'">'.$caseProperty['caseProperty'].'</option>';
                 } ?>
-            </select>
+	</select>
 
-            <!-- <input type="text" id="case_property" onchange="SetFieldProperty('caseProperty', this.value);"> -->
-        </li>
+	<!-- <input type="text" id="case_property" onchange="SetFieldProperty('caseProperty', this.value);"> -->
+</li>
 
-       <?php
+<?php
         }
     }
 
@@ -125,24 +126,23 @@ class GravityFormsServiceProvider extends ServiceProvider
     {
         ?>
 
-   <script type='text/javascript'>
+<script type='text/javascript'>
+	// To display custom field under each type of Gravity Forms field
+	jQuery.each(fieldSettings, function(index, value) {
+		fieldSettings[index] += ", .highlight_setting";
+	});
 
-    // To display custom field under each type of Gravity Forms field
-    jQuery.each(fieldSettings, function(index, value) {
-        fieldSettings[index] += ", .highlight_setting";
-    });
+	// store the custom field with associated Gravity Forms field
+	jQuery(document).bind("gform_load_field_settings", function(event, field, form) {
 
-    // store the custom field with associated Gravity Forms field
-    jQuery(document).bind("gform_load_field_settings", function(event, field, form){
-     
-    // save field value: Start Section B
-    jQuery("#case_property").val(field["casePropertyName"]);
-    // End Section B
+		// save field value: Start Section B
+		jQuery("#case_property").val(field["casePropertyName"]);
+		// End Section B
 
-    });
+	});
 
-   </script>
+</script>
 
-   <?php
+<?php
     }
 }

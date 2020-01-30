@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP\Foundation;
+namespace Yard\IRMA\Foundation;
 
 use Exception;
 
@@ -30,7 +30,7 @@ class Plugin
     /**
      * Instance of the configuration repository.
      *
-     * @var \IRMA\WP\Foundation\Config
+     * @var \Yard\IRMA\Foundation\Config
      */
     public $config;
 

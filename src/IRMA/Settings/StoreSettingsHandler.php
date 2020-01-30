@@ -1,6 +1,6 @@
 <?php
 
-namespace IRMA\WP\Settings;
+namespace Yard\IRMA\Settings;
 
 class StoreSettingsHandler
 {
