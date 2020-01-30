@@ -3,7 +3,7 @@
 namespace Yard\IRMA\GravityForms\Filters;
 
 use GFAPI;
-use Yard\IRMA\GravityForms\IrmaAttributeField;
+use Yard\IRMA\GravityForms\Fields\IrmaAttributeField;
 
 class DisableEntryCreation
 {

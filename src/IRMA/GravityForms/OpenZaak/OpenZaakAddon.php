@@ -71,6 +71,12 @@ class OpenZaakAddon extends GFAddOn
         return self::$_instance;
     }
 
+    public function render_uninstall()
+    {
+        require_once(__DIR__.'/views/add-attributes.php');
+        parent::render_uninstall();
+    }
+
     public function plugin_settings_fields()
     {
         return [
@@ -78,17 +84,47 @@ class OpenZaakAddon extends GFAddOn
                 'title'  => esc_html__('Openzaak Settings', 'irma'),
                 'fields' => [
                     [
-                        'name'              => 'irma_server_token',
-                        'tooltip'           => esc_html__('Server token', 'irma'),
-                        'label'             => esc_html__('Server token', 'irma'),
+                        'name'              => 'openzaak_rsin',
+                        'tooltip'           => esc_html__('RSIN identifier', 'irma'),
+                        'label'             => esc_html__('RSIN identifier', 'irma'),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
                             $this, 'is_valid_setting'
                         ],
                     ],
+                    [
+                        'name'  => 'openzaak_attributes',
+                        'label' => esc_html__('Attributen', 'irma'),
+                        'type'  => 'repeatable_group',
+                        'args'  => [
+                            [
+                                'name'          => 'list',
+                                'type'          => 'list'
+                            ],
+                        ],
+                    ]
                 ]
             ]
         ];
+    }
+
+    /**
+    * Define the markup for the repeatable_group type field.
+    *
+    * @param array $field The field properties.
+    */
+    public function settings_repeatable_group($field)
+    {
+        foreach ($field['args'] as $field) {
+            if (!method_exists('GFAddOn', 'settings_'. $field['type'])) {
+                $class = "\Yard\IRMA\GravityForms\OpenZaak\Settings\\" . ucfirst($field['type']) ."Field";
+                if (class_exists($class) && (method_exists($class, 'render'))) {
+                    echo (new $class($field))->render();
+                }
+            } else {
+                $this->settings_text($field);
+            }
+        }
     }
 }

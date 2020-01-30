@@ -21,24 +21,11 @@
 		<div class="col-md-5 col-sm-5 col-xs-12">
 			<form id="irma-settings-form" class="pd-irma-form">
 
-				<div class="pd-irma-block">
-					<label for="irma_server_endpoint_url" class="irma-form-label"><?php _e('Server endpoint', 'irma_wp'); ?></label>
-					<input type="url" name="irma_server_endpoint_url" id="irma_server_endpoint_url" value="<?php echo $settings->getEndpointUrl(); ?>" class="irma-form-input">
-				</div>
 
-				<div class="pd-irma-block">
-					<label for="irma_server_endpoint_token" class="irma-form-label"><?php _e('Server token', 'irma_wp'); ?></label>
-					<input type="text" name="irma_server_endpoint_token" id="irma_server_endpoint_token" value="<?php echo $settings->getEndpointToken(); ?>" class="irma-form-input">
-				</div>
 
 				<div class="pd-irma-block">
 					<label for="irma_wp_rsin" class="irma-form-label"><?php _e('RSIN', 'irma_wp'); ?></label>
 					<input type="text" name="irma_wp_rsin" id="irma_wp_rsin" value="<?php echo $settings->getRISN(); ?>" class="irma-form-input">
-				</div>
-
-				<div class="pd-irma-block">
-					<label for="irma_wp_bsn_attribute" class="irma-form-label"><?php _e('BSN attribute', 'irma_wp'); ?></label>
-					<input type="text" name="irma_wp_bsn_attribute" id="irma_wp_bsn_attribute" value="<?php echo $settings->getAttributeBSN(); ?>" class="irma-form-input">
 				</div>
 
 				<div class="pd-irma-block">
@@ -54,13 +41,6 @@
 				<div class="pd-irma-block">
 					<label for="createCasePropertyURL" class="irma-form-label"><?php _e('create case property URL', 'irma_wp'); ?></label>
 					<input type="text" name="createCasePropertyURL" id="createCasePropertyURL" value="<?php echo $settings->createCasePropertyURL(); ?>" class="irma-form-input">
-				</div>
-
-				<div class="pd-irma-form__footer">
-					<a href="#" id="irma_save_settings" class="pd-irma-button">
-						Save
-					</a>
-					<div id="pd-irma-form-notification"></div>
 				</div>
 			</form>
 		</div>
@@ -95,7 +75,7 @@
 <script>
 	(function($) {
 		// create decos attributes overview when page is loaded.
-		$( document ).ready(function() {
+		$(document).ready(function() {
 			$.ajax({
 				url: '<?php echo admin_url('admin-ajax.php'); ?>',
 				method: 'POST',
@@ -105,7 +85,7 @@
 			}).done(function(response) {
 				createDecosAttributesOverview(response.data.decosAttributes);
 			})
-		// });
+			// });
 
 			// create notification after submitting a form.
 			var createNotification = function(message, type, settingsType) {
@@ -121,11 +101,11 @@
 
 				var notification = $('<div class="pd-irma-notice ' + typeClass + '">' + message + ' </div>');
 
-				if(settingsType == 'irma_settings') {
+				if (settingsType == 'irma_settings') {
 					$('#pd-irma-form-notification').html(notification).hide().fadeIn();
 				}
 
-				if(settingsType == 'irma_decos_settings') {
+				if (settingsType == 'irma_decos_settings') {
 					$('#pd-irma-form-decos-attributes-notification').html(notification).hide().fadeIn();
 				}
 
@@ -140,8 +120,8 @@
 				var deleteIcon = '<?php echo $deleteIcon; ?>';
 				$('#decos-attributes-overview').empty();
 				$('#decos-attributes-overview').append('<tr><th>Property name</th><th>Property value</th><th>Delete</th></tr>');
-				let attributesOverview = $( decosAttributes ).each(function( index, element ) {
-					let tableRow = '<tr><td>' +  element['caseProperty'] + '</td><td>' + element['casePropertyValue'] + '</td><td class="delete-decos-attribute" data-case-property="' + element['caseProperty'] + '" ><img src="' + deleteIcon + '" /></td></tr>';
+				let attributesOverview = $(decosAttributes).each(function(index, element) {
+					let tableRow = '<tr><td>' + element['caseProperty'] + '</td><td>' + element['casePropertyValue'] + '</td><td class="delete-decos-attribute" data-case-property="' + element['caseProperty'] + '" ><img src="' + deleteIcon + '" /></td></tr>';
 					$('#decos-attributes-overview').append(tableRow);
 				});
 			}
@@ -149,8 +129,8 @@
 			// validate the decos form input fields.
 			var validateForm = function() {
 				empty = false;
-				$('#irma-settings-decos-form input[type="text"]').each(function(){
-					if(!$(this).val()){
+				$('#irma-settings-decos-form input[type="text"]').each(function() {
+					if (!$(this).val()) {
 						empty = true;
 						$(this).addClass('input-empty');
 					} else {
@@ -207,7 +187,7 @@
 
 				var empty = validateForm();
 
-				if(empty){
+				if (empty) {
 					return;
 				}
 
@@ -231,4 +211,5 @@
 			})
 		});
 	})(jQuery);
+
 </script>

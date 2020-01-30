@@ -107,14 +107,14 @@ class GravityFormsServiceProvider extends ServiceProvider
      */
     public function enqueueScripts($form, $is_ajax)
     {
-        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery'], false, true);
+        wp_register_script('openzaak-gf-js', $this->plugin->resourceUrl('openzaak-gf.js'), ['jquery'], false, true);
 
-        wp_localize_script('irma-gf-js', 'irma_gf', [
-            'handle_url'  => get_rest_url(null, 'irma/v1/gf/handle'),
-            'session_url' => get_rest_url(null, 'irma/v1/gf/session'),
+        wp_localize_script('openzaak-gf-js', 'openzaak_gf', [
+            'handle_url'  => get_rest_url(null, 'openzaak/v1/gf/handle'),
+            'session_url' => get_rest_url(null, 'openzaak/v1/gf/session'),
         ]);
 
-        wp_enqueue_script('irma-gf-js');
+        wp_enqueue_script('openzaak-gf-js');
     }
 
     public function irma_wp_custom_field_case_property($position, $form_id)
