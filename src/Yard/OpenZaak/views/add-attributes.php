@@ -1,13 +1,25 @@
 <form id="openzaak-settings-form">
-	<label class="openzaak-form-label"><?php _e('Add Openzaak attribute', 'irma'); ?></label>
-	<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Attribute name', 'irma'); ?>" required>
-	<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribute value', 'irma'); ?>" required>
-
-	<div class="openzaak-form__footer">
-		<a href="#" id="openzaak_save_attributes" class="button-primary">
-			Save
-		</a>
-		<div id="openzaak-form-attributes-notification"></div>
+	<div id="" class="gaddon-section gaddon-first-section">
+		<h4 class="gaddon-section-title gf_settings_subgroup_title">OpenZaak attributen</h4>
+		<table class="form-table gforms_form_settings">
+			<tbody>
+				<tr id="gaddon-setting-row-openzaak_attribute">
+					<th>
+						<?php _e('Attribuut toevoegen', 'irma'); ?>
+					</th>
+					<td>
+						<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Attribuut naam', 'irma'); ?>" required>
+						<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribuut waarde', 'irma'); ?>" required>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="openzaak-form__footer">
+			<a href="#" id="openzaak_save_attributes" class="button-primary">
+				Attribuut toevoegen
+			</a>
+			<div id="openzaak-form-attributes-notification"></div>
+		</div>
 	</div>
 </form>
 

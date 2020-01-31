@@ -7,6 +7,7 @@ use GFForms;
 use GuzzleHttp\Client;
 use Yard\Foundation\ServiceProvider;
 use Yard\OpenZaak\Actions\ExternalCall;
+use Yard\OpenZaak\Settings\StoreSettingsHandler;
 
 class OpenZaakServiceProvider extends ServiceProvider
 {
@@ -31,7 +32,8 @@ class OpenZaakServiceProvider extends ServiceProvider
 
         GFForms::include_addon_framework();
 
-        add_action('gform_after_submission', [new ExternalCall(new Client(), OpenZaakSettingsManager::make()), 'handle'], 10, 2);
+        add_action('wp_ajax_openzaak_store_settings', [new StoreSettingsHandler(), 'handle']);
+        add_action('gform_after_submission', [new ExternalCall(new Client(), SettingsManager::make()), 'handle'], 10, 2);
         add_action('gform_loaded', [$this, 'loadOpenZaak'], 5);
         add_action('gform_field_standard_settings', [$this, 'addCustomAttributeToField'], 10, 2);
         add_action('gform_editor_js', [$this, 'addCustomAttributeToFieldScript'], 11, 2);
@@ -44,9 +46,9 @@ class OpenZaakServiceProvider extends ServiceProvider
      */
     public function loadOpenZaak(): void
     {
-        GFAddOn::register('Yard\OpenZaak\OpenZaakAddon');
+        GFAddOn::register('Yard\OpenZaak\Addon');
 
-        OpenZaakAddon::get_instance();
+        Addon::get_instance();
     }
 
     /**
@@ -60,7 +62,7 @@ class OpenZaakServiceProvider extends ServiceProvider
     public function addCustomAttributeToField(int $position, int $form_id): void
     {
         if (0 == $position) {
-            $settings = OpenZaakSettingsManager::make();
+            $settings = SettingsManager::make();
             require __DIR__ . '/GravityForms/views/select-attribute.php';
         }
     }

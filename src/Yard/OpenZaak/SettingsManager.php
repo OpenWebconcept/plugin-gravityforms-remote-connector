@@ -2,9 +2,9 @@
 
 namespace Yard\OpenZaak;
 
-use Yard\Settings\SettingsManager;
+use Yard\Foundation\SettingsManager as BaseSettingsManager;
 
-class OpenZaakSettingsManager extends SettingsManager
+class SettingsManager extends BaseSettingsManager
 {
     /**
      * OpenZaak settings key.

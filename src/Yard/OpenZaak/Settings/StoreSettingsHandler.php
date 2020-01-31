@@ -1,8 +1,8 @@
 <?php
 
-namespace Yard\Settings;
+namespace Yard\OpenZaak\Settings;
 
-use Yard\OpenZaak\OpenZaakSettingsManager;
+use Yard\OpenZaak\SettingsManager;
 
 class StoreSettingsHandler
 {
@@ -30,10 +30,10 @@ class StoreSettingsHandler
 
         parse_str($_POST['data'] ?? [], $data);
 
-        $settings                 = OpenZaakSettingsManager::make()->all();
+        $settings                 = SettingsManager::make()->all();
         $settings['attributes'][] = $this->removePrefix($data);
 
-        if (OpenZaakSettingsManager::make()->save($settings)) {
+        if (SettingsManager::make()->save($settings)) {
             return wp_send_json_success([
                 'message' => 'Openzaak configuration has been updated!',
             ]);

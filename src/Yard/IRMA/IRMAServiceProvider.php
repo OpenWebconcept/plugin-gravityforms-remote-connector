@@ -10,16 +10,9 @@ use Yard\IRMA\Client\IRMAClient;
 use Yard\IRMA\Filters\DisableEntryCreation;
 use Yard\IRMA\GravityForms\Fields\IrmaAttributeField;
 use Yard\IRMA\GravityForms\Fields\IrmaHeaderField;
-use Yard\IRMA\GravityForms\Fields\IrmaLaunchQR;
-use Yard\Settings\SettingsManager;
 
 class IRMAServiceProvider extends ServiceProvider
 {
-    /**
-     * @var SettingsManager
-     */
-    private $settings;
-
     /**
      * Register all necessities for GravityForms.
      */
@@ -78,7 +71,7 @@ class IRMAServiceProvider extends ServiceProvider
      */
     public function registerRestRoutes(): void
     {
-        $settings = IRMASettingsManager::make();
+        $settings = SettingsManager::make();
         $client   = new IRMAClient($settings->getEndpointUrl(), $settings->getEndpointToken());
 
         add_action('rest_api_init', function () use ($client) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\Settings;
+namespace Yard\Foundation;
 
 abstract class SettingsManager
 {

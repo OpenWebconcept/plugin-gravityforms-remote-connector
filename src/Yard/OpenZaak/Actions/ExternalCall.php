@@ -4,7 +4,7 @@ namespace Yard\OpenZaak\Actions;
 
 use Exception;
 use GuzzleHttp\Client;
-use Yard\Settings\SettingsManager;
+use Yard\Foundation\SettingsManager;
 
 class ExternalCall
 {

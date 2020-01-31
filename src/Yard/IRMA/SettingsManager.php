@@ -2,9 +2,9 @@
 
 namespace Yard\IRMA;
 
-use Yard\Settings\SettingsManager;
+use Yard\Foundation\SettingsManager as BaseSettingsManager;
 
-class IRMASettingsManager extends SettingsManager
+class SettingsManager extends BaseSettingsManager
 {
     protected $key = 'gravityformsaddon_irma-addon_settings';
 

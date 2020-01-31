@@ -4,7 +4,7 @@ namespace Yard\OpenZaak;
 
 use GFAddOn;
 
-class OpenZaakAddon extends GFAddOn
+class Addon extends GFAddOn
 {
     /**
          * Version number.
@@ -46,7 +46,7 @@ class OpenZaakAddon extends GFAddOn
      *
      * @var string
      */
-    protected $_title = 'Gravityforms Openzaak Add-On';
+    protected $_title = 'Gravityforms OpenZaak Add-On';
 
     /**
      * The short title of the Add-On to be used in limited spaces.
@@ -81,11 +81,19 @@ class OpenZaakAddon extends GFAddOn
     {
         return [
             [
-                'title'  => esc_html__('Openzaak Settings', 'irma'),
+                'title'  => esc_html__('OpenZaak Settings', 'irma'),
                 'fields' => [
                     [
+                        'name'              => 'openzaak_url',
+                        'label'             => esc_html__('OpenZaak url', 'irma'),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'feedback_callback' => [
+                            $this, 'is_valid_setting'
+                        ],
+                    ],
+                    [
                         'name'              => 'openzaak_rsin',
-                        'tooltip'           => esc_html__('RSIN identifier', 'irma'),
                         'label'             => esc_html__('RSIN identifier', 'irma'),
                         'type'              => 'text',
                         'class'             => 'medium',
@@ -118,7 +126,7 @@ class OpenZaakAddon extends GFAddOn
     {
         foreach ($field['args'] as $field) {
             if (!method_exists('GFAddOn', 'settings_'. $field['type'])) {
-                $class = "\Yard\OpenZaak\Settings\\" . ucfirst($field['type']) ."Field";
+                $class = "\Yard\OpenZaak\Settings\Fields\\" . ucfirst($field['type']) ."Field";
                 if (class_exists($class) && (method_exists($class, 'render'))) {
                     echo (new $class($field))->render();
                 }

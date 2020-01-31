@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\OpenZaak\Settings;
+namespace Yard\OpenZaak\Settings\Fields;
 
 class LinkField
 {
