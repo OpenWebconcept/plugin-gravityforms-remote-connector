@@ -1,26 +1,11 @@
 <?php
 
-namespace Yard\IRMA\Settings;
+namespace Yard\Settings;
 
-use Yard\IRMA\GravityForms\OpenZaak\KeyValuePair;
+use Yard\OpenZaak\KeyValuePair;
 
 class StoreSettingsHandler
 {
-    /**
-     * Settings that can be filled.
-     *
-     * @var array
-     */
-    private $fillable = [
-        'irma_wp_rsin',
-        'irma_wp_bsn_attribute',
-        'irma_wp_irma_attribute_name',
-        'irma_wp_irma_attribute_value',
-        'createCaseURL',
-        'createCaseObjectURL',
-        'createCasePropertyURL',
-    ];
-
     /**
      * Handle the AJAX request.
      *

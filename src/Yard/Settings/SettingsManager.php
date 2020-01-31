@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\Settings;
+namespace Yard\Settings;
 
 class SettingsManager
 {

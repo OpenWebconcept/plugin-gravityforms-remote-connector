@@ -11,9 +11,9 @@
  * Text Domain: irma-wp
  * Domain Path: /languages.
  */
-use Yard\IRMA\Actions;
-use Yard\IRMA\Autoloader;
-use Yard\IRMA\Foundation\Plugin;
+use Yard\Actions;
+use Yard\Autoloader;
+use Yard\Foundation\Plugin;
 
 define('IRMA_WP_VERSION', '0.4');
 define('IRMA_WP__PLUGIN_URL', __DIR__);

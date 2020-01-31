@@ -1,8 +1,8 @@
 <?php
 
-namespace Yard\IRMA;
+namespace Yard;
 
-use Yard\IRMA\GravityForms\Actions\ExternalCall;
+use Yard\OpenZaak\Actions\ExternalCall;
 
 class Actions
 {

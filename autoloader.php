@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA;
+namespace Yard;
 
 class Autoloader
 {

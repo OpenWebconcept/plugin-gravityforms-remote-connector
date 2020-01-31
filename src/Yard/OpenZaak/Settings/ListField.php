@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\GravityForms\OpenZaak\Settings;
+namespace Yard\OpenZaak\Settings;
 
 class ListField
 {

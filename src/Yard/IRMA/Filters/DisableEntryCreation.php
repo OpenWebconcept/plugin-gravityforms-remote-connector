@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\GravityForms\Filters;
+namespace Yard\IRMA\Filters;
 
 use GFAPI;
 use Yard\IRMA\GravityForms\Fields\IrmaAttributeField;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Yard\IRMA\Settings;
+namespace Yard\Settings;
 
-use Yard\IRMA\Foundation\ServiceProvider;
+use Yard\Foundation\ServiceProvider;
 
 class SettingsServiceProvider extends ServiceProvider
 {

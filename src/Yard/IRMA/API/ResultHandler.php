@@ -1,9 +1,9 @@
 <?php
 
-namespace Yard\GravityForms\API;
+namespace Yard\IRMA\API;
 
 use GFAPI;
-use Yard\Client\IRMAClient;
+use Yard\IRMA\Client\IRMAClient;
 
 class ResultHandler
 {

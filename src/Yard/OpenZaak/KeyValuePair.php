@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\GravityForms\OpenZaak;
+namespace Yard\OpenZaak\OpenZaak;
 
 class KeyValuePair
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\GravityForms\API;
+namespace Yard\IRMA\API;
 
 use GFAPI;
 use WP_REST_Request;
@@ -27,9 +27,7 @@ class Session
      */
     public function handle(WP_REST_Request $request)
     {
-        $formId = $request->get_param('id');
         $form   = GFAPI::get_form($request->get_param('id'));
-
         if (!$form) {
             return new WP_REST_Response([
                 'error' => 'Could not find form.',

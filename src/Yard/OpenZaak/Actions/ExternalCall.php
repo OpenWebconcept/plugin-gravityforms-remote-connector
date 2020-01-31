@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\GravityForms\Actions;
+namespace Yard\OpenZaak\Actions;
 
 use Exception;
 use GuzzleHttp\Client;

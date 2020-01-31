@@ -1,10 +1,10 @@
 <?php
 
-namespace Yard\IRMA\GravityForms;
+namespace Yard\IRMA;
 
 use GFAddOn;
 
-class IrmaAddOn extends GFAddOn
+class IRMAAddOn extends GFAddOn
 {
     /**
      * Version number.
