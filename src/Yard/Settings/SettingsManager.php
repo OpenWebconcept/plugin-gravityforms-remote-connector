@@ -7,17 +7,11 @@ class SettingsManager
     /**
      * @var array
      */
-    private $settings;
-
-    /**
-     * @var array
-     */
-    private $settingsDecos;
+    private $settingsOpenzaak;
 
     public function __construct()
     {
-        $this->settings      = get_option('irma_settings', []);
-        $this->settingsDecos = get_option('irma_settings_decos', []);
+        $this->settingsOpenzaak = get_option('openzaak_settings', []);
     }
 
     /**
@@ -101,8 +95,8 @@ class SettingsManager
      *
      * @return array
      */
-    public function getAttributeDecos(): array
+    public function getAttributeOpenzaak(): array
     {
-        return $this->settingsDecos ?? [];
+        return $this->settingsOpenzaak ?? [];
     }
 }

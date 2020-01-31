@@ -1,10 +1,10 @@
 <?php
 
-namespace Yard\IRMA\GravityForms\Actions;
+namespace Yard\GravityForms\Actions;
 
 use Exception;
 use GuzzleHttp\Client;
-use Yard\IRMA\Settings\SettingsManager;
+use Yard\Settings\SettingsManager;
 
 class ExternalCall
 {
@@ -45,7 +45,7 @@ class ExternalCall
             $this->createCaseObject($createdCaseObjectJSON, $authorization);
             $this->createCaseProperties($caseURLwithID, $caseID, $formEntries, $authorization);
         } catch (Exception $e) {
-            require __DIR__ . '/../Views/FormSubmissionError.php';
+            require __DIR__ . '/../views/form-submission-error.php';
             exit;
         }
     }

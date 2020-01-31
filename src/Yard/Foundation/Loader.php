@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\Foundation;
+namespace Yard\Foundation;
 
 class Loader
 {

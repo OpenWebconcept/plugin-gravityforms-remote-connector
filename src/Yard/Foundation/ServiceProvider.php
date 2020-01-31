@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\IRMA\Foundation;
+namespace Yard\Foundation;
 
 abstract class ServiceProvider
 {
@@ -8,7 +8,7 @@ abstract class ServiceProvider
     /**
      * Instance of the plugin.
      *
-     * @var \Yard\IRMA\Foundation\Plugin
+     * @var \Yard\Foundation\Plugin
      */
     protected $plugin;
 
