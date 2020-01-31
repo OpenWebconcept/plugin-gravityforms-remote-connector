@@ -2,7 +2,7 @@
 
 namespace Yard\IRMA\GravityForms\Fields;
 
-use Yard\IRMA\Settings\SettingsManager;
+use Yard\IRMA\IRMASettingsManager;
 
 class IrmaHeaderField extends IrmaField
 {
@@ -82,7 +82,7 @@ class IrmaHeaderField extends IrmaField
             return;
         }
 
-        $settingsManager = new SettingsManager();
+        $settingsManager = IRMASettingsManager::make();
 
         // Compare submitted value with the true value.
         foreach ($groundTruth as $item) {

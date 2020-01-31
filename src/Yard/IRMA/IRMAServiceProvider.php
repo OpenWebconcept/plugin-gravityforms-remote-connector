@@ -25,8 +25,6 @@ class IRMAServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->settings = new SettingsManager();
-
         $this->registerActions();
         $this->registerFilters();
         $this->registerRestRoutes();
@@ -47,8 +45,6 @@ class IRMAServiceProvider extends ServiceProvider
 
         add_action('gform_loaded', [$this, 'loadIRMAAddon'], 5);
         add_action('gform_enqueue_scripts', [$this, 'enqueueScripts'], 10, 2);
-        add_action('gform_field_standard_settings', [$this, 'addCustomAttributeToField'], 10, 2);
-        add_action('gform_editor_js', [$this, 'addCustomAttributeToFieldScript'], 11, 2);
     }
 
     /**
@@ -59,7 +55,7 @@ class IRMAServiceProvider extends ServiceProvider
     public static function loadIRMAAddon(): void
     {
         GF_Fields::register(new IrmaAttributeField());
-        GF_Fields::register(new IrmaLaunchQR());
+        // GF_Fields::register(new IrmaLaunchQR());
         GF_Fields::register(new IrmaHeaderField());
 
         GFAddOn::register('Yard\IRMA\IRMAAddOn');
@@ -82,7 +78,8 @@ class IRMAServiceProvider extends ServiceProvider
      */
     public function registerRestRoutes(): void
     {
-        $client = new IRMAClient($this->settings->getEndpointUrl(), $this->settings->getEndpointToken());
+        $settings = IRMASettingsManager::make();
+        $client   = new IRMAClient($settings->getEndpointUrl(), $settings->getEndpointToken());
 
         add_action('rest_api_init', function () use ($client) {
             register_rest_route('irma/v1', '/gf/handle', [
@@ -113,30 +110,5 @@ class IRMAServiceProvider extends ServiceProvider
         ]);
 
         wp_enqueue_script('irma-gf-js');
-    }
-
-    /**
-     * Add Custom attribute to fields.
-     *
-     * @param int $position
-     * @param int $form_id
-     *
-     * @return void
-     */
-    public function addCustomAttributeToField(int $position, int $form_id): void
-    {
-        if (0 == $position) {
-            require __DIR__ . '/GravityForms/views/select-attribute.php';
-        }
-    }
-
-    /**
-     * Add script to facilitate custom attribute.
-     *
-     * @return void
-     */
-    public function addCustomAttributeToFieldScript(): void
-    {
-        require __DIR__ . '/GravityForms/views/select-attribute-script.php';
     }
 }

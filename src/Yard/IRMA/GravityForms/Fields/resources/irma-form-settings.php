@@ -4,7 +4,7 @@
 		<?php gform_tooltip('irma_attributes'); ?>
 	</label>
 	<div class="irma_attribute_list">
-		<input type="text" class="irma_attribute_field" onchange="SetFieldProperty('irmaAttribute', this.value);" />
+		<input type="text" class="irma_attribute_field fieldwidth-3" onchange="SetFieldProperty('irmaAttribute', this.value);" />
 	</div>
 </li>
 
@@ -13,7 +13,7 @@
 		<?php esc_html_e('IRMA Header text', 'irma-wp'); ?>
 	</label>
 	<div class="irma_header_list">
-		<input type="text" class="irma_header_field" onchange="SetFieldProperty('text', this.value);" />
+		<input type="text" class="irma_header_field fieldwidth-3" onchange="SetFieldProperty('text', this.value);" />
 	</div>
 	<br />
 	<div class="irma_qr_popup_container">
@@ -30,7 +30,7 @@
 		<?php esc_html_e('Button label', 'irma-wp'); ?>
 	</label>
 	<div class="irma_qr_popup_container">
-		<input type="text" id="irma_header_button_label" class="irma_header_button_label" onchange="SetFieldProperty('buttonLabel', this.value);" />
+		<input type="text" id="irma_header_button_label" class="irma_header_button_label fieldwidth-3" onchange="SetFieldProperty('buttonLabel', this.value);" />
 	</div>
 	<br />
 	<label class="section_label" for="irma_header_attribute_fullname_id_label">
@@ -38,7 +38,7 @@
 		<?php gform_tooltip('irma_header_attribute_fullname_id'); ?>
 	</label>
 	<div class="irma_header_attribute_fullname_id">
-		<input type="text" class="irma_header_attribute_fullname_id" onchange="SetFieldProperty('irmaHeaderAttributeFullnameId', this.value);" />
+		<input type="text" class="irma_header_attribute_fullname_id fieldwidth-3" onchange="SetFieldProperty('irmaHeaderAttributeFullnameId', this.value);" />
 	</div>
 	<br />
 	<label class="section_label" for="irma_header_attribute_bns_id_label">
@@ -46,7 +46,7 @@
 		<?php gform_tooltip('irma_header_attribute_bsn_id'); ?>
 	</label>
 	<div class="irma_header_attribute_bsn_id">
-		<input type="text" class="irma_header_attribute_bsn_id" onchange="SetFieldProperty('irmaHeaderAttributeBsnId', this.value);" />
+		<input type="text" class="irma_header_attribute_bsn_id fieldwidth-3" onchange="SetFieldProperty('irmaHeaderAttributeBsnId', this.value);" />
 	</div>
 	<br />
 	<div class="irma_header_city_id_container">
@@ -55,7 +55,7 @@
 			<?php gform_tooltip('irma_header_city_id'); ?>
 		</label>
 		<div class="irma_header_city_id">
-			<input type="text" class="irma_header_city_id" onchange="SetFieldProperty('irmaHeaderAttributeCity', this.value);" />
+			<input type="text" class="irma_header_city_id fieldwidth-3" onchange="SetFieldProperty('irmaHeaderAttributeCity', this.value);" />
 		</div>
 	</div>
 	<br />
@@ -65,7 +65,7 @@
 			<?php gform_tooltip('irma_header_city'); ?>
 		</label>
 		<div class="irma_header_city">
-			<input type="text" class="irma_header_city" onchange="SetFieldProperty('irmaHeaderCity', this.value);" />
+			<input type="text" class="irma_header_city fieldwidth-3" onchange="SetFieldProperty('irmaHeaderCity', this.value);" />
 		</div>
 	</div>
 </li>
@@ -87,6 +87,6 @@
 		<?php gform_tooltip('irma_qr'); ?>
 	</label>
 	<div class="irma_qr_popup_container">
-		<input type="text" id="irma_qr_button_label" class="irma_qr_button_label" onchange="SetFieldProperty('irmaButtonLabel', this.value);" />
+		<input type="text" id="irma_qr_button_label" class="irma_qr_button_label fieldwidth-3" onchange="SetFieldProperty('irmaButtonLabel', this.value);" />
 	</div>
 </li>

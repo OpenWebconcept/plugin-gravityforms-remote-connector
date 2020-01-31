@@ -75,11 +75,11 @@ class IRMAClient
     private function post(string $endpoint, string $token, array $payload = []): array
     {
         $postArgs = [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'body' => json_encode($payload),
-            ];
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($payload),
+        ];
 
         if (!empty($token)) {
             $postArgs = [

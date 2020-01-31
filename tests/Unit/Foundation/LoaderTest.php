@@ -1,10 +1,10 @@
 <?php
 
-namespace Yard\Blocks\Unit\Backend\Foundation;
+namespace Yard\Tests\Unit\Foundation;
 
 use WP_Mock;
-use Yard\Blocks\Foundation\Loader;
-use Yard\Blocks\Tests\Unit\TestCase;
+use Yard\Foundation\Loader;
+use Yard\Tests\Unit\TestCase;
 
 class LoaderTest extends TestCase
 {
@@ -59,7 +59,7 @@ class LoaderTest extends TestCase
         WP_Mock::expectActionAdded('test-action', [$this, 'test'], 10, 1);
         WP_Mock::expectFilterAdded('test-filter', [$this, 'test'], 10, 1);
 
-		$loader->register();
+        $loader->register();
 
         $this->assertTrue(true);
     }

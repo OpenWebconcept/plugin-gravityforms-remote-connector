@@ -88,7 +88,7 @@ class IRMAAddOn extends GFAddOn
     public function field_appearance_settings($position, $formId)
     {
         if (350 == $position) {
-            require __DIR__.'/Fields/resources/irma-form-settings.php';
+            require __DIR__.'/GravityForms/Fields/resources/irma-form-settings.php';
         }
     }
 
@@ -99,7 +99,7 @@ class IRMAAddOn extends GFAddOn
      */
     public function editor_script()
     {
-        require __DIR__.'/Fields/resources/editor-script.php';
+        require __DIR__.'/GravityForms/Fields/resources/editor-script.php';
     }
 
     public function filter_gform_tooltips($tooltips)

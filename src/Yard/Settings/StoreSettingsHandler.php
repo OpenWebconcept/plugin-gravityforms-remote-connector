@@ -2,10 +2,17 @@
 
 namespace Yard\Settings;
 
-use Yard\OpenZaak\KeyValuePair;
+use Yard\OpenZaak\OpenZaakSettingsManager;
 
 class StoreSettingsHandler
 {
+    /**
+     * Prefix of the metadata.
+     *
+     * @var string
+     */
+    protected $prefix = 'openzaak_attribute_';
+
     /**
      * Handle the AJAX request.
      *
@@ -21,18 +28,12 @@ class StoreSettingsHandler
             ], 403);
         }
 
-        parse_str($_POST['data'] ?? '', $data);
+        parse_str($_POST['data'] ?? [], $data);
 
-        $object = KeyValuePair::make($data);
-        $data   = [];
+        $settings                 = OpenZaakSettingsManager::make()->all();
+        $settings['attributes'][] = $this->removePrefix($data);
 
-        $settings   = get_option('openzaak_settings', []);
-        if (!empty($settings)) {
-            $data = $settings;
-        }
-        $data[] = $object;
-
-        if (update_option('openzaak_settings', $data)) {
+        if (OpenZaakSettingsManager::make()->save($settings)) {
             return wp_send_json_success([
                 'message' => 'Openzaak configuration has been updated!',
             ]);
@@ -41,5 +42,22 @@ class StoreSettingsHandler
         return wp_send_json_error([
             'message' => 'Openzaak configuration has NOT been updated!',
         ]);
+    }
+
+    /**
+     * Remove any prefixed data for readability.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function removePrefix(array $data): array
+    {
+        return array_combine(
+            array_map(function ($k) {
+                return str_replace($this->prefix, '', $k);
+            }, array_keys($data)),
+            $data
+        );
     }
 }

@@ -118,7 +118,7 @@ class OpenZaakAddon extends GFAddOn
     {
         foreach ($field['args'] as $field) {
             if (!method_exists('GFAddOn', 'settings_'. $field['type'])) {
-                $class = "\Yard\IRMA\GravityForms\OpenZaak\Settings\\" . ucfirst($field['type']) ."Field";
+                $class = "\Yard\OpenZaak\Settings\\" . ucfirst($field['type']) ."Field";
                 if (class_exists($class) && (method_exists($class, 'render'))) {
                     echo (new $class($field))->render();
                 }

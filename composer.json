@@ -17,12 +17,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Yard\\IRMA\\": "./src/IRMA"
+      "Yard\\": "./src/Yard"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "IRMA\\Tests\\": "./tests"
+      "Yard\\Tests\\": "./tests"
     }
   },
   "scripts": {

@@ -8,9 +8,18 @@ use Yard\Settings\SettingsManager;
 
 class ExternalCall
 {
-    public function __construct()
+    /**
+     * HTTP Client
+     *
+     * @var Client	$client
+     * @var SettingsManager $settingsManager
+     */
+    protected $client;
+
+    public function __construct(Client $client, SettingsManager $settingsManager)
     {
-        $this->settingsManager = new SettingsManager();
+        $this->client          = $client;
+        $this->settingsManager = $settingsManager;
     }
 
     /**
@@ -21,7 +30,7 @@ class ExternalCall
      *
      * @return array
      */
-    public function externalCall($entry, array $form)
+    public function handle(array $entry, array $form)
     {
         $formID      = $form['fields'][0]['formId'];
         $formEntries = [];
@@ -139,9 +148,7 @@ class ExternalCall
      */
     public function createCase($JSON, $authorization): array
     {
-        $client = new Client();
-
-        $response = $client->request('POST', $this->settingsManager->createCaseURL(), [
+        $response = $this->client->request('POST', $this->settingsManager->createCaseURL(), [
             'verify'  => false,
             'body'    => $JSON,
             'headers' => [
@@ -166,9 +173,7 @@ class ExternalCall
      */
     public function createCaseObject($createdCaseObjectJSON, $authorization): bool
     {
-        $client = new Client();
-
-        $response = $client->request('POST', $this->settingsManager->createCaseObjectURL(), [
+        $response = $this->client->request('POST', $this->settingsManager->createCaseObjectURL(), [
             'verify'  => false,
             'body'    => $createdCaseObjectJSON,
             'headers' => [
@@ -193,10 +198,9 @@ class ExternalCall
      */
     public function createCaseProperty($createdCasePropertyJSON, $caseID, $authorization): bool
     {
-        $client                = new Client();
         $createCasePropertyURL = str_replace('caseID', $caseID, $this->settingsManager->createCasePropertyURL());
 
-        $response = $client->request('POST', $createCasePropertyURL, [
+        $response = $this->client->request('POST', $createCasePropertyURL, [
             'verify'  => false,
             'body'    => $createdCasePropertyJSON,
             'headers' => [

@@ -1,9 +1,9 @@
 <?php
 
-namespace Yard\Blocks\Tests\Config;
+namespace Yard\Tests\Config;
 
-use Yard\Blocks\Foundation\Config;
-use Yard\Blocks\Tests\Unit\TestCase;
+use Yard\Foundation\Config;
+use Yard\Tests\Unit\TestCase;
 
 class RepositoryTest extends TestCase
 {

@@ -2,101 +2,43 @@
 
 namespace Yard\Settings;
 
-class SettingsManager
+abstract class SettingsManager
 {
-    /**
-     * @var array
-     */
-    private $settingsOpenzaak;
-
     public function __construct()
     {
-        $this->settingsOpenzaak = get_option('openzaak_settings', []);
+        $this->settings = get_option($this->key, []);
     }
 
     /**
-     * Get the endpoint of the IRMA server.
+     * Static constructor for quick setup.
      *
-     * @return string|null
+     * @return self
      */
-    public function getEndpointUrl(): ?string
+    public static function make(): self
     {
-        return $this->settings['irma_server_endpoint_url'] ?? null;
+        $class = get_called_class();
+        return new $class();
     }
 
-    /**
-     * Get the token of the endpoint of the IRMA server.
-     *
-     * @return string|null
-     */
-    public function getEndpointToken(): ?string
+    public function save($data): bool
     {
-        return $this->settings['irma_server_endpoint_token'] ?? null;
+        return update_option($this->key, $data);
     }
 
-    /**
-     * Get the RSIN code.
-     *`.
-     *
-     * @return string|null
-     */
-    public function getRISN(): ?string
+    public function all($default = [])
     {
-        return $this->settings['irma_wp_rsin'] ?? null;
+        $all = get_option($this->key, $default);
+        if (!isset($all['attributes'])) {
+            $all['attributes'] = [];
+        }
+
+        return $all;
     }
 
-    /**
-     * Get the create case URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCaseURL(): ?string
+    public function get($key, $default = [])
     {
-        return $this->settings['createCaseURL'] ?? null;
-    }
+        $all = $this->all($default);
 
-    /**
-     * Get the create case object URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCaseObjectURL(): ?string
-    {
-        return $this->settings['createCaseObjectURL'] ?? null;
-    }
-
-    /**
-     * Get the create case property URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCasePropertyURL(): ?string
-    {
-        return $this->settings['createCasePropertyURL'] ?? null;
-    }
-
-    /**
-     * Get the RSIN code.
-     *`.
-     *
-     * @return string|null
-     */
-    public function getAttributeBSN(): ?string
-    {
-        return $this->settings['irma_wp_bsn_attribute'] ?? null;
-    }
-
-    /**
-     * Get the RSIN code.
-     *`.
-     *
-     * @return array
-     */
-    public function getAttributeOpenzaak(): array
-    {
-        return $this->settingsOpenzaak ?? [];
+        return $all[$key] ?? $all;
     }
 }

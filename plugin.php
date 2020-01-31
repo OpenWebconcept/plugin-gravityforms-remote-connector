@@ -11,7 +11,6 @@
  * Text Domain: irma-wp
  * Domain Path: /languages.
  */
-use Yard\Actions;
 use Yard\Autoloader;
 use Yard\Foundation\Plugin;
 
@@ -31,7 +30,6 @@ if (!defined('WPINC')) {
 require_once __DIR__.'/autoloader.php';
 
 $autoloader = new Autoloader();
-$actions    = new Actions();
 
 /**
  * Begin execution of the plugin.

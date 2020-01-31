@@ -57,7 +57,6 @@
 				// e.stopPropagation();
 
 				var form = $('#openzaak-settings-form');
-
 				var empty = validateForm();
 
 				if (empty) {

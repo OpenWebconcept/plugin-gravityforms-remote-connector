@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\Blocks\Tests\Unit;
+namespace Yard\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
 

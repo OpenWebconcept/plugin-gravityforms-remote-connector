@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\OpenZaak\OpenZaak;
+namespace Yard\OpenZaak;
 
 class KeyValuePair
 {
@@ -18,11 +18,11 @@ class KeyValuePair
 
     public function key()
     {
-        return $this->data['openzaak_attribute_name'];
+        return $this->data['name'];
     }
 
     public function value()
     {
-        return $this->data['openzaak_attribute_value'];
+        return $this->data['value'];
     }
 }
