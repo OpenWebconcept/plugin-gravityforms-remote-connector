@@ -3,20 +3,20 @@
 namespace Yard\OpenZaak\Actions;
 
 use Exception;
-use GuzzleHttp\Client;
 use Yard\Foundation\SettingsManager;
+use Yard\OpenZaak\Client\OpenZaakClient;
 
 class ExternalCall
 {
     /**
      * HTTP Client
      *
-     * @var Client	$client
+     * @var OpenZaakClient	$client
      * @var SettingsManager $settingsManager
      */
     protected $client;
 
-    public function __construct(Client $client, SettingsManager $settingsManager)
+    public function __construct(OpenZaakClient $client, SettingsManager $settingsManager)
     {
         $this->client          = $client;
         $this->settingsManager = $settingsManager;

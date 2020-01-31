@@ -4,8 +4,12 @@ namespace Yard\Foundation;
 
 abstract class SettingsManager
 {
-    public function __construct()
+    public function __construct($key = '')
     {
+        if (! empty($key)) {
+            $this->key     = $key;
+        }
+
         $this->settings = get_option($this->key, []);
     }
 
@@ -14,10 +18,10 @@ abstract class SettingsManager
      *
      * @return self
      */
-    public static function make(): self
+    public static function make($key = ''): self
     {
         $class = get_called_class();
-        return new $class();
+        return new $class($key);
     }
 
     public function save($data): bool
