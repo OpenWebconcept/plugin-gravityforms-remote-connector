@@ -44,7 +44,7 @@ class OpenZaakClient extends Client
      *
      * @return array
      */
-    private function post(string $endpoint, string $token, array $payload = []): array
+    private function post(array $payload = []): array
     {
         $postArgs = [
             'headers' => [
@@ -58,7 +58,7 @@ class OpenZaakClient extends Client
         if (!empty($token)) {
             $postArgs = array_merge($postArgs, [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$token,
+                    'Authorization' => 'Bearer '.$this->token,
                 ]
             ]);
         }
@@ -66,7 +66,7 @@ class OpenZaakClient extends Client
         \var_dump($postArgs);
         exit;
 
-        $response = wp_remote_post($this->endpoint.'/'.$endpoint, $postArgs);
+        $response = wp_remote_post($this->endpoint.'/'.$this->endpoint, $postArgs);
 
         return json_decode(wp_remote_retrieve_body($response), true);
     }

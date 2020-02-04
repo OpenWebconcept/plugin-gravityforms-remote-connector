@@ -4,13 +4,13 @@ namespace Yard\Foundation;
 
 abstract class SettingsManager
 {
+    protected $key = '';
+
     public function __construct($key = '')
     {
         if (! empty($key)) {
             $this->key     = $key;
         }
-
-        $this->settings = get_option($this->key, []);
     }
 
     /**
