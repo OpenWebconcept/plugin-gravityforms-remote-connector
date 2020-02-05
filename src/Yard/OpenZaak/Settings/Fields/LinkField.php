@@ -4,7 +4,12 @@ namespace Yard\OpenZaak\Settings\Fields;
 
 class LinkField
 {
-    public function render()
+    /**
+     * Render the field.
+     *
+     * @return string
+     */
+    public function render(): string
     {
         return '<a href="#">delete</a>';
     }

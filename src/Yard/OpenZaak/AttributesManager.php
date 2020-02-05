@@ -11,7 +11,7 @@ class AttributesManager extends BaseSettingsManager
      *
      * @var string
      */
-    protected $key = 'openzaak_settings';
+    protected $key = 'gravityformsaddon_openzaak-addon_attributes';
 
     /**
      * Get the attributes.
@@ -25,14 +25,29 @@ class AttributesManager extends BaseSettingsManager
             $all['attributes'] = [];
         }
 
-        return $all;
+        return $all['attributes'];
     }
 
-    public function find($key, $default = [])
+    public function find($value, $default = [], $key = '')
     {
         $all = $this->get('attributes', $default);
+        $id  = array_search($value, array_column($all, 'name'));
 
-        $id = array_search($key, array_column($all, 'name'));
-        return $all[$id] ?? null;
+        if (empty($key)) {
+            return $all[$id] ?? null;
+        }
+
+        return ($all[$id][$key] ?? $all[$id]);
+    }
+
+    public function save($data): bool
+    {
+        if (!isset($data['attributes'])) {
+            $dataTmp               = [];
+            $dataTmp['attributes'] = $data;
+            $data                  = $dataTmp;
+        }
+
+        return update_option($this->key, $data);
     }
 }

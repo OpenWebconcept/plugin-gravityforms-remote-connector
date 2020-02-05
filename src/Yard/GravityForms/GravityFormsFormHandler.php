@@ -14,7 +14,7 @@ class GravityFormsFormHandler
      * @param array $entry
      * @param array $form
      *
-     * @return false|array
+     * @return false|array|Exception
      */
     public function execute(array $entry, array $form)
     {
@@ -23,12 +23,14 @@ class GravityFormsFormHandler
             return false;
         }
 
-        dd($connectorEntity);
-
-        $formID          = $form['fields'][0]['formId'];
-        $payload         = OpenZaakFormObject::make($form['fields'], $entry)->toJson();
-
-        $connectorEntity->getConnector()->send();
+        $formID          = $this->getFormID($form);
+        $payload         = OpenZaakFormObject::make($form['fields'], $entry)->toArray();
+        try {
+            $response = $connectorEntity->getConnector()->send($payload);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            exit();
+        }
     }
 
     /**
@@ -41,5 +43,10 @@ class GravityFormsFormHandler
     protected function getConnectorEntity($form): ConnectorEntity
     {
         return ConnectorManager::make()->find($form);
+    }
+
+    protected function getFormID(array $form): int
+    {
+        return $form['fields'][0]['formId'] ?? null;
     }
 }

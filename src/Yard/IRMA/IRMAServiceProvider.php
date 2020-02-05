@@ -2,9 +2,9 @@
 
 namespace Yard\IRMA;
 
+use GF_Fields;
 use GFAddOn;
 use GFForms;
-use GF_Fields;
 use UnexpectedValueException;
 use Yard\Foundation\ServiceProvider;
 use Yard\IRMA\Client\IRMAClient;

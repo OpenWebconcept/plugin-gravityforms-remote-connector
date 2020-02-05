@@ -2,43 +2,104 @@
 
 namespace Yard\OpenZaak;
 
+use Yard\OpenZaak\GravityForms\Fields\AbstractField;
+use Yard\OpenZaak\GravityForms\Fields\OpenZaak;
+
 class OpenZaakFormObject
 {
-    protected $fields;
+    /**
+     * Fields
+     *
+     * @var array
+     */
+    protected $fields = [];
 
-    protected $entry;
+    /**
+     * Entry.
+     *
+     * @var array
+     */
+    protected $entry = [];
 
-    public function __construct(array $fields = [], array $entry = [])
+    /**
+     * Attributes
+     *
+     * @var AttributesManager
+     */
+    protected $attributes = [];
+
+
+
+    final public function __construct(array $fields = [], array $entry = [])
     {
-        $this->fields = $fields;
-        $this->entry  = $entry;
+        $this->fields     = $fields;
+        $this->entry      = $entry;
+        $this->attributes = AttributesManager::make();
     }
 
-    public static function make(array $fields = [], array $entry = [])
+    /**
+     * Static constructor
+     *
+     * @param array $fields
+     * @param array $entry
+     *
+     * @return self
+     */
+    public static function make(array $fields = [], array $entry = []): self
     {
         return new static($fields, $entry);
     }
 
     public function buildFields(): array
     {
-        $formEntries = [];
-        $settings    = AttributesManager::make()->find('edwin');
-        dd($settings);
-
+        $formEntries   = [];
         foreach ($this->fields as $field) {
-            if (!isset($field['casePropertyName'])) {
+            if (!$this->hasPropertyName($field)) {
                 continue;
             }
-            dd($field, rgar($this->entry, (string) $field['id']));
-            $formEntries = array_merge($formEntries, [
-                trim(rgar($this->entry, (string) $field['id'])) => trim($field['casePropertyName'])
-            ]);
+
+            $field                                   = $this->factoryField($field);
+            $formEntries[$field->getPropertyName()]  =  $field->getPropertyValue();
         }
+
         return $formEntries;
     }
 
-    public function toJson()
+    protected function factoryField(object $field): AbstractField
     {
-        return dd(json_encode($this->buildFields()));
+        $className  = get_class($field);
+        $class      = 'Yard\OpenZaak\GravityForms\Fields\\'. str_replace('GF_Field_', '', $className);
+        if (class_exists($class)) {
+            $field = new $class($field, $this->entry, $this->attributes);
+        } else {
+            $field = new OpenZaak($field, $this->entry, $this->attributes);
+        }
+
+        return $field;
+    }
+
+    protected function hasPropertyName($field): bool
+    {
+        return isset($field['casePropertyName']);
+    }
+
+    /**
+     * Return data to json
+     *
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->buildFields());
+    }
+
+    /**
+     * Return data to array.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return json_decode($this->toJson(), true);
     }
 }

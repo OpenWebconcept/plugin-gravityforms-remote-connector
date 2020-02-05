@@ -3,6 +3,8 @@
 namespace Yard\OpenZaak;
 
 use Yard\Connector\BaseConnector;
+use Yard\Connector\ConnectorInterface;
+use Yard\OpenZaak\Client\OpenZaakClient;
 
 class OpenZaakConnector extends BaseConnector
 {
@@ -16,12 +18,24 @@ class OpenZaakConnector extends BaseConnector
     }
 
     /**
+     * Get the client of the connector.
+     *
+     * @return ConnectorInterface
+     */
+    public function client()
+    {
+        return new OpenZaakClient(SettingsManager::make()->find('openzaak_url'), SettingsManager::make()->find('openzaak_token'));
+    }
+
+    /**
      * Handle the sending of the request.
      *
+     * @var array $payload
      * @return void
      */
-    public function send()
+    public function send(array $payload = [])
     {
+        return $this->client()->post($payload);
     }
 
     /**

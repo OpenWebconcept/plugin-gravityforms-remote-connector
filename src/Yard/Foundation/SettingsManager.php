@@ -52,4 +52,9 @@ abstract class SettingsManager
 
         return $all[$key] ?? $all;
     }
+
+    public function find($key, $default = [])
+    {
+        return $this->get($key, $default);
+    }
 }

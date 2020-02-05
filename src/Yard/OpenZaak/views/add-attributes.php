@@ -65,9 +65,6 @@
 
 			// onclick event for openzaak attributes.
 			$('#openzaak_save_attributes').click(function(e) {
-				// e.preventDefault();
-				// e.stopPropagation();
-
 				var form = $('#openzaak-settings-form');
 				var empty = validateForm();
 
@@ -79,8 +76,8 @@
 					url: '<?php echo admin_url('admin-ajax.php'); ?>',
 					method: 'POST',
 					data: {
-						action: 'openzaak_store_settings',
-						security: '<?php echo wp_create_nonce('openzaak_store_settings'); ?>',
+						action: 'openzaak_store_attribute',
+						security: '<?php echo wp_create_nonce('openzaak_store_attribute'); ?>',
 						data: form.serialize()
 					}
 				}).done(function(response) {

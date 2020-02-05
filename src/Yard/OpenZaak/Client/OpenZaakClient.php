@@ -2,6 +2,8 @@
 
 namespace Yard\OpenZaak\Client;
 
+use Exception;
+
 class OpenZaakClient
 {
     /**
@@ -51,15 +53,18 @@ class OpenZaakClient
             'body' => json_encode($payload),
         ];
 
-        if (!empty($token)) {
-            $postArgs = array_merge($postArgs, [
+        if (!empty($this->token)) {
+            $postArgs = \array_merge_recursive($postArgs, [
                 'headers' => [
                     'Authorization' => 'Bearer '.$this->token,
                 ]
             ]);
         }
 
-        $response = wp_remote_post($this->endpoint.'/'.$this->endpoint, $postArgs);
+        $response = wp_remote_post($this->endpoint .'/zaken', $postArgs);
+        if (!in_array(wp_remote_retrieve_response_code($response), [200, 201])) {
+            throw new Exception("Something went wrong: ". wp_remote_retrieve_response_message($response));
+        }
 
         return json_decode(wp_remote_retrieve_body($response), true);
     }

@@ -93,6 +93,15 @@ class Addon extends GFAddOn
                         ],
                     ],
                     [
+                        'name'              => 'openzaak_token',
+                        'label'             => esc_html__('OpenZaak token', 'irma'),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'feedback_callback' => [
+                            $this, 'is_valid_setting'
+                        ],
+                    ],
+                    [
                         'name'              => 'openzaak_rsin',
                         'label'             => esc_html__('RSIN identifier', 'irma'),
                         'type'              => 'text',

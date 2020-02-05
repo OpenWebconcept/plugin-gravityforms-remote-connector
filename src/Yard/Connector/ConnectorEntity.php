@@ -6,10 +6,25 @@ use ReflectionClass;
 
 class ConnectorEntity
 {
+    /**
+     * Connector
+     *
+     * @var ConnectorInterface
+     */
     protected $connector;
 
+    /**
+     * Name of the connector.
+     *
+     * @var string
+     */
     protected $name = '';
 
+    /**
+     * Identifier of teh connector.
+     *
+     * @var string
+     */
     protected $identifier = '';
 
     public function __construct(ConnectorInterface $connector)
@@ -17,6 +32,11 @@ class ConnectorEntity
         $this->connector  = $connector;
     }
 
+    /**
+     * Build the connectorEntity.
+     *
+     * @return self
+     */
     public function build(): self
     {
         if (empty($identifier)) {
@@ -35,8 +55,10 @@ class ConnectorEntity
 
     /**
      * Get the value of name
+     *
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -44,19 +66,21 @@ class ConnectorEntity
     /**
      * Set the value of name
      *
-     * @return  self
+     * @var string $name
+     * @return self
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
-
         return $this;
     }
 
     /**
      * Get the value of identifier
+     *
+     * @return string
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -64,19 +88,21 @@ class ConnectorEntity
     /**
      * Set the value of identifier
      *
-     * @return  self
+     * @var string $identifier
+     * @return self
      */
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier)
     {
         $this->identifier = $identifier;
-
         return $this;
     }
 
     /**
      * Get the value of connector
+     *
+     * @return ConnectorInterface
      */
-    public function getConnector()
+    public function getConnector(): ConnectorInterface
     {
         return $this->connector;
     }

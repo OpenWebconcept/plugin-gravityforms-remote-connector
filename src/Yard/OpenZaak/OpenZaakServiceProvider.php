@@ -5,14 +5,16 @@ namespace Yard\OpenZaak;
 use GFAddOn;
 use GFForms;
 use Yard\Foundation\ServiceProvider;
-use Yard\OpenZaak\Settings\StoreSettingsHandler;
+use Yard\OpenZaak\Settings\AttributeStorageHandler;
 
 class OpenZaakServiceProvider extends ServiceProvider
 {
     /**
      * Register all necessities for GravityForms.
+     *
+     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerActions();
     }
@@ -24,13 +26,14 @@ class OpenZaakServiceProvider extends ServiceProvider
      */
     public function registerActions(): void
     {
-        if (! method_exists('GFForms', 'include_addon_framework')) {
+        if (! method_exists(GFForms::class, 'include_addon_framework')) {
             return;
         }
 
         GFForms::include_addon_framework();
 
-        add_action('wp_ajax_openzaak_store_settings', [new StoreSettingsHandler(), 'handle']);
+        add_action('wp_ajax_openzaak_store_attribute', [new AttributeStorageHandler(), 'store']);
+        add_action('wp_ajax_openzaak_remove_attribute', [new AttributeStorageHandler(), 'remove']);
 
         add_action('gform_loaded', [$this, 'loadOpenZaak'], 5);
         add_action('gform_field_standard_settings', [$this, 'addCustomAttributeToField'], 10, 2);
@@ -60,7 +63,7 @@ class OpenZaakServiceProvider extends ServiceProvider
     public function addCustomAttributeToField(int $position, int $form_id): void
     {
         if (0 == $position) {
-            $settings = SettingsManager::make();
+            $attributes = AttributesManager::make();
             require __DIR__ . '/GravityForms/views/select-attribute.php';
         }
     }

@@ -8,7 +8,7 @@ use Yard\OpenZaak\KeyValuePair;
 		<option value=""><?php _e('Kies attribuut', 'irma'); ?>
 		</option>
 		<?php
-                foreach ($settings->get('attributes') as $caseProperty) {
+                foreach ($attributes->all() as $caseProperty) {
                     $caseProperty = KeyValuePair::make($caseProperty);
                     echo '<option value="'.$caseProperty->key().'">'. $caseProperty->key() .' - '. $caseProperty->value() .'</option>';
                 } ?>

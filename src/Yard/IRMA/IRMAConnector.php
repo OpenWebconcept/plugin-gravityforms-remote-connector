@@ -16,11 +16,22 @@ class IRMAConnector extends BaseConnector
     }
 
     /**
+     * Get the client of the connector.
+     *
+     * @return
+     */
+    public function client()
+    {
+        return;
+    }
+
+    /**
      * Handle the sending of the request.
      *
+     * @var array $payload
      * @return void
      */
-    public function send()
+    public function send(array $payload = [])
     {
     }
 

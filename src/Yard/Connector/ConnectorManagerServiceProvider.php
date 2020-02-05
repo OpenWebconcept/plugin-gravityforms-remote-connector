@@ -8,8 +8,10 @@ class ConnectorManagerServiceProvider extends ServiceProvider
 {
     /**
      * Register all necessities.
+     *
+     * @return void
      */
-    public function register()
+    public function register(): void
     {
         (new ConnectorManager())->registerConnectors();
     }

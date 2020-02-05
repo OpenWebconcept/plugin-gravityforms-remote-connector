@@ -4,16 +4,22 @@ namespace Yard\Connector;
 
 use Yard\GravityForms\GravityFormsDefaultConnector;
 
-class ConnectorManager
+final class ConnectorManager
 {
     /**
      * All the available connectors.
      *
      * @var ConnectorEntity[]
+     * @return self
      */
     private static $connectors = [];
 
-    public static function make()
+    /**
+     * Static constructor.
+     *
+     * @return self
+     */
+    public static function make(): self
     {
         return new static();
     }
@@ -22,11 +28,12 @@ class ConnectorManager
      * Add connector to stack.
      *
      * @param ConnectorInterface $connector
+     * @param string $name
      * @param string $identifier
      *
      * @return void
      */
-    public static function add(ConnectorInterface $connector, $identifier = '', $name = ''): void
+    public static function add(ConnectorInterface $connector, string $identifier = '', string $name = ''): void
     {
         $entity = (new ConnectorEntity($connector))->build();
         if (!isset(static::$connectors[$entity->getIdentifier()])) {
@@ -72,7 +79,7 @@ class ConnectorManager
     {
         array_map(function ($connector) {
             static::add(new $connector());
-        }, config('core.connectors', []));
+        }, \config('core.connectors', []));
 
         return static::$connectors;
     }
