@@ -5,8 +5,6 @@ namespace Yard\OpenZaak;
 use GFAddOn;
 use GFForms;
 use Yard\Foundation\ServiceProvider;
-use Yard\OpenZaak\Actions\ExternalCall;
-use Yard\OpenZaak\Client\OpenZaakClient;
 use Yard\OpenZaak\Settings\StoreSettingsHandler;
 
 class OpenZaakServiceProvider extends ServiceProvider
@@ -26,17 +24,14 @@ class OpenZaakServiceProvider extends ServiceProvider
      */
     public function registerActions(): void
     {
-        if (! method_exists('\GFForms', 'include_addon_framework')) {
+        if (! method_exists('GFForms', 'include_addon_framework')) {
             return;
         }
 
         GFForms::include_addon_framework();
 
         add_action('wp_ajax_openzaak_store_settings', [new StoreSettingsHandler(), 'handle']);
-        add_action('gform_after_submission', [new ExternalCall(
-            new OpenZaakClient(SettingsManager::make('gravityformsaddon_openzaak-addon_settings')->get('openzaak_url'), ''),
-            SettingsManager::make()
-        ), 'handle'], 10, 2);
+
         add_action('gform_loaded', [$this, 'loadOpenZaak'], 5);
         add_action('gform_field_standard_settings', [$this, 'addCustomAttributeToField'], 10, 2);
         add_action('gform_editor_js', [$this, 'addCustomAttributeToFieldScript'], 11, 2);
@@ -49,7 +44,7 @@ class OpenZaakServiceProvider extends ServiceProvider
      */
     public function loadOpenZaak(): void
     {
-        GFAddOn::register('Yard\OpenZaak\Addon');
+        GFAddOn::register(\Yard\OpenZaak\Addon::class);
 
         Addon::get_instance();
     }

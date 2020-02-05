@@ -2,6 +2,7 @@
 
 namespace Yard\IRMA\Client;
 
+use UnexpectedValueException;
 use Yard\IRMA\Attribute;
 use Yard\IRMA\AttributeCollection;
 
@@ -22,6 +23,9 @@ class IRMAClient
      */
     public function __construct($endpoint, $token)
     {
+        if (empty($endpoint)) {
+            throw new UnexpectedValueException('An endpoint should not be empty.');
+        }
         $this->endpoint = rtrim($endpoint, '/');
         $this->token    = rtrim($token);
     }

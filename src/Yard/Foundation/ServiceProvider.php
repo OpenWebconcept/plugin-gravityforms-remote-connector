@@ -12,9 +12,14 @@ abstract class ServiceProvider
      */
     protected $plugin;
 
-    public function __construct(Plugin $plugin)
+    public function __construct(Plugin $plugin = null)
     {
         $this->plugin = $plugin;
+    }
+
+    public function plugin()
+    {
+        return $this->plugin;
     }
 
     /**

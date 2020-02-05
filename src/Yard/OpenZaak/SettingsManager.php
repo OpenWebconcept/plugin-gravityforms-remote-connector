@@ -11,7 +11,7 @@ class SettingsManager extends BaseSettingsManager
      *
      * @var string
      */
-    protected $key = 'openzaak_settings';
+    protected $key = 'gravityformsaddon_openzaak-addon_settings';
 
     /**
      * Get the RSIN code.
@@ -21,49 +21,6 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getRISN(): ?string
     {
-        return $this->settings['irma_wp_rsin'] ?? null;
-    }
-
-    /**
-     * Get the create case URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCaseURL(): ?string
-    {
-        return $this->settings['createCaseURL'] ?? null;
-    }
-
-    /**
-     * Get the create case object URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCaseObjectURL(): ?string
-    {
-        return $this->settings['createCaseObjectURL'] ?? null;
-    }
-
-    /**
-     * Get the create case property URL.
-     *`.
-     *
-     * @return string|null
-     */
-    public function createCasePropertyURL(): ?string
-    {
-        return $this->settings['createCasePropertyURL'] ?? null;
-    }
-
-    /**
-     * Get the RSIN code.
-     *
-     * @return array
-     */
-    public function getAttributes(): array
-    {
-        return $this->settings ?? [];
+        return $this->get('openzaak_rsin', null);
     }
 }

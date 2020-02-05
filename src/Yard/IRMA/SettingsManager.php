@@ -15,7 +15,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getEndpointUrl(): ?string
     {
-        return $this->settings['irma_server_endpoint'] ?? null;
+        return $this->get('irma_server_endpoint', null);
     }
 
     /**
@@ -25,7 +25,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getEndpointToken(): ?string
     {
-        return $this->settings['irma_server_token'] ?? null;
+        return $this->get('irma_server_token', null);
     }
 
     /**
@@ -36,6 +36,6 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getAttributeBSN(): ?string
     {
-        return $this->settings['irma_wp_bsn_attribute'] ?? null;
+        return $this->get('irma_bsn_attribute_field_name', null);
     }
 }

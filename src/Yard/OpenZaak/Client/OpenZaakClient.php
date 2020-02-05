@@ -2,9 +2,7 @@
 
 namespace Yard\OpenZaak\Client;
 
-use GuzzleHttp\Client;
-
-class OpenZaakClient extends Client
+class OpenZaakClient
 {
     /**
      * @var string|null
@@ -38,13 +36,11 @@ class OpenZaakClient extends Client
     }
 
     /**
-     * @param string $endpoint
-     * @param string $token
      * @param array  $payload
      *
      * @return array
      */
-    private function post(array $payload = []): array
+    public function post(array $payload = []): array
     {
         $postArgs = [
             'headers' => [
@@ -62,9 +58,6 @@ class OpenZaakClient extends Client
                 ]
             ]);
         }
-
-        \var_dump($postArgs);
-        exit;
 
         $response = wp_remote_post($this->endpoint.'/'.$this->endpoint, $postArgs);
 

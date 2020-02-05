@@ -4,7 +4,17 @@ namespace Yard\Foundation;
 
 abstract class SettingsManager
 {
+    /**
+    * Key of the option.
+    *
+    * @var string
+    */
     protected $key = '';
+
+    /**
+    * Setting array of the option.
+    */
+    protected $settings;
 
     public function __construct($key = '')
     {
@@ -32,9 +42,6 @@ abstract class SettingsManager
     public function all($default = [])
     {
         $all = get_option($this->key, $default);
-        if (!isset($all['attributes'])) {
-            $all['attributes'] = [];
-        }
 
         return $all;
     }

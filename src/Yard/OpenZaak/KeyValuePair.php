@@ -18,11 +18,11 @@ class KeyValuePair
 
     public function key()
     {
-        return $this->data['name'];
+        return $this->data['name'] ?? '';
     }
 
     public function value()
     {
-        return $this->data['value'];
+        return $this->data['value'] ?? '';
     }
 }

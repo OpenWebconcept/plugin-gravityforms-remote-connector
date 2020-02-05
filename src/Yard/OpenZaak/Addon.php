@@ -46,7 +46,7 @@ class Addon extends GFAddOn
      *
      * @var string
      */
-    protected $_title = 'Gravityforms OpenZaak Add-On';
+    protected $_title = 'GravityForms OpenZaak Add-On';
 
     /**
      * The short title of the Add-On to be used in limited spaces.

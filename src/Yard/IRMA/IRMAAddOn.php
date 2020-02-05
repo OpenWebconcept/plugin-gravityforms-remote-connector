@@ -11,7 +11,7 @@ class IRMAAddOn extends GFAddOn
      *
      * @var string
      */
-    protected $_version = IRMA_WP_VERSION;
+    protected $_version = GF_R_C_VERSION;
 
     /**
      * Minimal required GF version.

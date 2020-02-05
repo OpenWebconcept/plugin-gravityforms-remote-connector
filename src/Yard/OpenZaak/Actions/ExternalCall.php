@@ -16,6 +16,13 @@ class ExternalCall
      */
     protected $client;
 
+    /**
+     * SettingsManager.
+     *
+     * @var SettingsManager
+     */
+    protected $settingsManager;
+
     public function __construct(OpenZaakClient $client, SettingsManager $settingsManager)
     {
         $this->client          = $client;
@@ -32,17 +39,8 @@ class ExternalCall
      */
     public function handle(array $entry, array $form)
     {
-        $formID      = $form['fields'][0]['formId'];
-        $formEntries = [];
-
-        foreach ($form['fields'] as $field) {
-            array_push($formEntries, ['casePropertyValue' => trim(rgar($entry, (string) $field['id'])), 'casePropertyName' => trim($field['casePropertyName'])]);
-        }
-
-        $authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJZYXJkIn0.MsPgx9cTjz6xE7HIoqtYYvpK5W3KrKlvIMGhdtGQE8U';
-
         try {
-            $createdCaseJSON = $this->createCaseJSON($formEntries, $formID);
+            $createdCaseJSON = $this->createCaseJSON($formEntries);
             $caseInstance    = $this->createCase($createdCaseJSON, $authorization);
 
             // the case ID
@@ -146,92 +144,15 @@ class ExternalCall
      *
      * @return array
      */
-    public function createCase($JSON, $authorization): array
+    public function createCase($json): array
     {
-        $response = $this->client->request('POST', $this->settingsManager->createCaseURL(), [
-            'verify'  => false,
-            'body'    => $JSON,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $authorization,
-                'Content-Type'  => 'application/json',
-            ],
-        ]);
+        $response = $this->client->post($json);
+        dd($response);
 
         if (201 !== $response->getStatusCode() && 200 !== $response->getStatusCode()) {
             throw new Exception('Something went wrong.');
         }
 
         return json_decode($response->getBody()->getContents(), true);
-    }
-
-    /**
-     * Execute the request and create a case object.
-     *
-     * @param string $createdCaseObjectJSON
-     *
-     * @return bool
-     */
-    public function createCaseObject($createdCaseObjectJSON, $authorization): bool
-    {
-        $response = $this->client->request('POST', $this->settingsManager->createCaseObjectURL(), [
-            'verify'  => false,
-            'body'    => $createdCaseObjectJSON,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $authorization,
-                'Content-Type'  => 'application/json',
-            ],
-        ]);
-
-        if (201 !== $response->getStatusCode() && 200 !== $response->getStatusCode()) {
-            throw new Exception('Something went wrong.');
-        }
-
-        return true;
-    }
-
-    /**
-     * Execute the request and create a case object.
-     *
-     * @param string $createdCaseObjectJSON
-     *
-     * @return bool
-     */
-    public function createCaseProperty($createdCasePropertyJSON, $caseID, $authorization): bool
-    {
-        $createCasePropertyURL = str_replace('caseID', $caseID, $this->settingsManager->createCasePropertyURL());
-
-        $response = $this->client->request('POST', $createCasePropertyURL, [
-            'verify'  => false,
-            'body'    => $createdCasePropertyJSON,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $authorization,
-                'Content-Type'  => 'application/json',
-            ],
-        ]);
-
-        if (201 !== $response->getStatusCode() && 200 !== $response->getStatusCode()) {
-            throw new Exception('Something went wrong.');
-        }
-
-        return true;
-    }
-
-    /**
-     * Create JSON object and create a case from the JSON object.
-     *
-     * @param string $caseURLwithID
-     * @param string $caseID
-     * @param array  $formEntries
-     * @param string $authorization
-     */
-    public function createCaseProperties($caseURLwithID, $caseID, $formEntries, $authorization)
-    {
-        // create caseProperties separately for every form field
-        foreach ($formEntries as $formEntry) {
-            if (!empty($formEntry['casePropertyName']) && 'BSN' !== $formEntry['casePropertyName']) {
-                $createdCasePropertyJSON = $this->createCasePropertyJSON($caseURLwithID, $formEntry['casePropertyName'], $formEntry['casePropertyValue']);
-                $this->createCaseProperty($createdCasePropertyJSON, $caseID, $authorization);
-            }
-        }
     }
 }

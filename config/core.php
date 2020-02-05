@@ -5,9 +5,16 @@ return [
      * Service Providers.
      */
     'providers' => [
-        Yard\IRMA\IRMAServiceProvider::class,
+        Yard\Connector\ConnectorManagerServiceProvider::class,
+        Yard\GravityForms\GravityFormsServiceProvider::class,
         Yard\OpenZaak\OpenZaakServiceProvider::class,
+        Yard\IRMA\IRMAServiceProvider::class
     ],
 
-    'text_domain' => 'irma_wp',
+    'connectors' => [
+        Yard\IRMA\IRMAConnector::class,
+        Yard\OpenZaak\OpenZaakConnector::class,
+    ],
+
+    'text_domain' => 'gravityforms-remote-connector',
 ];

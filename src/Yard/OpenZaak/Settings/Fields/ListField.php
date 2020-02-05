@@ -2,17 +2,19 @@
 
 namespace Yard\OpenZaak\Settings\Fields;
 
+use Yard\OpenZaak\AttributesManager;
 use Yard\OpenZaak\KeyValuePair;
-use Yard\OpenZaak\SettingsManager;
 
 class ListField
 {
     protected $item;
 
+    protected $data;
+
     public function __construct($item)
     {
         $this->item = $item;
-        $this->data = SettingsManager::make()->get('attributes');
+        $this->data = AttributesManager::make()->get('attributes');
     }
 
     public function render()

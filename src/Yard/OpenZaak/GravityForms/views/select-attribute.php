@@ -10,7 +10,7 @@ use Yard\OpenZaak\KeyValuePair;
 		<?php
                 foreach ($settings->get('attributes') as $caseProperty) {
                     $caseProperty = KeyValuePair::make($caseProperty);
-                    echo '<option value="'.$caseProperty->key().'">'. $caseProperty->value() .'</option>';
+                    echo '<option value="'.$caseProperty->key().'">'. $caseProperty->key() .' - '. $caseProperty->value() .'</option>';
                 } ?>
 	</select>
 </li>

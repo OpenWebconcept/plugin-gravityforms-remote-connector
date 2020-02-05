@@ -5,6 +5,7 @@ namespace Yard\IRMA;
 use GFAddOn;
 use GFForms;
 use GF_Fields;
+use UnexpectedValueException;
 use Yard\Foundation\ServiceProvider;
 use Yard\IRMA\Client\IRMAClient;
 use Yard\IRMA\Filters\DisableEntryCreation;
@@ -48,7 +49,6 @@ class IRMAServiceProvider extends ServiceProvider
     public static function loadIRMAAddon(): void
     {
         GF_Fields::register(new IrmaAttributeField());
-        // GF_Fields::register(new IrmaLaunchQR());
         GF_Fields::register(new IrmaHeaderField());
 
         GFAddOn::register('Yard\IRMA\IRMAAddOn');
@@ -71,22 +71,30 @@ class IRMAServiceProvider extends ServiceProvider
      */
     public function registerRestRoutes(): void
     {
+        if (is_admin()) {
+            return;
+        }
         $settings = SettingsManager::make();
-        $client   = new IRMAClient($settings->getEndpointUrl(), $settings->getEndpointToken());
+        try {
+            $client   = new IRMAClient($settings->getEndpointUrl(), $settings->getEndpointToken());
 
-        add_action('rest_api_init', function () use ($client) {
-            register_rest_route('irma/v1', '/gf/handle', [
-                'methods'  => 'POST',
-                'callback' => [new API\ResultHandler($client), 'handle'],
-            ]);
-        });
+            add_action('rest_api_init', function () use ($client) {
+                register_rest_route('irma/v1', '/gf/handle', [
+                    'methods'  => 'POST',
+                    'callback' => [new API\ResultHandler($client), 'handle'],
+                ]);
+            });
 
-        add_action('rest_api_init', function () use ($client) {
-            register_rest_route('irma/v1', '/gf/session', [
-                'methods'  => 'GET',
-                'callback' => [new API\Session($client), 'handle'],
-            ]);
-        });
+            add_action('rest_api_init', function () use ($client) {
+                register_rest_route('irma/v1', '/gf/session', [
+                    'methods'  => 'GET',
+                    'callback' => [new API\Session($client), 'handle'],
+                ]);
+            });
+        } catch (UnexpectedValueException $e) {
+            require_once __DIR__ . '/views/setting-error.php';
+            exit;
+        }
     }
 
     /**

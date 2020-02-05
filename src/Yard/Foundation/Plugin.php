@@ -11,7 +11,7 @@ class Plugin
      *
      * @var string
      */
-    const NAME = 'irma-wp';
+    const NAME = 'gravityforms-remote-connector';
 
     /**
      * Version of the plugin.
@@ -48,7 +48,7 @@ class Plugin
      *
      * @param string $rootPath
      */
-    public function __construct($rootPath)
+    public function __construct($rootPath = '')
     {
         $this->rootPath = $rootPath;
     }
@@ -58,6 +58,11 @@ class Plugin
      */
     public function boot()
     {
+        if (file_exists(GF_R_C_ROOT_PATH .'/vendor/autoload.php')) {
+            require_once GF_R_C_ROOT_PATH .'/vendor/autoload.php';
+        }
+        require_once __DIR__ .'/helpers.php';
+
         $this->config = new Config($this->rootPath.'/config');
         $this->config->boot();
 
@@ -127,7 +132,7 @@ class Plugin
     /**
      * Get the path to a particular resource.
      *
-     * @param $file
+     * @var string $file
      *
      * @return string
      */

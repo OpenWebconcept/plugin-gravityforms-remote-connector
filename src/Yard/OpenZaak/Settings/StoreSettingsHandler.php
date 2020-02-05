@@ -47,9 +47,9 @@ class StoreSettingsHandler
     /**
      * Remove any prefixed data for readability.
      *
-     * @param array $data
+     * @param array[] $data
      *
-     * @return array
+     * @return array[]
      */
     private function removePrefix(array $data): array
     {

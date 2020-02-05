@@ -53,13 +53,14 @@ class Config
      * Retrieve a specific config value from the configuration repository.
      *
      * @param $setting
+     * @param $default
      *
      * @return array|mixed
      */
-    public function get($setting)
+    public function get($setting, $default = '')
     {
         if (!$setting) {
-            return $this->all();
+            return $default;
         }
 
         $parts = explode('.', $setting);
