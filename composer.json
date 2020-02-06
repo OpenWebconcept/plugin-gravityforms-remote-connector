@@ -1,5 +1,5 @@
 {
-  "name": "privacybydesign/irma-wp",
+  "name": "owc/gravityforms-remote-connector",
   "description": "Integration with IRMA for WordPress",
   "homepage": "https://privacybydesign.foundation/",
   "type": "wordpress-plugin",
