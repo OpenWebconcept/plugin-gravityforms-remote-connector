@@ -52,12 +52,12 @@ class Config
     /**
      * Retrieve a specific config value from the configuration repository.
      *
-     * @param $setting
-     * @param $default
+     * @param string $setting
+     * @param string $default
      *
      * @return array|mixed
      */
-    public function get($setting, $default = '')
+    public function get(string $setting, $default = '')
     {
         if (!$setting) {
             return $default;

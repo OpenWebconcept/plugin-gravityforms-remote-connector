@@ -4,24 +4,46 @@ namespace Yard\OpenZaak;
 
 class KeyValuePair
 {
+    /**
+     * Data array
+     *
+     * @var array
+     */
     protected $data;
 
-    public function __construct($data)
+    public function __construct(array $data = [])
     {
         $this->data   = $data;
     }
 
-    public static function make($data)
+    /**
+     * Static constructor
+     *
+     * @param array $data
+     *
+     * @return self
+     */
+    public static function make(array $data = []): self
     {
         return new self($data);
     }
 
-    public function key()
+    /**
+     * Return the key.
+     *
+     * @return string
+     */
+    public function key(): string
     {
         return $this->data['name'] ?? '';
     }
 
-    public function value()
+    /**
+     * Return the value.
+     *
+     * @return string
+     */
+    public function value(): string
     {
         return $this->data['value'] ?? '';
     }

@@ -7,18 +7,18 @@ use Yard\Tests\Unit\TestCase;
 
 class RepositoryTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         \WP_Mock::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         \WP_Mock::tearDown();
     }
 
     /** @test */
-    public function gets_value_correctly()
+    public function gets_value_correctly(): void
     {
         $repository = new Config(__DIR__ . '/config');
         $repository->boot();
@@ -40,14 +40,13 @@ class RepositoryTest extends TestCase
         ];
 
         $this->assertEquals($config, $repository->all());
-        $this->assertEquals($config, $repository->get(false));
         $this->assertEquals(true, $repository->get('test.single_file'));
         $this->assertEquals('directory', $repository->get('directory.testfile.in_directory'));
         $this->assertEquals('works', $repository->get('directory.multi.deep.multi_level'));
     }
 
     /** @test */
-    public function check_setting_of_path()
+    public function check_setting_of_path(): void
     {
         $repository = new Config(__DIR__ . '/config');
 
@@ -58,7 +57,7 @@ class RepositoryTest extends TestCase
     }
 
     /** @test */
-    public function check_setting_of_protected_nodes()
+    public function check_setting_of_protected_nodes(): void
     {
         $repository = new Config(__DIR__ . '/config');
         $repository->boot();

@@ -26,9 +26,7 @@ class OpenZaakFormObject
      *
      * @var AttributesManager
      */
-    protected $attributes = [];
-
-
+    protected $attributes;
 
     final public function __construct(array $fields = [], array $entry = [])
     {
@@ -68,6 +66,7 @@ class OpenZaakFormObject
     protected function factoryField(object $field): AbstractField
     {
         $className  = get_class($field);
+        dd($field->casePropertyName, $this->entry);
         $class      = 'Yard\OpenZaak\GravityForms\Fields\\'. str_replace('GF_Field_', '', $className);
         if (class_exists($class)) {
             $field = new $class($field, $this->entry, $this->attributes);
@@ -78,9 +77,16 @@ class OpenZaakFormObject
         return $field;
     }
 
-    protected function hasPropertyName($field): bool
+    /**
+     * Check if object contains 'propertyName'.
+     *
+     * @param object $field
+     *
+     * @return boolean
+     */
+    protected function hasPropertyName(object $field): bool
     {
-        return isset($field['casePropertyName']);
+        return isset($field->casePropertyName);
     }
 
     /**

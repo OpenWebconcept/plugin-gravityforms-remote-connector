@@ -19,5 +19,5 @@ define('WP_DEBUG', false);
 \WP_Mock::bootstrap();
 
 $GLOBALS['yard-blocks'] = [
-    'active_plugins' => ['irma-wp/plugin.php'],
+    'active_plugins' => ['owc-gravityforms-remote-connector/plugin.php'],
 ];

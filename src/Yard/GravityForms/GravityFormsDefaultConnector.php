@@ -16,11 +16,19 @@ class GravityFormsDefaultConnector extends BaseConnector
     }
 
     /**
+     * Get the client of the connector.
+     */
+    public function client()
+    {
+    }
+
+    /**
      * Handle the sending of the request.
      *
+     * @var array $payload
      * @return void
      */
-    public function send()
+    public function send(array $payload = [])
     {
     }
 

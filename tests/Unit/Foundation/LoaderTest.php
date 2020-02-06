@@ -8,48 +8,48 @@ use Yard\Tests\Unit\TestCase;
 
 class LoaderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         WP_Mock::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         WP_Mock::tearDown();
     }
 
     /** @test */
-    public function it_adds_actions_to_the_loader_actions()
+    public function it_adds_actions_to_the_loader_actions(): void
     {
         $loader = Loader::getInstance();
 
         $loader->addAction('test-hook', $this, 'test', 10, 1);
 
         $this->assertClassHasAttribute('actions', Loader::class);
-        $this->assertAttributeCount(1, 'actions', $loader);
+        $this->assertCount(1, $loader->getActions());
 
         $loader->addAction('test-hook-2', $this, 'test', 10, 1);
         $loader->addAction('test-hook-3', $this, 'test', 10, 1);
-        $this->assertAttributeCount(3, 'actions', $loader);
+        $this->assertCount(3, $loader->getActions());
     }
 
     /** @test */
-    public function it_adds_filters_to_the_loader_actions()
+    public function it_adds_filters_to_the_loader_actions(): void
     {
         $loader = Loader::getInstance();
 
         $loader->addFilter('test-hook', $this, 'test', 10, 1);
 
         $this->assertClassHasAttribute('filters', Loader::class);
-        $this->assertAttributeCount(1, 'filters', $loader);
+        $this->assertCount(1, $loader->getFilters());
 
         $loader->addFilter('test-hook-2', $this, 'test', 10, 1);
         $loader->addFilter('test-hook-3', $this, 'test', 10, 1);
-        $this->assertAttributeCount(3, 'filters', $loader);
+        $this->assertCount(3, $loader->getFilters());
     }
 
     /** @test */
-    public function it_registers_the_hooks_correctly()
+    public function it_registers_the_hooks_correctly(): void
     {
         $loader = Loader::getInstance();
 

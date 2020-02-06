@@ -24,9 +24,9 @@ class Loader
     /**
      * Retrieves an instance of the loader, and creates one if it doesn't exist.
      *
-     * @return null|Loader
+     * @return self
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         static $inst = null;
         if (null === $inst) {
@@ -34,6 +34,26 @@ class Loader
         }
 
         return $inst;
+    }
+
+    /**
+     * Return the collection of actions.
+     *
+     * @return array
+     */
+    public function getActions(): array
+    {
+        return $this->actions;
+    }
+
+    /**
+     * Return the collection of filters.
+     *
+     * @return array
+     */
+    public function getFilters(): array
+    {
+        return $this->filters;
     }
 
     /**
@@ -48,7 +68,7 @@ class Loader
      * @param    int    $accepted_args Optional. The number of arguments that should be passed to the $callback.
      *                                 Default is 1.
      */
-    public function addAction($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+    public function addAction($hook, $component, string $callback, $priority = 10, $accepted_args = 1): void
     {
         $this->actions = $this->add($this->actions, $hook, $component, $callback, $priority, $accepted_args);
     }
@@ -65,7 +85,7 @@ class Loader
      * @param    int    $accepted_args Optional. The number of arguments that should be passed to the $callback.
      *                                 Default is 1
      */
-    public function addFilter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+    public function addFilter($hook, $component, $callback, $priority = 10, $accepted_args = 1): void
     {
         $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $accepted_args);
     }

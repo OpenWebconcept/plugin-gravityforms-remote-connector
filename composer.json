@@ -1,15 +1,14 @@
 {
-  "name": "privacybydesign/irma-wp",
-  "description": "Integration with IRMA for WordPress",
-  "homepage": "https://privacybydesign.foundation/",
+  "name": "owc/gravityforms-remote-connector",
+  "description": "WordPress Integration with various connectors to remote sources",
+  "homepage": "https://www.yard.nl",
   "type": "wordpress-plugin",
   "require": {
-    "php": ">=7.0",
-    "guzzlehttp/guzzle": "^6.3"
+    "php": ">=7.0"
   },
   "require-dev": {
     "mockery/mockery": "1.0.*",
-    "phpunit/phpunit": "~7.0",
+    "phpunit/phpunit": "~8.0",
     "10up/wp_mock": "dev-master",
     "squizlabs/php_codesniffer": "^3.0",
     "friendsofphp/php-cs-fixer": "^2.0",

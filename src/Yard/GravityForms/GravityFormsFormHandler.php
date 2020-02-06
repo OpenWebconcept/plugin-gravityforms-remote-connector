@@ -2,6 +2,7 @@
 
 namespace Yard\GravityForms;
 
+use Exception;
 use Yard\Connector\ConnectorEntity;
 use Yard\Connector\ConnectorManager;
 use Yard\OpenZaak\OpenZaakFormObject;
@@ -27,7 +28,7 @@ class GravityFormsFormHandler
         $payload         = OpenZaakFormObject::make($form['fields'], $entry)->toArray();
         try {
             $response = $connectorEntity->getConnector()->send($payload);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
             exit();
         }

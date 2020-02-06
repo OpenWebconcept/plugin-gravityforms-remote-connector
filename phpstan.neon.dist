@@ -12,6 +12,7 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - %currentWorkingDirectory%/src/
+        - %currentWorkingDirectory%/tests/
 #    excludes_analyse:
     autoload_files:
          - %currentWorkingDirectory%/src/Yard/Foundation/helpers.php
@@ -23,6 +24,7 @@ parameters:
 #        - %currentWorkingDirectory%/myplugin-functions.php
     autoload_directories:
         - %currentWorkingDirectory%/src/
+        - %currentWorkingDirectory%/tests/
     ignoreErrors:
         # Uses func_get_args()
         # Fixed in WordPress 5.3

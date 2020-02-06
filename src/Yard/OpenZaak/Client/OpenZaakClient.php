@@ -18,8 +18,9 @@ class OpenZaakClient
 
     /**
      * @param string $endpoint
+     * @param string $token
      */
-    public function __construct($endpoint, $token)
+    public function __construct(string $endpoint, string $token)
     {
         $this->endpoint = rtrim($endpoint, '/');
         $this->token    = rtrim($token);
