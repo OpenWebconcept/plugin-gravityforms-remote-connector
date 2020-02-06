@@ -18,7 +18,7 @@ class IRMAConnector extends BaseConnector
     /**
      * Get the client of the connector.
      *
-     * @return
+     * @return void
      */
     public function client()
     {

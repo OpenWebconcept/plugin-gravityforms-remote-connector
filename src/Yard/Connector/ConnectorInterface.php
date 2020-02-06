@@ -13,6 +13,8 @@ interface ConnectorInterface
 
     /**
      * Get the client of the connector.
+     *
+     * @return void
      */
     public function client();
 

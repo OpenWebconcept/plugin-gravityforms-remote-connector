@@ -20,7 +20,7 @@ class OpenZaakConnector extends BaseConnector
     /**
      * Get the client of the connector.
      *
-     * @return ConnectorInterface
+     * @return OpenZaakClient
      */
     public function client()
     {
@@ -31,9 +31,9 @@ class OpenZaakConnector extends BaseConnector
      * Handle the sending of the request.
      *
      * @var array $payload
-     * @return void
+     * @return array
      */
-    public function send(array $payload = [])
+    public function send(array $payload = []): array
     {
         return $this->client()->post($payload);
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74857d556c5cae150b0b7b7c5c053604",
+    "content-hash": "8ddb324f7232615b7ae3900989f8c290",
     "packages": [],
     "packages-dev": [
         {
@@ -3212,6 +3212,29 @@
                 "validate"
             ],
             "time": "2019-11-24T13:36:37+00:00"
+        },
+        {
+            "name": "wp-premium/gravityforms",
+            "version": "2.4.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-premium/gravityforms.git",
+                "reference": "2fdbf28f57cec0056c8b214542626f2bc4005811"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-premium/gravityforms/zipball/2fdbf28f57cec0056c8b214542626f2bc4005811",
+                "reference": "2fdbf28f57cec0056c8b214542626f2bc4005811",
+                "shasum": ""
+            },
+            "type": "wordpress-plugin",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-12-24T14:25:36+00:00"
         }
     ],
     "aliases": [],
