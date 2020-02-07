@@ -33,7 +33,7 @@ class GravityFormsAddon extends GFAddOn
      *
      * @var string
      */
-    protected $_path = 'irma-wp/plugin.php';
+    protected $_path = GF_R_C_ROOT_PATH .'/plugin.php';
 
     /**
      * The physical path to the main plugin file.

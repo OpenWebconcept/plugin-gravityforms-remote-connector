@@ -21,6 +21,8 @@ if (!defined('WPINC')) {
     die;
 }
 
+define('GF_R_C_PLUGIN_FILE', __FILE__);
+define('GF_R_C_PLUGIN_SLUG', 'gravityforms-remote-connector');
 define('GF_R_C_ROOT_PATH', __DIR__);
 define('GF_R_C_VERSION', '0.4');
 

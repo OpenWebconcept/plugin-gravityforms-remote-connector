@@ -34,11 +34,25 @@ abstract class SettingsManager
         return new $class($key);
     }
 
-    public function save($data): bool
+    /**
+     * Save the data to the database.
+    *
+    * @param array $data
+    *
+    * @return boolean
+    */
+    public function save(array $data): bool
     {
         return update_option($this->key, $data);
     }
 
+    /**
+     * Get the attributes.
+     *
+     * @param array $default
+     *
+     * @return array[]
+     */
     public function all($default = [])
     {
         $all = get_option($this->key, $default);
@@ -53,6 +67,14 @@ abstract class SettingsManager
         return $all[$key] ?? $all;
     }
 
+    /**
+     * Find a specific value by key.
+     *
+     * @param string $key
+	 * @param array $default
+     *
+     * @return string|array
+     */
     public function find($key, $default = [])
     {
         return $this->get($key, $default);

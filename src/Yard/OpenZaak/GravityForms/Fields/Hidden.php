@@ -6,6 +6,6 @@ class Hidden extends AbstractField
 {
     public function getPropertyValue(): string
     {
-        return trim($this->attributes->find($this->getPropertyName(), '', 'value'));
+        return trim($this->attributes->findValue($this->getPropertyName(), '', 'value'));
     }
 }

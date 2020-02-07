@@ -32,7 +32,7 @@ class IRMAAddOn extends GFAddOn
      *
      * @var string
      */
-    protected $_path = 'irma-wp/plugin.php';
+    protected $_path = GF_R_C_ROOT_PATH .'/plugin.php';
 
     /**
      * The physical path to the main plugin file.
@@ -104,10 +104,10 @@ class IRMAAddOn extends GFAddOn
 
     public function filter_gform_tooltips($tooltips)
     {
-        $tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname.', 'irma-wp');
-        $tooltips['irma_header_attribute_bsn_id']      = esc_html('Fill in the ID of the field used for the BSN.', 'irma-wp');
-        $tooltips['irma_header_city_id']               = esc_html('Fill in the ID of the field used for the city.', 'irma-wp');
-        $tooltips['irma_header_city']                  = esc_html('Fill in the city that you would like to check on.', 'irma-wp');
+        $tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname.', GF_R_C_PLUGIN_SLUG);
+        $tooltips['irma_header_attribute_bsn_id']      = esc_html('Fill in the ID of the field used for the BSN.', GF_R_C_PLUGIN_SLUG);
+        $tooltips['irma_header_city_id']               = esc_html('Fill in the ID of the field used for the city.', GF_R_C_PLUGIN_SLUG);
+        $tooltips['irma_header_city']                  = esc_html('Fill in the city that you would like to check on.', GF_R_C_PLUGIN_SLUG);
 
         return $tooltips;
     }

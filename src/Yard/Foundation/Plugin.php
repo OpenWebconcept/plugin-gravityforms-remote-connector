@@ -58,9 +58,6 @@ class Plugin
      */
     public function boot()
     {
-        if (file_exists(GF_R_C_ROOT_PATH .'/vendor/autoload.php')) {
-            require_once GF_R_C_ROOT_PATH .'/vendor/autoload.php';
-        }
         require_once __DIR__ .'/helpers.php';
 
         $this->config = new Config($this->rootPath.'/config');
@@ -71,7 +68,6 @@ class Plugin
         $this->bootServiceProviders();
 
         $this->loader->addAction('wp_enqueue_scripts', $this, 'enqueueScripts');
-        $this->loader->addAction('admin_enqueue_scripts', $this, 'enqueueAdminScripts');
         $this->loader->register();
     }
 
@@ -80,23 +76,8 @@ class Plugin
      */
     public function enqueueScripts()
     {
-        wp_enqueue_style('irma-wp', $this->resourceUrl('irma-wp.css'), false);
+        wp_enqueue_style(GF_R_C_ROOT_PATH, $this->resourceUrl(GF_R_C_PLUGIN_SLUG .'.css'), false);
         wp_enqueue_script('irma-js', $this->resourceUrl('irma.js'), false);
-    }
-
-    /**
-     * Enqueue scripts for the WordPress Admin.
-     */
-    public function enqueueAdminScripts()
-    {
-        wp_enqueue_style('irma-admin-wp', $this->resourceUrl('irma-admin.css'), false);
-
-        // only allow bootstrap on the IRMA settings page
-        if (isset($_GET['page']) && 'irma' == $_GET['page']) {
-            // CSS Bootstrap
-            wp_register_style('irma-wp_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
-            wp_enqueue_style('irma-wp_bootstrap');
-        }
     }
 
     /**
@@ -138,7 +119,7 @@ class Plugin
      */
     public function resourceUrl($file)
     {
-        return plugins_url('resources/'.$file, 'irma-wp/plugin.php');
+        return plugins_url('resources/'.$file, GF_R_C_PLUGIN_SLUG .'/plugin.php');
     }
 
     /**

@@ -2,10 +2,15 @@
 
 namespace Yard\IRMA\GravityForms\Fields;
 
-use Yard\IRMA\SettingsManager;
+use Yard\IRMA\IRMASettingsManager;
 
 class IrmaHeaderField extends IrmaField
 {
+	/**
+	 * Type of the field.
+	 *
+	 * @var string
+	 */
     public $type = 'IRMA-header';
 
     /**
@@ -55,7 +60,7 @@ class IrmaHeaderField extends IrmaField
             'irmaHeaderAttributeBsnID'      => $this->irmaHeaderAttributeBsnId,
             'irmaHeaderAttributeCity'       => $this->irmaHeaderAttributeCity,
             'irmaHeaderCity'                => $this->irmaHeaderCity,
-            'logoUrl'                       => plugins_url('/resources/img/irma-logo-new.png', 'irma-wp/plugin.php'),
+            'logoUrl'                       => plugins_url('/resources/img/irma-logo-new.png', GF_R_C_PLUGIN_SLUG .'/plugin.php'),
         ];
 
         add_action('gform_enqueue_scripts', function () use ($args) {
@@ -69,11 +74,19 @@ class IrmaHeaderField extends IrmaField
         return $this->renderView($name, $args);
     }
 
-    public function validate($value, $form)
+	/**
+	 * Validate the value.
+	 *
+	 * @param string $value
+	 * @param array $form
+	 *
+	 * @return void
+	 */
+    public function validate($value, $form): void
     {
         // Retrieve the session token from the form data.
         $sessionToken = $this->get_input_value_submission('input_'.$form['id'].'_irma_session_token');
-        $groundTruth  = get_transient('irma_result_'.$sessionToken);
+        $groundTruth  = get_transient('irma_result_' . $sessionToken);
 
         if (empty($sessionToken) || !$groundTruth) {
             $this->failed_validation  = true;
@@ -82,7 +95,7 @@ class IrmaHeaderField extends IrmaField
             return;
         }
 
-        $settingsManager = SettingsManager::make();
+        $settingsManager = IRMASettingsManager::make();
 
         // Compare submitted value with the true value.
         foreach ($groundTruth as $item) {

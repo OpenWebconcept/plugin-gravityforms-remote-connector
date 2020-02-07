@@ -11,9 +11,9 @@ class IrmaField extends GF_Field
      *
      * @param string $name
      * @param array $args
-     * @return string
+     * @return string|false
      */
-    public function renderView(string $name, array $args): string
+    public function renderView(string $name, array $args)
     {
         extract($args);
         ob_start();

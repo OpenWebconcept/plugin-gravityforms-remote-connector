@@ -1,17 +1,17 @@
 <?php
 
-namespace Yard\OpenZaak\Actions;
+namespace Yard\Decos\Actions;
 
 use Exception;
 use Yard\Foundation\SettingsManager;
-use Yard\OpenZaak\Client\OpenZaakClient;
+use Yard\Decos\Client\DecosClient;
 
 class ExternalCall
 {
     /**
      * HTTP Client
      *
-     * @var OpenZaakClient	$client
+     * @var DecosClient	$client
      * @var SettingsManager $settingsManager
      */
     protected $client;
@@ -23,7 +23,7 @@ class ExternalCall
      */
     protected $settingsManager;
 
-    public function __construct(OpenZaakClient $client, SettingsManager $settingsManager)
+    public function __construct(DecosClient $client, SettingsManager $settingsManager)
     {
         $this->client          = $client;
         $this->settingsManager = $settingsManager;

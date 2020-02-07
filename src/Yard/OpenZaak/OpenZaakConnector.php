@@ -3,7 +3,6 @@
 namespace Yard\OpenZaak;
 
 use Yard\Connector\BaseConnector;
-use Yard\Connector\ConnectorInterface;
 use Yard\OpenZaak\Client\OpenZaakClient;
 
 class OpenZaakConnector extends BaseConnector

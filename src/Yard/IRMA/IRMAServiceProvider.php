@@ -2,22 +2,25 @@
 
 namespace Yard\IRMA;
 
-use GF_Fields;
 use GFAddOn;
 use GFForms;
+use GF_Fields;
 use UnexpectedValueException;
 use Yard\Foundation\ServiceProvider;
 use Yard\IRMA\Client\IRMAClient;
 use Yard\IRMA\Filters\DisableEntryCreation;
 use Yard\IRMA\GravityForms\Fields\IrmaAttributeField;
 use Yard\IRMA\GravityForms\Fields\IrmaHeaderField;
+use Yard\IRMA\IRMASettingsManager;
 
 class IRMAServiceProvider extends ServiceProvider
 {
     /**
      * Register all necessities for GravityForms.
+	 *
+	 * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerActions();
         $this->registerFilters();
@@ -74,20 +77,23 @@ class IRMAServiceProvider extends ServiceProvider
         if (is_admin()) {
             return;
         }
-        $settings = SettingsManager::make();
+
+        $settings = IRMASettingsManager::make();
+        if (empty($settings->getEndpointUrl() ) ) {
+            return;
+        }
+
         try {
             $client   = new IRMAClient($settings->getEndpointUrl(), $settings->getEndpointToken());
 
             add_action('rest_api_init', function () use ($client) {
-                register_rest_route('irma/v1', '/gf/handle', [
-                    'methods'  => 'POST',
+				register_rest_route('irma/v1', '/gf/handle', [
+                    'methods'  => \WP_REST_Server::CREATABLE,
                     'callback' => [new API\ResultHandler($client), 'handle'],
                 ]);
-            });
 
-            add_action('rest_api_init', function () use ($client) {
                 register_rest_route('irma/v1', '/gf/session', [
-                    'methods'  => 'GET',
+                    'methods'  => \WP_REST_Server::READABLE,
                     'callback' => [new API\Session($client), 'handle'],
                 ]);
             });
@@ -100,10 +106,11 @@ class IRMAServiceProvider extends ServiceProvider
     /**
      * @param array $form
      * @param bool  $is_ajax
+	 * @return void
      */
-    public function enqueueScripts($form, $is_ajax)
+    public function enqueueScripts($form, $is_ajax): void
     {
-        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery'], false, true);
+        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery'], date('ymd'), true);
 
         wp_localize_script('irma-gf-js', 'irma_gf', [
             'handle_url'  => get_rest_url(null, 'irma/v1/gf/handle'),

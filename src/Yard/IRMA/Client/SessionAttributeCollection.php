@@ -4,7 +4,7 @@ namespace Yard\Irma\Client;
 
 use JsonSerializable;
 
-class SessionAttributeCollection implements JsonSerializable
+final class SessionAttributeCollection implements JsonSerializable
 {
     /**
      * @var string|null
@@ -17,18 +17,20 @@ class SessionAttributeCollection implements JsonSerializable
     private $attributes = [];
 
     /**
-     * @return AttributeCollection
+	 * Static constructor
+	 *
+     * @return self
      */
-    public static function make()
+    public static function make(): self
     {
         return new static;
     }
 
     /**
      * @param string $value
-     * @return AttributeCollection
+     * @return self
      */
-    public function setLabel($value)
+    public function setLabel($value): self
     {
         $this->label = $value;
 
@@ -37,9 +39,9 @@ class SessionAttributeCollection implements JsonSerializable
 
     /**
      * @param string $value
-     * @return AttributeCollection
+     * @return self
      */
-    public function add($value)
+    public function add($value): self
     {
         $this->attributes[] = $value;
 
@@ -49,7 +51,7 @@ class SessionAttributeCollection implements JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'label'      => $this->label,

@@ -8,8 +8,8 @@
 						<?php _e('Attribuut toevoegen', 'irma'); ?>
 					</th>
 					<td>
-						<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Attribuut naam', 'irma'); ?>" required>
-						<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribuut waarde', 'irma'); ?>" required>
+						<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Naam ter herkenning', 'irma'); ?>" required>
+						<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribuut naam van OpenZaak', 'irma'); ?>" required>
 					</td>
 				</tr>
 			</tbody>

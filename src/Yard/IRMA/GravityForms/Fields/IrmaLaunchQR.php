@@ -12,25 +12,25 @@ class IrmaLaunchQR extends IrmaField
     /**
      * Renders the field.
      *
-     * @param string $form
+     * @param array $form
      * @param string $value
      * @param object $entry
      *
      * @return string
      */
-    public function get_field_input($form, $value = '', $entry = null)
+    public function get_field_input($form, $value = '', $entry = null): string
     {
         $formId = $form['id'];
         $id     = (int) $this->id;
 
         if ($this->is_form_editor()) {
-            return '<img src="' . plugins_url('resources/img/qr_code.jpg', 'irma-wp/plugin.php') . '"/>';
+            return '<img src="' . plugins_url('resources/img/qr_code.jpg', GF_R_C_ROOT_PATH .'/'. GF_R_C_PLUGIN_FILE) . '"/>';
         }
 
         $args = [
-            'id'			       => $id,
+            'id'			     => $id,
             'formId'		    => $formId,
-            'buttonLabel'	=> empty($this->irmaButtonLabel) ? __('Get IRMA attributes', 'irma-wp') : $this->irmaButtonLabel,
+            'buttonLabel'	=> empty($this->irmaButtonLabel) ? __('Get IRMA attributes', GF_R_C_PLUGIN_SLUG) : $this->irmaButtonLabel,
             'popup' 		    => !empty($this->irmaPopup) && $this->irmaPopup,
         ];
 
@@ -45,13 +45,13 @@ class IrmaLaunchQR extends IrmaField
      * @param array $form
      * @return void
      */
-    public function validate($value, $form)
+    public function validate($value, $form): void
     {
         $sessionToken = $this->get_input_value_submission('input_' . $form['id'] . '_irma_session_token');
 
         if (empty($sessionToken)) {
             $this->failed_validation  = true;
-            $this->validation_message = empty($this->errorMessage) ? __('Please fetch your IRMA attributes.', 'irma-wp') : $this->errorMessage;
+            $this->validation_message = empty($this->errorMessage) ? __('Please fetch your IRMA attributes.', GF_R_C_PLUGIN_SLUG) : $this->errorMessage;
             return;
         }
     }
@@ -59,9 +59,9 @@ class IrmaLaunchQR extends IrmaField
     /**
      * Defines how to display the field in the form editor.
      *
-     * @return void
+     * @return array
      */
-    public function get_form_editor_button()
+    public function get_form_editor_button(): array
     {
         return [
             'group' => 'advanced_fields',

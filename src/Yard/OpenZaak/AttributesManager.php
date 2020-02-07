@@ -16,6 +16,8 @@ class AttributesManager extends BaseSettingsManager
     /**
      * Get the attributes.
      *
+     * @param array $default
+     *
      * @return array[]
      */
     public function all($default = []): array
@@ -28,7 +30,16 @@ class AttributesManager extends BaseSettingsManager
         return $all['attributes'];
     }
 
-    public function find($value, $default = [], $key = '')
+    /**
+     * Find a specific value by key.
+     *
+     * @param string $value
+     * @param array $default
+     * @param string $key
+     *
+     * @return string|array
+     */
+    public function findValue(string $value, $default = [], $key = '')
     {
         $all = $this->get('attributes', $default);
         $id  = array_search($value, array_column($all, 'name'));
@@ -40,7 +51,10 @@ class AttributesManager extends BaseSettingsManager
         return ($all[$id][$key] ?? $all[$id]);
     }
 
-    public function save($data): bool
+    /**
+	 * @inheritDo
+	 */
+    public function save(array $data): bool
     {
         if (!isset($data['attributes'])) {
             $dataTmp               = [];

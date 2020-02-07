@@ -12,7 +12,6 @@ return [
     ],
 
     'connectors' => [
-        Yard\IRMA\IRMAConnector::class,
         Yard\OpenZaak\OpenZaakConnector::class,
     ],
 

@@ -35,12 +35,15 @@ class ListField
     public function render(): void
     { ?>
 <table>
+	<tr>
+	<th>Naam ter herkenning</th>
+	<th>Attribuut naam van OpenZaak</th>
+	</tr>
 	<?php foreach ($this->data as $key => $data) { ?>
 	<tr>
 		<?php $data = KeyValuePair::make($data); ?>
 		<td><em><?php echo $data->key(); ?>
 		</td>
-		<td> -> </td>
 		<td><em><?php echo $data->value(); ?></em></td>
 		<td> &nbsp; &nbsp; &nbsp;<a class="openzaak_remove_attribute button-secondary" data-attribute-key="<?php echo $data->key(); ?>">verwijder</a></td>
 	</tr>
