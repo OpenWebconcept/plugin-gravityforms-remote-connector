@@ -63,6 +63,8 @@ class OpenZaakClient
         }
 
         $response = wp_remote_post($this->endpoint .'/zaken', $postArgs);
+		\dd($response);
+
         if (!in_array(wp_remote_retrieve_response_code($response), [200, 201])) {
             throw new Exception("Something went wrong: ". wp_remote_retrieve_response_message($response));
         }

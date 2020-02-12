@@ -66,7 +66,6 @@ class OpenZaakFormObject
     protected function factoryField(object $field): AbstractField
     {
         $className  = get_class($field);
-        dd($field->casePropertyName, $this->entry);
         $class      = 'Yard\OpenZaak\GravityForms\Fields\\'. str_replace('GF_Field_', '', $className);
         if (class_exists($class)) {
             $field = new $class($field, $this->entry, $this->attributes);

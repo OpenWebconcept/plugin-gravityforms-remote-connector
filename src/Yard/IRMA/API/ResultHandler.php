@@ -3,6 +3,7 @@
 namespace Yard\IRMA\API;
 
 use GFAPI;
+use OutOfBoundsException;
 use Yard\IRMA\Client\IRMAClient;
 
 class ResultHandler
@@ -19,7 +20,10 @@ class ResultHandler
 
     public function handle()
     {
-        $formId = $_POST['formId'];
+		$formId = isset($_POST['formId']) ? absint($_POST['formId']) : null;
+        if ( null === ($formId)) {
+			throw new OutOfBoundsException('No form is requested');
+		};
         $form   = GFAPI::get_form($formId);
 
         $token = $_POST['token'];
