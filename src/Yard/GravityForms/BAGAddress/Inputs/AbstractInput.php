@@ -18,26 +18,18 @@ abstract class AbstractInput
 
     public function __construct(array $form, $field, $value)
     {
-        $this->form                                                             = $form;
-        $this->formID                                                           = absint($this->form['id']);
-        $this->field                                                            = $field;
-        $this->id                                                               = intval($this->field->id);
-        $this->is_entry_detail                                                  = $this->field->is_entry_detail();
-        $this->is_form_editor                                                   = $this->field->is_form_editor();
-        $this->field_id                                                         = $this->is_entry_detail || $this->is_form_editor || 0 == $this->formID ? "input_$this->id" : 'input_' . $this->formID . "_$this->id";
-        $this->form_id                                                          = ($this->is_entry_detail || $this->is_form_editor) && empty($this->formID) ? rgget('id') : $this->formID;
-        $this->value                                                            = $value;
-        $this->tabindex                                                         = $this->field->get_tabindex();
-        $this->is_admin                                                         = $this->is_entry_detail || $this->is_form_editor;
-        $this->style                                                            = ($this->is_admin && rgar($this->getInput(), 'isHidden')) ? "style='display:none;'" : '';
-        $this->disabled_text                                                    = $this->is_form_editor ? "disabled='disabled'" : '';
-        $this->class_suffix                                                     = $this->is_entry_detail ? '_admin' : '';
-        $this->required_attribute                                               = $this->field->isRequired ? 'aria-required="true"' : '';
-        $this->form_sub_label_placement                                         = rgar($this->form, 'subLabelPlacement');
-        $this->field_sub_label_placement                                        = $this->field->subLabelPlacement;
-        $this->is_sub_label_above                                               = 'above' == $this->field_sub_label_placement || (empty($this->field_sub_label_placement) && 'above' == $this->form_sub_label_placement);
-        $this->sub_label_class_attribute                                        = 'hidden_label' == $this->field_sub_label_placement ? "class='hidden_sub_label screen-reader-text'" : '';
-        $this->is_field_hidden                                                  = false;
+        $this->form                        = $form;
+        $this->field                       = $field;
+        $this->value                       = $value;
+        $this->css_prefix                  = $this->field->is_entry_detail ? "_admin" : "";
+        $this->is_admin                    = $this->field->is_entry_detail || $this->field->is_form_editor;
+        $this->style                       = ($this->is_admin && rgar($this->getInput(), 'isHidden')) ? "style='display:none;'" : '';
+        $this->disabled_text               = $this->field->is_form_editor ? "disabled='disabled'" : '';
+        $this->required_attribute          = $this->field->isRequired ? 'aria-required="true"' : '';
+        $this->invalid_attribute           = $this->field->failed_validation ? 'aria-invalid="true"' : 'aria-invalid="false"';
+        $this->field_sub_label_placement   = $this->field->subLabelPlacement;
+        $this->is_sub_label_above          = 'above' == $this->field_sub_label_placement || (empty($this->field_sub_label_placement) && 'above' == rgar($this->form, 'subLabelPlacement'));
+        $this->sub_label_class_attribute   = 'hidden_label' == $this->field_sub_label_placement ? "class='hidden_sub_label screen-reader-text'" : '';
     }
 
     /**
@@ -47,18 +39,11 @@ abstract class AbstractInput
      */
     public function getValue()
     {
-        $value  = '';
-        if (empty($this->value)) {
-            return $value;
-        }
-
         if (is_array($this->value)) {
-            return esc_attr(rgpost($this->id . '.'. $this->fieldID, $this->value));
+            return esc_attr(rgget($this->field->id .'.'. $this->fieldID, $this->value));
         } else {
             return $this->value;
         }
-
-        return $value;
     }
 
     /**
@@ -81,33 +66,42 @@ abstract class AbstractInput
         return '' != rgar($this->getInput(), 'customLabel') ? $this->getInput()['customLabel'] : $this->fieldText;
     }
 
+    protected function getSpanField(): string
+    {
+        return "<span id='input_{$this->field->id}_{$this->form['id']}.{$this->fieldID}.container' class='ginput_{$this->fieldPosition} {$this->css_prefix} {$this->fieldID}' {$this->style}>";
+    }
+
+    protected function getLabelField(): string
+    {
+        return "<label for='{$this->field->id}_{$this->fieldID}' id='{$this->field->id}_{$this->fieldID}_label' {$this->sub_label_class_attribute}>{$this->getLabel()}</label>";
+    }
+
+    protected function getInputField(): string
+    {
+        return "<input
+                    type='text'
+                    data-name='{$this->fieldName}'
+                    name='input_{$this->field->id}.{$this->fieldID}'
+                    id='input_{$this->field->id}_{$this->form['id']}_{$this->fieldID}'
+                    value='{$this->getValue()}'
+                    {$this->field->get_tabindex()} {$this->disabled_text} {$this->readonly} {$this->getPlaceholder()} {$this->required_attribute} {$this->invalid_attribute}
+                    aria-label='{$this->fieldName}'
+                />";
+    }
+
     public function render()
     {
         if ($this->is_admin || ! rgar($this->getInput(), 'isHidden')) {
             if ($this->is_sub_label_above) {
-                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
-						<label for='{$this->field_id}_{$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_label' {$this->sub_label_class_attribute}>{$this->getLabel()}</label>
-						<input
-							type='text'
-							data-name='{$this->fieldName}'
-							name='input_{$this->id}.{$this->fieldID}'
-							id='{$this->field_id}_{$this->fieldID}'
-							value='{$this->getValue()}'
-							{$this->tabindex} {$this->disabled_text} {$this->readonly} {$this->getPlaceholder()} {$this->required_attribute}
-						/>
-					</span>";
+                return "{$this->getSpanField()}
+                        {$this->getLabelField()}
+                        {$this->getInputField()}
+                    </span>";
             } else {
-                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
-						<input
-							type='text'
-							data-name='{$this->fieldName}'
-							name='input_{$this->id}.{$this->fieldID}'
-							id='{$this->field_id}_{$this->fieldID}'
-							value='{$this->getValue()}'
-							{$this->tabindex} {$this->disabled_text} {$this->readonly} {$this->getPlaceholder()} {$this->required_attribute}
-						/>
-						<label for='{$this->field_id}_{$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_label' {$this->sub_label_class_attribute}>{$this->getLabel()}</label>
-					</span>";
+                return "{$this->getSpanField()}
+                        {$this->getInputField()}
+                        {$this->getLabelField()}
+                    </span>";
             }
         }
     }

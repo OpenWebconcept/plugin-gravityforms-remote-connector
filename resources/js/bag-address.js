@@ -4,7 +4,7 @@ jQuery(document).ready( function() {
         var button = jQuery(this);
         var isValid = true;
         var inputs = jQuery('.gform_wrapper input').filter(function() {
-            return this.name.match(/(zip|home-number)$/)
+            return this.name.match(/(zip|homeNumber)$/)
         });
 
 		var isValid = inputs.each(function(index, item) {
@@ -25,8 +25,8 @@ jQuery(document).ready( function() {
             data: {
 				'action': 'bag_address_lookup',
 				'zip': document.querySelector("input[data-name='zip']").value,
-				'homeNumber': document.querySelector("input[data-name='home-number']").value,
-				'homeNumberAddition': document.querySelector("input[data-name='home-number-addition']").value
+				'homeNumber': document.querySelector("input[data-name='homeNumber']").value,
+				'homeNumberAddition': document.querySelector("input[data-name='homeNumberAddition']").value
 			},
             beforeSend : function ( xhr ) {
                 button.val('Zoekende...').prop('disabled', 'disable');

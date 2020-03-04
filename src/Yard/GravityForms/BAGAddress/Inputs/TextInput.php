@@ -2,7 +2,7 @@
 
 namespace Yard\GravityForms\BAGAddress\Inputs;
 
-class Text extends AbstractInput
+class TextInput extends AbstractInput
 {
 
     /** @var int ID of the field in the form. */

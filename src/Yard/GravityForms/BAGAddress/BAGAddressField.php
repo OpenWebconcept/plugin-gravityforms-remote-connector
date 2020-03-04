@@ -3,7 +3,8 @@
 namespace Yard\GravityForms\BAGAddress;
 
 use GF_Field;
-use Yard\GravityForms\BAGAddress\Inputs\Text;
+use Yard\GravityForms\BAGAddress\Inputs\StringInput;
+use Yard\GravityForms\BAGAddress\Inputs\TextInput;
 
 if (! class_exists('\GFForms')) {
     die();
@@ -14,33 +15,7 @@ class BAGAddressField extends GF_Field
     /**
      * @var string $type The field type.
      */
-    public $type = 'bag-address';
-
-
-    public function get_form_editor_field_settings()
-    {
-        return [
-            // 'conditional_logic_field_setting',
-            // 'prepopulate_field_setting',
-            // 'error_message_setting',
-            'label_setting',
-            // 'admin_label_setting',
-            // 'label_placement_setting',
-            'sub_label_placement_setting',
-            // 'default_input_values_setting',
-            // 'input_placeholders_setting',
-            // 'rules_setting',
-            // 'copy_values_option',
-            // 'description_setting',
-            // 'visibility_setting',
-            // 'css_class_setting',
-        ];
-    }
-
-    public function is_conditional_logic_supported()
-    {
-        return true;
-    }
+    public $type = 'bag_address';
 
     /**
      * Return the field title, for use in the form editor.
@@ -52,118 +27,171 @@ class BAGAddressField extends GF_Field
         return esc_attr__('BAG Address', GF_R_C_PLUGIN_SLUG);
     }
 
-    public function validate($value, $form)
+    public function get_form_editor_button()
     {
+        return [
+            'group' => 'advanced_fields',
+            'text'  => $this->get_form_editor_field_title(),
+        ];
     }
 
-    public function get_field_input($form, $value = '', $entry = null)
+    public function get_form_editor_field_settings()
     {
-        $zip = (new Text($form, $this, $value))
-            ->setFieldID(1)
-            ->setFieldName('zip')
-            ->setFieldText('Postcode')
-            ->setFieldValue('6811 LV')
-            ->setFieldPosition('left');
-
-        $homeNumber = (new Text($form, $this, $value))
-            ->setFieldID(2)
-            ->setFieldName('home-number')
-            ->setFieldText('Huisnummer')
-            ->setFieldValue('55')
-            ->setFieldPosition('left');
-
-        $homeNumberAddition = (new Text($form, $this, $value))
-            ->setFieldID(3)
-            ->setFieldName('home-number-addition')
-            ->setFieldText('Huisnummertoevoeging')
-            ->setFieldValue('14')
-            ->setFieldPosition('right');
-
-        $city = (new Text($form, $this, $value))
-            ->setFieldID(4)
-            ->setFieldName('city')
-            ->setFieldText('City')
-            ->setReadonly()
-            ->setFieldPosition('full');
-
-        $address = (new Text($form, $this, $value))
-            ->setFieldID(5)
-            ->setFieldName('address')
-            ->setFieldText('Address')
-            ->setReadonly()
-            ->setFieldPosition('left');
-
-        $state = (new Text($form, $this, $value))
-            ->setFieldID(6)
-            ->setFieldName('state')
-            ->setFieldText('State')
-            ->setReadonly()
-            ->setFieldPosition('full');
-
-        $button = '<input type="button" id="bag-lookup" value="Opzoeken">';
-
-        $result = '<div class="result"></div>';
-
-        $inputs = $zip->render() . $homeNumber->render() . $homeNumberAddition->render() . $result . $button . $address->render() . $city->render() . $state->render();
-        // $inputs                            = $zip->render() . $homeNumber->render();
-
-        $is_admin                          = $this->is_entry_detail() || $this->is_form_editor();
-        $form_id                           = absint($form['id']);
-        $id                                = intval($this->id);
-        $field_id                          = $this->is_entry_detail() || $this->is_form_editor() || 0 == $form_id ? "input_$id" : 'input_' . $form_id . "_$id";
-        $form_id                           = ($is_admin) && empty($form_id) ? rgget('id') : $form_id;
-        $disabled_text                     = $this->is_form_editor() ? "disabled='disabled'" : '';
-        $class_suffix                      = $this->is_entry_detail() ? '_admin' : '';
-        $required_attribute                = $this->isRequired ? 'aria-required="true"' : '';
-        $form_sub_label_placement          = rgar($form, 'subLabelPlacement');
-        $field_sub_label_placement         = $this->subLabelPlacement;
-        $is_sub_label_above                = 'above' == $field_sub_label_placement || (empty($field_sub_label_placement) && 'above' == $form_sub_label_placement);
-        $sub_label_class_attribute         = 'hidden_label' == $field_sub_label_placement ? "class='hidden_sub_label screen-reader-text'" : '';
-
-        wp_register_script('bag_address-js', plugin_dir_url(GF_R_C_PLUGIN_FILE) . 'resources/js/bag-address.js');
-        wp_enqueue_script('bag_address-js');
-        wp_localize_script('bag_address-js', 'bag_address', ['ajaxurl' => admin_url('admin-ajax.php')]);
-
-        return "<div class='ginput_complex{$this->class_suffix} ginput_container ginput_container_bag_address' id='{$field_id}'>
-					{$inputs}
-				<div class='gf_clear gf_clear_complex'></div>
-			</div>";
+        return [
+            // 'conditional_logic_field_setting',
+            // 'prepopulate_field_setting',
+            // 'error_message_setting',
+            // 'label_setting',
+            // 'admin_label_setting',
+            // 'label_placement_setting',
+            // 'sub_label_placement_setting',
+            // 'default_input_values_setting',
+            // 'input_placeholders_setting',
+            // 'rules_setting',
+            // 'copy_values_option',
+            // 'description_setting',
+            // 'visibility_setting',
+            // 'css_class_setting',
+            'conditional_logic_field_setting',
+            'prepopulate_field_setting',
+            'error_message_setting',
+            'label_setting',
+            'admin_label_setting',
+            'rules_setting',
+            'duplicate_setting',
+            'description_setting',
+            'css_class_setting',
+        ];
     }
 
-    public function get_value_submission($field_values, $get_from_post_global_var = true)
-    {
-        // dd($_POST, $field_values);
-        // dd(parent::get_value_submission($field_values, $get_from_post_global_var));
-        return parent::get_value_submission($field_values, $get_from_post_global_var);
-    }
-
-    /**
-     * Whether this field expects an array during submission.
-     *
-     * @since 2.4
-     *
-     * @return bool
-     */
-    public function is_value_submission_array()
+    public function is_conditional_logic_supported()
     {
         return true;
     }
 
-    public function is_value_submission_empty($form_id)
+    protected function getFields($value): array
     {
-        return false;
+        $form = \GFAPI::get_form($this->formId);
+        dd($value, $form);
+        $zip = (new TextInput($form, $this, $value))
+                ->setFieldID(1)
+                ->setFieldName('zip')
+                ->setFieldText('Postcode')
+                ->setFieldValue('6811 LV')
+                ->setFieldPosition('left');
+
+        $homeNumber = (new TextInput($form, $this, $value))
+                ->setFieldID(2)
+                ->setFieldName('homeNumber')
+                ->setFieldText('Huisnummer')
+                ->setFieldValue('55')
+                ->setFieldPosition('left');
+
+        $homeNumberAddition = (new TextInput($form, $this, $value))
+                ->setFieldID(3)
+                ->setFieldName('homeNumberAddition')
+                ->setFieldText('Huisnummertoevoeging')
+                ->setFieldValue('14')
+                ->setFieldPosition('right');
+
+        $button = (new StringInput())
+            ->setContent('<input type="button" id="bag-lookup" value="Opzoeken">');
+
+        $result = (new StringInput())
+            ->setContent('<div class="result"></div>');
+
+        $city = (new TextInput($form, $this, $value))
+                ->setFieldID(4)
+                ->setFieldName('city')
+                ->setFieldText('City')
+                ->setReadonly()
+                ->setFieldPosition('full');
+
+        $address = (new TextInput($form, $this, $value))
+                ->setFieldID(5)
+                ->setFieldName('address')
+                ->setFieldText('Address')
+                ->setReadonly()
+                ->setFieldPosition('left');
+
+        $state = (new TextInput($form, $this, $value))
+                ->setFieldID(6)
+                ->setFieldName('state')
+                ->setFieldText('State')
+                ->setReadonly()
+                ->setFieldPosition('full');
+
+        return [
+            $zip,
+            $homeNumber,
+            $homeNumberAddition,
+            $button,
+            $result,
+            $city,
+            $address,
+            $state
+        ];
+    }
+
+    public function get_field_input($form, $value = '', $entry = null)
+    {
+        wp_register_script('bag_address-js', plugin_dir_url(GF_R_C_PLUGIN_FILE) . 'resources/js/bag-address.js');
+        wp_enqueue_script('bag_address-js');
+        wp_localize_script('bag_address-js', 'bag_address', ['ajaxurl' => admin_url('admin-ajax.php')]);
+
+        $output = implode(' ', array_map(function ($item) {
+            return $item->render();
+        }, $this->getFields($value)));
+
+        return "<div class='ginput_complex{$this->class_suffix} ginput_container ginput_container_bag_address' id='input_{$form['id']}_{intval($this->id)}'>
+                    {$output}
+                <div class='gf_clear gf_clear_complex'></div>
+            </div>";
+    }
+
+    public function get_form_editor_inline_script_on_page_render()
+    {
+
+        // set the default field label for the field
+        $script = sprintf("function SetDefaultValues_%s(field) {
+        field.label = '%s';
+        field.inputs = [
+			new Input(field.id + '.1', '%s'),
+			new Input(field.id + '.2', '%s'),
+			new Input(field.id + '.3', '%s'),
+			new Input(field.id + '.4', '%s'),
+			new Input(field.id + '.5', '%s'),
+			new Input(field.id + '.6', '%s')
+		];
+        }", $this->type, $this->get_form_editor_field_title(), 'Zip', 'HomeNumber', 'HomeNumberAddition', 'City', 'Address', 'State') . PHP_EOL;
+
+        return $script;
     }
 
     public function get_value_entry_detail($value, $currency = '', $use_text = false, $format = 'html', $media = 'screen')
     {
-        if (is_array($value) && ! empty($value)) {
-            $zip                         = trim($value[ $this->id . '.1' ]);
-            $homeNumber                  = trim($value[ $this->id . '.2' ]);
-            $homeNumberAddition          = trim($value[ $this->id . '.3' ]);
+        if (is_array($value)) {
+            $zip                         = trim(rgget($this->id . '.1', $value));
+            $homeNumber                  = trim(rgget($this->id . '.2', $value));
+            $homeNumberAddition          = trim(rgget($this->id . '.3', $value));
+            $city                        = trim(rgget($this->id . '.4', $value));
+            $address                     = trim(rgget($this->id . '.5', $value));
+            $state                       = trim(rgget($this->id . '.6', $value));
 
-            return $zip . ', ' . esc_html__('Qty: ', 'gravityforms') . $homeNumberAddition . ', ' . esc_html__('Price: ', 'gravityforms') . $homeNumber;
+            $return = $zip;
+            $return .= ! empty($return) && ! empty($homeNumber) ? " $homeNumber" : $homeNumber;
+            $return .= ! empty($return) && ! empty($homeNumberAddition) ? "$homeNumberAddition" : $homeNumberAddition;
+            $return .= ! empty($return) && ! empty($city) ? " $city" : $city;
+            $return .= ! empty($return) && ! empty($address) ? " $address" : $address;
+            $return .= ! empty($return) && ! empty($state) ? " $state" : $state;
         } else {
-            return $value;
+            $return = '';
         }
+
+        if ('html' === $format) {
+            $return = esc_html($return);
+        }
+
+        return $return;
     }
 }
