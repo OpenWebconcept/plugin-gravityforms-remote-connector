@@ -6,8 +6,8 @@ use GFAddOn;
 use GFForms;
 use GF_Fields;
 use Yard\Foundation\ServiceProvider;
+use Yard\GravityForms\BAGAddress\BAGAddressField;
 use Yard\GravityForms\BAGAddress\BAGLookup;
-use Yard\GravityForms\BAGAddress\Fields\BAGAddressField;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {

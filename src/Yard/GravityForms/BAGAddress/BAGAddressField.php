@@ -1,9 +1,9 @@
 <?php
 
-namespace Yard\GravityForms\BAGAddress\Fields;
+namespace Yard\GravityForms\BAGAddress;
 
 use GF_Field;
-use Yard\GravityForms\BAGAddress\Fields\Inputs\Text;
+use Yard\GravityForms\BAGAddress\Inputs\Text;
 
 if (! class_exists('\GFForms')) {
     die();
@@ -130,24 +130,40 @@ class BAGAddressField extends GF_Field
 			</div>";
     }
 
-    // public function get_value_submission($field_values, $get_from_post_global_var = true)
-    // {
-    //     // dd(parent::get_value_submission($field_values, $get_from_post_global_var));
-    //     return parent::get_value_submission($field_values, $get_from_post_global_var);
-    // }
+    public function get_value_submission($field_values, $get_from_post_global_var = true)
+    {
+        // dd($_POST, $field_values);
+        // dd(parent::get_value_submission($field_values, $get_from_post_global_var));
+        return parent::get_value_submission($field_values, $get_from_post_global_var);
+    }
+
+    /**
+     * Whether this field expects an array during submission.
+     *
+     * @since 2.4
+     *
+     * @return bool
+     */
+    public function is_value_submission_array()
+    {
+        return true;
+    }
+
+    public function is_value_submission_empty($form_id)
+    {
+        return false;
+    }
 
     public function get_value_entry_detail($value, $currency = '', $use_text = false, $format = 'html', $media = 'screen')
     {
         if (is_array($value) && ! empty($value)) {
-            $zip               = trim($value[ $this->id . '.zip' ]);
-            $homeNumber        = trim($value[ $this->id . '.home-number' ]);
-            $quantity          = trim($value[ $this->id . '.3' ]);
+            $zip                         = trim($value[ $this->id . '.1' ]);
+            $homeNumber                  = trim($value[ $this->id . '.2' ]);
+            $homeNumberAddition          = trim($value[ $this->id . '.3' ]);
 
-            $product = $zip . ', ' . esc_html__('Qty: ', 'gravityforms') . $quantity . ', ' . esc_html__('Price: ', 'gravityforms') . $homeNumber;
-
-            return $product;
+            return $zip . ', ' . esc_html__('Qty: ', 'gravityforms') . $homeNumberAddition . ', ' . esc_html__('Price: ', 'gravityforms') . $homeNumber;
         } else {
-            return 'no values';
+            return $value;
         }
     }
 }

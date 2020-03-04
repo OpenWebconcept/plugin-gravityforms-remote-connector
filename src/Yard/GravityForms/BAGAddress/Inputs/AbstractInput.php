@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\GravityForms\BAGAddress\Fields\Inputs;
+namespace Yard\GravityForms\BAGAddress\Inputs;
 
 use GFCommon;
 use GFFormsModel;
@@ -18,7 +18,6 @@ abstract class AbstractInput
 
     public function __construct(array $form, $field, $value)
     {
-        // dd($form, $field, $value);
         $this->form                                                             = $form;
         $this->formID                                                           = absint($this->form['id']);
         $this->field                                                            = $field;
@@ -49,10 +48,14 @@ abstract class AbstractInput
     public function getValue()
     {
         $value  = '';
+        if (empty($this->value)) {
+            return $value;
+        }
+
         if (is_array($this->value)) {
-            $value  = esc_attr(rgpost($this->id . '.'. $this->fieldID, $this->value));
-        } elseif (!empty($this->value)) {
-            $value = $this->value;
+            return esc_attr(rgpost($this->id . '.'. $this->fieldID, $this->value));
+        } else {
+            return $this->value;
         }
 
         return $value;
@@ -82,7 +85,7 @@ abstract class AbstractInput
     {
         if ($this->is_admin || ! rgar($this->getInput(), 'isHidden')) {
             if ($this->is_sub_label_above) {
-                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldName}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
+                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
 						<label for='{$this->field_id}_{$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_label' {$this->sub_label_class_attribute}>{$this->getLabel()}</label>
 						<input
 							type='text'
@@ -94,7 +97,7 @@ abstract class AbstractInput
 						/>
 					</span>";
             } else {
-                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldName}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
+                return "<span class='ginput_{$this->fieldPosition}{$this->class_suffix} {$this->fieldID}' id='{$this->field_id}_{$this->fieldID}_container' {$this->style}>
 						<input
 							type='text'
 							data-name='{$this->fieldName}'

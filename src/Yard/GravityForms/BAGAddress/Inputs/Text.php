@@ -1,6 +1,6 @@
 <?php
 
-namespace Yard\GravityForms\BAGAddress\Fields\Inputs;
+namespace Yard\GravityForms\BAGAddress\Inputs;
 
 class Text extends AbstractInput
 {
