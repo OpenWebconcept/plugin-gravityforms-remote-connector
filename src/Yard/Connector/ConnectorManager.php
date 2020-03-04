@@ -56,7 +56,7 @@ final class ConnectorManager
     public function find($identifier)
     {
         if (is_array($identifier)) {
-            $identifier = $identifier['remote-connector-addon']['remote-connector-connectors'];
+            $identifier = $identifier['remote-connector-addon']['remote-connector-connectors'] ?? '';
         }
 
         $connector = array_filter($this->all(), function ($connector) use ($identifier) {
