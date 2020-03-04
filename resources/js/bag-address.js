@@ -30,13 +30,16 @@ jQuery(document).ready( function() {
 			},
             beforeSend : function ( xhr ) {
                 button.val('Zoekende...').prop('disabled', 'disable');
+				document.querySelector("input[data-name='address']").setAttribute('value', '');
+				document.querySelector("input[data-name='city']").setAttribute('value', '');
+				document.querySelector("input[data-name='state']").setAttribute('value', '');
             },
             success: function(response) {
                 if(true === response.success) {
-                    document.querySelector("input[data-name='address']").setAttribute('value', response.data.results.street);
-                    document.querySelector("input[data-name='city']").setAttribute('value', response.data.results.city);
-                    document.querySelector("input[data-name='state']").setAttribute('value', response.data.results.state);
-					jQuery('.result').html();
+                    document.querySelector("input[data-name='address']").setAttribute('value', response.data.results.street ? response.data.results.street : '');
+                    document.querySelector("input[data-name='city']").setAttribute('value', response.data.results.city ? response.data.results.city : '');
+                    document.querySelector("input[data-name='state']").setAttribute('value', response.data.results.state ? response.data.results.state : '');
+					jQuery('.result').html(response.data.message);
                 } else {
 					jQuery('.result').html(response.data.message);
                 }

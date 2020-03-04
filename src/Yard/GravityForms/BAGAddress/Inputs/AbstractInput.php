@@ -94,13 +94,13 @@ abstract class AbstractInput
         if ($this->is_admin || ! rgar($this->getInput(), 'isHidden')) {
             if ($this->is_sub_label_above) {
                 return "{$this->getSpanField()}
-                        {$this->getLabelField()}
+						{$this->getLabelField()}
                         {$this->getInputField()}
                     </span>";
             } else {
                 return "{$this->getSpanField()}
                         {$this->getInputField()}
-                        {$this->getLabelField()}
+						{$this->getLabelField()}
                     </span>";
             }
         }

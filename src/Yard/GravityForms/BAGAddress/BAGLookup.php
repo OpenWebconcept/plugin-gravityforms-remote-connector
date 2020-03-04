@@ -34,7 +34,7 @@ class BAGLookup
         $data        = json_decode($body);
         $response    = $data->response;
         if (1 > $response->numFound) {
-            return \wp_send_json_success(
+            return \wp_send_json_error(
                 [
                     'message' => 'Geen resultaten gevonden',
                     'results' => []
@@ -45,7 +45,7 @@ class BAGLookup
         if (1 === $response->numFound) {
             $address = new BAGEntity($response->docs[0]);
             return wp_send_json_success([
-                'message' => 'Succes!',
+                'message' => '1 resultaat gevonden',
                 'results' => [
                     'street'               => $address->straatnaam,
                     'houseNumber'          => $address->huisnummer,
@@ -58,7 +58,12 @@ class BAGLookup
         }
 
         if (1 < $response->numFound) {
-            return \wp_send_json_success('Teveel resultaten gevonden. Probeer het adres specifieker te maken. Bijvoorbeeld met een huisnummer toevoeging.');
+            return \wp_send_json_error(
+                [
+                    'message' => 'Teveel resultaten gevonden. Probeer het adres specifieker te maken. Bijvoorbeeld met een huisnummer toevoeging',
+                    'results' => []
+                ]
+            );
         }
     }
 

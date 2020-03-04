@@ -38,42 +38,61 @@ class BAGAddressField extends GF_Field
     public function get_form_editor_field_settings()
     {
         return [
-            // 'conditional_logic_field_setting',
-            // 'prepopulate_field_setting',
-            // 'error_message_setting',
-            // 'label_setting',
-            // 'admin_label_setting',
-            // 'label_placement_setting',
-            // 'sub_label_placement_setting',
-            // 'default_input_values_setting',
-            // 'input_placeholders_setting',
-            // 'rules_setting',
-            // 'copy_values_option',
-            // 'description_setting',
-            // 'visibility_setting',
-            // 'css_class_setting',
-            'conditional_logic_field_setting',
-            'prepopulate_field_setting',
-            'error_message_setting',
-            'label_setting',
-            'admin_label_setting',
+            'sub_label_placement_setting',
+            'input_placeholders_setting',
             'rules_setting',
-            'duplicate_setting',
+            'conditional_logic_field_setting',
+            'label_setting',
+            'rules_setting',
             'description_setting',
             'css_class_setting',
         ];
     }
 
-    public function is_conditional_logic_supported()
+    /**
+     * This field type can be used when configuring conditional logic rules.
+     *
+     * @return bool
+     */
+    public function is_conditional_logic_supported(): bool
     {
         return true;
+    }
+
+    /**
+     * Override this method to perform custom validation logic.
+     *
+     * Return the result (bool) by setting $this->failed_validation.
+     * Return the validation message (string) by setting $this->validation_message.
+     *
+     * @param string|array $value The field value from get_value_submission().
+     * @param array        $form  The Form Object currently being processed.
+     */
+    public function validate($value, $form)
+    {
+        if ($this->isRequired) {
+            $zip                  = rgar($value, $this->id . '.1');
+            $homeNumber           = rgar($value, $this->id . '.2');
+
+            if (empty($zip) && empty($homeNumber)) {
+                $this->failed_validation  = true;
+                $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', 'gravityforms') : $this->errorMessage;
+            }
+        }
+
+        $city                     = rgar($value, $this->id . '.4');
+        $address                  = rgar($value, $this->id . '.5');
+        $state                    = rgar($value, $this->id . '.6');
+        if (empty($city) && empty($address) && empty($state)) {
+            $this->failed_validation  = true;
+            $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', 'gravityforms') : $this->errorMessage;
+        }
     }
 
     protected function getFields($value): array
     {
         $form = \GFAPI::get_form($this->formId);
-        dd($value, $form);
-        $zip = (new TextInput($form, $this, $value))
+        $zip  = (new TextInput($form, $this, $value))
                 ->setFieldID(1)
                 ->setFieldName('zip')
                 ->setFieldText('Postcode')
