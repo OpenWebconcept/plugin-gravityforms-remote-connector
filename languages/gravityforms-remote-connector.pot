@@ -1,0 +1,178 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravityforms Remote Connector\n"
+"POT-Creation-Date: 2020-03-05 11:13+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Language-Team: Yard Internet <info@yard.nl>\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-KeywordsList: __;_x;_e;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
+"X-Poedit-Basepath: ..\n"
+"Last-Translator: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: tests\n"
+"X-Poedit-SearchPathExcluded-1: docs\n"
+"X-Poedit-SearchPathExcluded-2: vendor\n"
+"X-Poedit-SearchPathExcluded-3: languages\n"
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:27
+msgid "BAG Address"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:93
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:102
+msgid "This field is required. Please enter a complete address."
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:112
+msgid "Postcode"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:119
+msgid "Homenumber"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:126
+msgid "Homenumber addition"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:131
+msgid "Search"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:139
+msgid "Address"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:146
+msgid "City"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/BAGAddressField.php:153
+msgid "State"
+msgstr ""
+
+#: src/Yard/GravityForms/BAGAddress/Bagger.php:26
+msgid "Attendees"
+msgstr ""
+
+#: src/Yard/GravityForms/GravityFormsAddon.php:89
+msgid "Geen remote connector"
+msgstr ""
+
+#: src/Yard/GravityForms/GravityFormsAddon.php:112
+msgid "Remote Connector settings"
+msgstr ""
+
+#: src/Yard/GravityForms/GravityFormsAddon.php:115
+msgid "Registered Connectors"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/IrmaLaunchQR.php:33
+msgid "Get IRMA attributes"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/IrmaLaunchQR.php:54
+msgid "Please fetch your IRMA attributes."
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:3
+msgid "IRMA Attribute"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:13
+msgid "IRMA Header text"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:21
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:75
+msgid "QR Code"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:25
+msgid "Display as pop-up?"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:30
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:86
+msgid "Button label"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:37
+msgid "ID attribute fullname"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:45
+msgid "ID attribute BSN"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:54
+msgid "ID attribute city"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:64
+msgid "City to check"
+msgstr ""
+
+#: src/Yard/IRMA/GravityForms/Fields/resources/irma-form-settings.php:81
+msgid "Display as pop-up"
+msgstr ""
+
+#: src/Yard/IRMA/IRMAAddOn.php:119
+msgid "Irma Settings"
+msgstr ""
+
+#: src/Yard/IRMA/IRMAAddOn.php:123 src/Yard/IRMA/IRMAAddOn.php:124
+msgid "Server endpoint"
+msgstr ""
+
+#: src/Yard/IRMA/IRMAAddOn.php:133 src/Yard/IRMA/IRMAAddOn.php:134
+msgid "Server token"
+msgstr ""
+
+#: src/Yard/IRMA/IRMAAddOn.php:143 src/Yard/IRMA/IRMAAddOn.php:144
+msgid "BSN attribute veldnaam"
+msgstr ""
+
+#: src/Yard/OpenZaak/Addon.php:84
+msgid "OpenZaak Settings"
+msgstr ""
+
+#: src/Yard/OpenZaak/Addon.php:88
+msgid "OpenZaak url"
+msgstr ""
+
+#: src/Yard/OpenZaak/Addon.php:97
+msgid "OpenZaak token"
+msgstr ""
+
+#: src/Yard/OpenZaak/Addon.php:106
+msgid "RSIN identifier"
+msgstr ""
+
+#: src/Yard/OpenZaak/Addon.php:115
+msgid "Attributen"
+msgstr ""
+
+#: src/Yard/OpenZaak/GravityForms/views/select-attribute.php:6
+msgid "Case eigenschap"
+msgstr ""
+
+#: src/Yard/OpenZaak/GravityForms/views/select-attribute.php:8
+msgid "Kies attribuut"
+msgstr ""
+
+#: src/Yard/OpenZaak/views/add-attributes.php:8
+msgid "Attribuut toevoegen"
+msgstr ""
+
+#: src/Yard/OpenZaak/views/add-attributes.php:11
+msgid "Naam ter herkenning"
+msgstr ""
+
+#: src/Yard/OpenZaak/views/add-attributes.php:12
+msgid "Attribuut naam van OpenZaak"
+msgstr ""

@@ -34,6 +34,7 @@
       "@integration"
     ],
     "cs": "./vendor/bin/phpcs",
-    "csfix": "./vendor/bin/phpcbf"
+    "csfix": "./vendor/bin/phpcbf",
+    "phpstan": "./vendor/bin/phpstan"
   }
 }

@@ -86,7 +86,7 @@ class GravityFormsAddon extends GFAddOn
     {
         $noConnector = [
             [
-            'label' => esc_html__('Geen remote connector', config('core.text_domain')),
+            'label' => esc_html__(__('No remote connector', config('core.text_domain'))),
             'value' => 'no-remote-connector'
             ]
         ];
@@ -109,10 +109,10 @@ class GravityFormsAddon extends GFAddOn
     {
         return [
         [
-            'title'  => esc_html__('Remote Connector settings', config('core.text_domain')),
+            'title'  => esc_html__('Remote connector settings', config('core.text_domain')),
             'fields' => [
                 [
-                    'label'   => esc_html__('Registered Connectors', config('core.text_domain')),
+                    'label'   => esc_html__('Registered connectors', config('core.text_domain')),
                     'type'    => 'select',
                     'name'    => 'remote-connector-connectors',
                     'choices' => $this->remoteConnectorChoicesAsArray()

@@ -154,3 +154,8 @@
 .validation_message {
   display: none;
 }
+
+.bag-search-button {
+	padding: 7px 4px !important;
+	font-size: unset;
+}

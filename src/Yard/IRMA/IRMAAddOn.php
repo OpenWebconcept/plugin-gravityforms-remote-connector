@@ -104,10 +104,10 @@ class IRMAAddOn extends GFAddOn
 
     public function filter_gform_tooltips($tooltips)
     {
-        $tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname.', GF_R_C_PLUGIN_SLUG);
-        $tooltips['irma_header_attribute_bsn_id']      = esc_html('Fill in the ID of the field used for the BSN.', GF_R_C_PLUGIN_SLUG);
-        $tooltips['irma_header_city_id']               = esc_html('Fill in the ID of the field used for the city.', GF_R_C_PLUGIN_SLUG);
-        $tooltips['irma_header_city']                  = esc_html('Fill in the city that you would like to check on.', GF_R_C_PLUGIN_SLUG);
+        $tooltips['irma_header_attribute_fullname_id'] = esc_html('Fill in the ID of the field used for the fullname.', config('core.text_domain'));
+        $tooltips['irma_header_attribute_bsn_id']      = esc_html('Fill in the ID of the field used for the BSN.', config('core.text_domain'));
+        $tooltips['irma_header_city_id']               = esc_html('Fill in the ID of the field used for the city.', config('core.text_domain'));
+        $tooltips['irma_header_city']                  = esc_html('Fill in the city that you would like to check on.', config('core.text_domain'));
 
         return $tooltips;
     }
@@ -116,12 +116,12 @@ class IRMAAddOn extends GFAddOn
     {
         return [
             [
-                'title'  => esc_html__('Irma Settings', 'irma'),
+                'title'  => esc_html__('Irma Settings', config('core.text_domain')),
                 'fields' => [
                     [
                         'name'              => 'irma_server_endpoint',
-                        'tooltip'           => esc_html__('Server endpoint', 'irma'),
-                        'label'             => esc_html__('Server endpoint', 'irma'),
+                        'tooltip'           => esc_html__('Server endpoint', config('core.text_domain')),
+                        'label'             => esc_html__('Server endpoint', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
@@ -130,8 +130,8 @@ class IRMAAddOn extends GFAddOn
                     ],
                     [
                         'name'              => 'irma_server_token',
-                        'tooltip'           => esc_html__('Server token', 'irma'),
-                        'label'             => esc_html__('Server token', 'irma'),
+                        'tooltip'           => esc_html__('Server token', config('core.text_domain')),
+                        'label'             => esc_html__('Server token', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
@@ -140,8 +140,8 @@ class IRMAAddOn extends GFAddOn
                     ],
                     [
                         'name'              => 'irma_bsn_attribute_field_name',
-                        'tooltip'           => esc_html__('BSN attribute veldnaam', 'irma'),
-                        'label'             => esc_html__('BSN attribute veldnaam', 'irma'),
+                        'tooltip'           => esc_html__('BSN attribute fieldname', config('core.text_domain')),
+                        'label'             => esc_html__('BSN attribute fieldname', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [

@@ -2,7 +2,7 @@
 
 namespace Yard\GravityForms\BAGAddress\Inputs;
 
-use GFCommon;
+use GFAPI;
 use GFFormsModel;
 
 abstract class AbstractInput
@@ -16,9 +16,8 @@ abstract class AbstractInput
     /** @var string Set default value of input. */
     protected $value;
 
-    public function __construct(array $form, $field, $value)
+    public function __construct($field, $value)
     {
-        $this->form                        = $form;
         $this->field                       = $field;
         $this->value                       = $value;
         $this->css_prefix                  = $this->field->is_entry_detail ? "_admin" : "";
@@ -28,12 +27,12 @@ abstract class AbstractInput
         $this->required_attribute          = $this->field->isRequired ? 'aria-required="true"' : '';
         $this->invalid_attribute           = $this->field->failed_validation ? 'aria-invalid="true"' : 'aria-invalid="false"';
         $this->field_sub_label_placement   = $this->field->subLabelPlacement;
-        $this->is_sub_label_above          = 'above' == $this->field_sub_label_placement || (empty($this->field_sub_label_placement) && 'above' == rgar($this->form, 'subLabelPlacement'));
+        $this->is_sub_label_above          = 'above' == $this->field_sub_label_placement || (empty($this->field_sub_label_placement) && 'above' == rgar(GFAPI::get_form($field->formId), 'subLabelPlacement'));
         $this->sub_label_class_attribute   = 'hidden_label' == $this->field_sub_label_placement ? "class='hidden_sub_label screen-reader-text'" : '';
     }
 
     /**
-     * Get the submitted value.
+     * Get the submitted value
      *
      * @return string|array
      */
@@ -49,60 +48,10 @@ abstract class AbstractInput
     /**
      * Return the input object.
      *
-     * @return void
+     * @return array|null
      */
     public function getInput()
     {
         return GFFormsModel::get_input($this->field, $this->field->id . '.'. $this->fieldID);
-    }
-
-    public function getPlaceholder()
-    {
-        return GFCommon::get_input_placeholder_attribute($this->getInput());
-    }
-
-    public function getLabel()
-    {
-        return '' != rgar($this->getInput(), 'customLabel') ? $this->getInput()['customLabel'] : $this->fieldText;
-    }
-
-    protected function getSpanField(): string
-    {
-        return "<span id='input_{$this->field->id}_{$this->form['id']}.{$this->fieldID}.container' class='ginput_{$this->fieldPosition} {$this->css_prefix} {$this->fieldID}' {$this->style}>";
-    }
-
-    protected function getLabelField(): string
-    {
-        return "<label for='{$this->field->id}_{$this->fieldID}' id='{$this->field->id}_{$this->fieldID}_label' {$this->sub_label_class_attribute}>{$this->getLabel()}</label>";
-    }
-
-    protected function getInputField(): string
-    {
-        return "<input
-                    type='text'
-                    data-name='{$this->fieldName}'
-                    name='input_{$this->field->id}.{$this->fieldID}'
-                    id='input_{$this->field->id}_{$this->form['id']}_{$this->fieldID}'
-                    value='{$this->getValue()}'
-                    {$this->field->get_tabindex()} {$this->disabled_text} {$this->readonly} {$this->getPlaceholder()} {$this->required_attribute} {$this->invalid_attribute}
-                    aria-label='{$this->fieldName}'
-                />";
-    }
-
-    public function render()
-    {
-        if ($this->is_admin || ! rgar($this->getInput(), 'isHidden')) {
-            if ($this->is_sub_label_above) {
-                return "{$this->getSpanField()}
-						{$this->getLabelField()}
-                        {$this->getInputField()}
-                    </span>";
-            } else {
-                return "{$this->getSpanField()}
-                        {$this->getInputField()}
-						{$this->getLabelField()}
-                    </span>";
-            }
-        }
     }
 }

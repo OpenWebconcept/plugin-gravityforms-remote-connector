@@ -28,9 +28,9 @@ class IrmaLaunchQR extends IrmaField
         }
 
         $args = [
-            'id'			     => $id,
+            'id'			       => $id,
             'formId'		    => $formId,
-            'buttonLabel'	=> empty($this->irmaButtonLabel) ? __('Get IRMA attributes', GF_R_C_PLUGIN_SLUG) : $this->irmaButtonLabel,
+            'buttonLabel'	=> empty($this->irmaButtonLabel) ? __('Get IRMA attributes', config('core.text_domain')) : $this->irmaButtonLabel,
             'popup' 		    => !empty($this->irmaPopup) && $this->irmaPopup,
         ];
 
@@ -51,7 +51,7 @@ class IrmaLaunchQR extends IrmaField
 
         if (empty($sessionToken)) {
             $this->failed_validation  = true;
-            $this->validation_message = empty($this->errorMessage) ? __('Please fetch your IRMA attributes.', GF_R_C_PLUGIN_SLUG) : $this->errorMessage;
+            $this->validation_message = empty($this->errorMessage) ? __('Please fetch your IRMA attributes.', config('core.text_domain')) : $this->errorMessage;
             return;
         }
     }

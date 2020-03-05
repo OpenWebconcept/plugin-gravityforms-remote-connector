@@ -51,6 +51,7 @@ class Plugin
     public function __construct($rootPath = '')
     {
         $this->rootPath = $rootPath;
+        load_plugin_textdomain($this->getName(), false, $this->getName() . '/languages/');
     }
 
     /**
@@ -76,8 +77,8 @@ class Plugin
      */
     public function enqueueScripts()
     {
-        wp_enqueue_style(GF_R_C_ROOT_PATH, $this->resourceUrl(GF_R_C_PLUGIN_SLUG .'.css'), false);
-        wp_enqueue_script('irma-js', $this->resourceUrl('irma.js'), false);
+        wp_enqueue_style(GF_R_C_ROOT_PATH, $this->resourceUrl(GF_R_C_PLUGIN_SLUG .'.css', 'css'), false);
+        wp_enqueue_script('irma-js', $this->resourceUrl('irma.js', 'js'), false);
     }
 
     /**
@@ -117,9 +118,10 @@ class Plugin
      *
      * @return string
      */
-    public function resourceUrl($file)
+    public function resourceUrl($file, $directory = '')
     {
-        return plugins_url('resources/'.$file, GF_R_C_PLUGIN_SLUG .'/plugin.php');
+        $directory = !empty($directory) ? $directory .'/' : '';
+        return plugins_url("resources/{$directory}/{$file}", GF_R_C_PLUGIN_SLUG .'/plugin.php');
     }
 
     /**

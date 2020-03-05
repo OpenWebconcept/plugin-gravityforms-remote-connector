@@ -133,7 +133,7 @@ class IRMAServiceProvider extends ServiceProvider
      */
     public function enqueueScripts($form, $is_ajax): void
     {
-        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js'), ['jquery'], date('ymd'), true);
+        wp_register_script('irma-gf-js', $this->plugin->resourceUrl('irma-gf.js', 'js'), ['jquery'], date('ymd'), true);
 
         wp_localize_script('irma-gf-js', 'irma_gf', [
             'handle_url'  => get_rest_url(null, 'irma/v1/gf/handle'),

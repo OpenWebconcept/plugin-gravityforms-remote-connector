@@ -2,28 +2,57 @@
 
 namespace Yard\GravityForms\BAGAddress;
 
+use WP_Error;
+
 class BAGLookup
 {
+    /**
+     * Zip code string
+     *
+     * @var string
+     */
     protected $zip = '';
 
+    /**
+     * Homenumber string
+     *
+     * @var string
+     */
     protected $homeNumber = '';
 
+    /**
+     * Homenumber addition string
+     *
+     * @var string
+     */
     protected $homeNumberAddition = '';
 
-    protected $url = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?q=postcode:{zip}%20and%20huisnummer:{homeNumber}%20and%20huisnummertoevoeging:{homeNumberAddition}%20and%20type:adres';
+    /**
+     * URL for BAG.
+     *
+     * @var string
+     */
+    private $url = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?q=postcode:{zip}%20and%20huisnummer:{homeNumber}%20and%20huisnummertoevoeging:{homeNumberAddition}%20and%20type:adres';
 
     final public function __construct()
     {
-        $this->zip                   = $this->formatZip();
-        $this->homeNumber            = $this->formatHomeNumber();
-        $this->homeNumberAddition    = $this->formatHomeNumberAddition();
+        $this->zip                   = $this->cleanUpInput('zip');
+        $this->homeNumber            = $this->cleanUpInput('homeNumber');
+        $this->homeNumberAddition    = $this->cleanUpInput('homeNumberAddition');
         $this->url                   = $this->parseURLvariables();
     }
 
-    protected function handleResponse($response)
+    /**
+     * Process the incoming response object.
+     *
+     * @param array|WP_Error $response HTTP response.
+     *
+     * @return string
+     */
+    protected function processResponse($response): string
     {
         if (is_wp_error($response)) {
-            return \wp_send_json_error(
+            return wp_send_json_error(
                 [
                     'message' => 'Er is een fout opgetreden',
                     'results' => $response
@@ -34,9 +63,9 @@ class BAGLookup
         $data        = json_decode($body);
         $response    = $data->response;
         if (1 > $response->numFound) {
-            return \wp_send_json_error(
+            return wp_send_json_error(
                 [
-                    'message' => 'Geen resultaten gevonden',
+                    'message' => __('No results found', config('core.text_domain')),
                     'results' => []
                 ]
             );
@@ -45,34 +74,42 @@ class BAGLookup
         if (1 === $response->numFound) {
             $address = new BAGEntity($response->docs[0]);
             return wp_send_json_success([
-                'message' => '1 resultaat gevonden',
+                'message' => __('1 result found', config('core.text_domain')),
                 'results' => [
-                    'street'               => $address->straatnaam,
-                    'houseNumber'          => $address->huisnummer,
-                    'city'                 => $address->woonplaatsnaam,
-                    'zip'                  => $address->postcode,
-                    'state'                => $address->provincienaam,
-                    'displayname'          => $address->weergavenaam
+                    'street'                 => $address->straatnaam,
+                    'houseNumber'            => $address->huisnummer,
+                    'city'                   => $address->woonplaatsnaam,
+                    'zip'                    => $address->postcode,
+                    'state'                  => $address->provincienaam,
+                    'displayname'            => $address->weergavenaam
                 ]
             ]);
         }
 
-        if (1 < $response->numFound) {
-            return \wp_send_json_error(
-                [
-                    'message' => 'Teveel resultaten gevonden. Probeer het adres specifieker te maken. Bijvoorbeeld met een huisnummer toevoeging',
-                    'results' => []
-                ]
-            );
-        }
+        return wp_send_json_error(
+            [
+                'message' => __('Found too many results. Try to make the address more specific. For example with a house number addition', config('core.text_domain')),
+                'results' => []
+            ]
+        );
     }
 
+    /**
+     * Static constructor
+     *
+     * @return self
+     */
     public static function make(): self
     {
         return new static();
     }
 
-    protected function parseURLvariables(): string
+    /**
+     * Parse the variables in the BAG url.
+     *
+     * @return string
+     */
+    private function parseURLvariables(): string
     {
         return str_replace(
             [
@@ -89,13 +126,20 @@ class BAGLookup
         );
     }
 
-    public function execute()
+    /**
+     * Actually execute the remote request.
+     *
+     * @return string
+     */
+    public function execute(): string
     {
-        return $this->handleResponse($this->call());
+        return $this->processResponse($this->call());
     }
 
     /**
      * Makes the call to remote.
+     *
+     * @return WP_Error|array The response or WP_Error on failure.
      */
     protected function call()
     {
@@ -106,35 +150,17 @@ class BAGLookup
      * Format the zipcode.
      * Removes any spaces, escapes weird characters.
      *
-     * @return string
-     */
-    protected function formatZip(): string
-    {
-        $zip = isset($_POST['zip']) ? esc_attr(trim($_POST['zip'])) : '';
-        return preg_replace('/\s/', '', $zip);
-    }
-
-    /**
-     * Format the homenumber.
-     * Removes any spaces, escapes weird characters.
+     * @param string $input
      *
      * @return string
      */
-    protected function formatHomeNumber(): string
+    protected function cleanUpInput($input = ''): string
     {
-        $homeNumber = isset($_POST['homeNumber']) ? esc_attr(trim($_POST['homeNumber'])) : '';
-        return preg_replace('/\s/', '', $homeNumber);
-    }
-
-    /**
-     * Format the homeNumberAddition.
-     * Removes any spaces, escapes weird characters.
-     *
-     * @return string
-     */
-    protected function formatHomeNumberAddition(): string
-    {
-        $homeNumberAddition = isset($_POST['homeNumberAddition']) ? esc_attr(trim($_POST['homeNumberAddition'])) : '';
-        return preg_replace('/\s/', '', $homeNumberAddition);
+        $output = isset($_POST[$input]) ? esc_attr(trim($_POST[$input])) : '';
+        $output = preg_replace('/\s/', '', $output);
+        if ($output === null) {
+            return '';
+        }
+        return $output;
     }
 }

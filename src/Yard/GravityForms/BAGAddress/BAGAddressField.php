@@ -24,9 +24,18 @@ class BAGAddressField extends GF_Field
      */
     public function get_form_editor_field_title()
     {
-        return esc_attr__('BAG Address', GF_R_C_PLUGIN_SLUG);
+        return esc_attr__('BAG Address', config('core.text_domain'));
     }
 
+    /**
+     * Returns the field button properties for the form editor. The array contains two elements:
+     * 'group' => 'standard_fields' // or  'advanced_fields', 'post_fields', 'pricing_fields'
+     * 'text'  => 'Button text'
+     *
+     * Built-in fields don't need to implement this because the buttons are added in sequence in GFFormDetail
+     *
+     * @return array
+     */
     public function get_form_editor_button()
     {
         return [
@@ -35,6 +44,11 @@ class BAGAddressField extends GF_Field
         ];
     }
 
+    /**
+     * Returns the class names of the settings which should be available on the field in the form editor.
+     *
+     * @return array
+     */
     public function get_form_editor_field_settings()
     {
         return [
@@ -67,6 +81,8 @@ class BAGAddressField extends GF_Field
      *
      * @param string|array $value The field value from get_value_submission().
      * @param array        $form  The Form Object currently being processed.
+     *
+     * @return void
      */
     public function validate($value, $form)
     {
@@ -76,7 +92,7 @@ class BAGAddressField extends GF_Field
 
             if (empty($zip) && empty($homeNumber)) {
                 $this->failed_validation  = true;
-                $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', 'gravityforms') : $this->errorMessage;
+                $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', config('core.text_domain')) : $this->errorMessage;
             }
         }
 
@@ -85,73 +101,72 @@ class BAGAddressField extends GF_Field
         $state                    = rgar($value, $this->id . '.6');
         if (empty($city) && empty($address) && empty($state)) {
             $this->failed_validation  = true;
-            $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', 'gravityforms') : $this->errorMessage;
+            $this->validation_message = empty($this->errorMessage) ? esc_html__('This field is required. Please enter a complete address.', config('core.text_domain')) : $this->errorMessage;
         }
     }
 
+    /**
+     * Return all the fields available.
+     *
+     * @param string $value
+     *
+     * @return []
+     */
     protected function getFields($value): array
     {
-        $form = \GFAPI::get_form($this->formId);
-        $zip  = (new TextInput($form, $this, $value))
+        return [
+            (new TextInput($this, $value))
                 ->setFieldID(1)
                 ->setFieldName('zip')
-                ->setFieldText('Postcode')
+                ->setFieldText(__('Postcode', config('core.text_domain')))
                 ->setFieldValue('6811 LV')
-                ->setFieldPosition('left');
-
-        $homeNumber = (new TextInput($form, $this, $value))
+                ->setFieldPosition('left'),
+            (new TextInput($this, $value))
                 ->setFieldID(2)
                 ->setFieldName('homeNumber')
-                ->setFieldText('Huisnummer')
+                ->setFieldText(__('Homenumber', config('core.text_domain')))
                 ->setFieldValue('55')
-                ->setFieldPosition('left');
-
-        $homeNumberAddition = (new TextInput($form, $this, $value))
+                ->setFieldPosition('right'),
+            (new TextInput($this, $value))
                 ->setFieldID(3)
                 ->setFieldName('homeNumberAddition')
-                ->setFieldText('Huisnummertoevoeging')
+                ->setFieldText(__('Homenumber addition', config('core.text_domain')))
                 ->setFieldValue('14')
-                ->setFieldPosition('right');
-
-        $button = (new StringInput())
-            ->setContent('<input type="button" id="bag-lookup" value="Opzoeken">');
-
-        $result = (new StringInput())
-            ->setContent('<div class="result"></div>');
-
-        $city = (new TextInput($form, $this, $value))
-                ->setFieldID(4)
-                ->setFieldName('city')
-                ->setFieldText('City')
-                ->setReadonly()
-                ->setFieldPosition('full');
-
-        $address = (new TextInput($form, $this, $value))
+                ->setFieldPosition('left'),
+            (new StringInput())
+            ->setContent(sprintf('<span class="ginput_right"><label>&nbsp;</label><input type="submit" class="bag-search-button button" id="bag-lookup" value="%s"></span>', __('Search', config('core.text_domain')))),
+            (new StringInput())
+            ->setContent('<div class="result" style="display:block; height: 25px"></div>'),
+            (new TextInput($this, $value))
                 ->setFieldID(5)
                 ->setFieldName('address')
-                ->setFieldText('Address')
+                ->setFieldText(__('Address', config('core.text_domain')))
                 ->setReadonly()
-                ->setFieldPosition('left');
-
-        $state = (new TextInput($form, $this, $value))
+                ->setFieldPosition('full'),
+            (new TextInput($this, $value))
+                ->setFieldID(4)
+                ->setFieldName('city')
+                ->setFieldText(__('City', config('core.text_domain')))
+                ->setReadonly()
+                ->setFieldPosition('left'),
+            (new TextInput($this, $value))
                 ->setFieldID(6)
                 ->setFieldName('state')
-                ->setFieldText('State')
+                ->setFieldText(__('State', config('core.text_domain')))
                 ->setReadonly()
-                ->setFieldPosition('full');
-
-        return [
-            $zip,
-            $homeNumber,
-            $homeNumberAddition,
-            $button,
-            $result,
-            $city,
-            $address,
-            $state
+                ->setFieldPosition('right')
         ];
     }
 
+    /**
+     * Returns the field inner markup.
+     *
+     * @param array        $form  The Form Object currently being processed.
+     * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
+     * @param null|array   $entry Null or the Entry Object currently being edited.
+     *
+     * @return string
+     */
     public function get_field_input($form, $value = '', $entry = null)
     {
         wp_register_script('bag_address-js', plugin_dir_url(GF_R_C_PLUGIN_FILE) . 'resources/js/bag-address.js');
@@ -168,6 +183,11 @@ class BAGAddressField extends GF_Field
             </div>";
     }
 
+    /**
+     * Returns the scripts to be included for this field type in the form editor.
+     *
+     * @return string
+     */
     public function get_form_editor_inline_script_on_page_render()
     {
 
@@ -187,6 +207,19 @@ class BAGAddressField extends GF_Field
         return $script;
     }
 
+    /**
+     * Format the entry value for display on the entry detail page and for the {all_fields} merge tag.
+     *
+     * Return a value that's safe to display for the context of the given $format.
+     *
+     * @param string|array $value    The field value.
+     * @param string       $currency The entry currency code.
+     * @param bool|false   $use_text When processing choice based fields should the choice text be returned instead of the value.
+     * @param string       $format   The format requested for the location the merge is being used. Possible values: html, text or url.
+     * @param string       $media    The location where the value will be displayed. Possible values: screen or email.
+     *
+     * @return string
+     */
     public function get_value_entry_detail($value, $currency = '', $use_text = false, $format = 'html', $media = 'screen')
     {
         if (is_array($value)) {

@@ -5,11 +5,11 @@
 			<tbody>
 				<tr id="gaddon-setting-row-openzaak_attribute">
 					<th>
-						<?php _e('Attribuut toevoegen', 'irma'); ?>
+						<?php _e('Add attribute', config('core.text_domain')); ?>
 					</th>
 					<td>
-						<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Naam ter herkenning', 'irma'); ?>" required>
-						<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribuut naam van OpenZaak', 'irma'); ?>" required>
+						<input type="text" name="openzaak_attribute_name" id="openzaak_attribute_name" class="openzaak-form-input" placeholder="<?php _e('Name as identification', config('core.text_domain')); ?>" required>
+						<input type="text" name="openzaak_attribute_value" id="openzaak_attribute_value" class="openzaak-form-input" placeholder="<?php _e('Attribute name of OpenZaak', config('core.text_domain')); ?>" required>
 					</td>
 				</tr>
 			</tbody>

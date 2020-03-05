@@ -81,11 +81,11 @@ class Addon extends GFAddOn
     {
         return [
             [
-                'title'  => esc_html__('OpenZaak Settings', 'irma'),
+                'title'  => esc_html__('OpenZaak Settings', config('core.text_domain')),
                 'fields' => [
                     [
                         'name'              => 'openzaak_url',
-                        'label'             => esc_html__('OpenZaak url', 'irma'),
+                        'label'             => esc_html__('OpenZaak url', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
@@ -94,7 +94,7 @@ class Addon extends GFAddOn
                     ],
                     [
                         'name'              => 'openzaak_token',
-                        'label'             => esc_html__('OpenZaak token', 'irma'),
+                        'label'             => esc_html__('OpenZaak token', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
@@ -103,7 +103,7 @@ class Addon extends GFAddOn
                     ],
                     [
                         'name'              => 'openzaak_rsin',
-                        'label'             => esc_html__('RSIN identifier', 'irma'),
+                        'label'             => esc_html__('RSIN identifier', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'feedback_callback' => [
@@ -112,7 +112,7 @@ class Addon extends GFAddOn
                     ],
                     [
                         'name'  => 'openzaak_attributes',
-                        'label' => esc_html__('Attributen', 'irma'),
+                        'label' => esc_html__('Attributes', config('core.text_domain')),
                         'type'  => 'repeatable_group',
                         'args'  => [
                             [
