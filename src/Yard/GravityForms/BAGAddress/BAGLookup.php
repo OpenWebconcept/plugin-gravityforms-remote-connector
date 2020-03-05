@@ -32,7 +32,7 @@ class BAGLookup
      *
      * @var string
      */
-    private $url = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?q=postcode:{zip}%20and%20huisnummer:{homeNumber}%20and%20huisnummertoevoeging:{homeNumberAddition}%20and%20type:adres';
+    private $url = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?q=';
 
     final public function __construct()
     {
@@ -111,19 +111,18 @@ class BAGLookup
      */
     private function parseURLvariables(): string
     {
-        return str_replace(
-            [
-                '{zip}',
-                '{homeNumber}',
-                '{homeNumberAddition}'
-            ],
-            [
-                $this->zip,
-                $this->homeNumber,
-                $this->homeNumberAddition
-            ],
-            $this->url
-        );
+        $filteredParameters = array_filter([
+            'postcode' => $this->zip,
+            'huisnummer' => $this->homeNumber,
+            'huisnummertoevoeging' => $this->homeNumberAddition,
+            'type' => 'adres'
+        ], function ($item) {
+            return !empty($item);
+        });
+
+        $query = http_build_query($filteredParameters, null, '%20and%20');
+        $query = str_replace('=', ':', $query);
+        return sprintf('%s%s', $this->url, $query);
     }
 
     /**

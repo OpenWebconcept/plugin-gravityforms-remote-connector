@@ -119,19 +119,16 @@ class BAGAddressField extends GF_Field
                 ->setFieldID(1)
                 ->setFieldName('zip')
                 ->setFieldText(__('Postcode', config('core.text_domain')))
-                ->setFieldValue('6811 LV')
                 ->setFieldPosition('left'),
             (new TextInput($this, $value))
                 ->setFieldID(2)
                 ->setFieldName('homeNumber')
                 ->setFieldText(__('Homenumber', config('core.text_domain')))
-                ->setFieldValue('55')
                 ->setFieldPosition('right'),
             (new TextInput($this, $value))
                 ->setFieldID(3)
                 ->setFieldName('homeNumberAddition')
                 ->setFieldText(__('Homenumber addition', config('core.text_domain')))
-                ->setFieldValue('14')
                 ->setFieldPosition('left'),
             (new StringInput())
             ->setContent(sprintf('<span class="ginput_right"><label>&nbsp;</label><input type="submit" class="bag-search-button button" id="bag-lookup" value="%s"></span>', __('Search', config('core.text_domain')))),
