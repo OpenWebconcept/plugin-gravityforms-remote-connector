@@ -28,7 +28,7 @@ class GravityFormsServiceProvider extends ServiceProvider
 
         GravityFormsAddon::get_instance();
 
-        add_action('wp_ajax_no_priv_bag_address_lookup', [new BAGLookup, 'execute']);
+        add_action('wp_ajax_nopriv_bag_address_lookup', [new BAGLookup, 'execute']);
         add_action('wp_ajax_bag_address_lookup', [new BAGLookup, 'execute']);
 
         add_action('gform_loaded', function () {
