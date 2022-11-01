@@ -1,0 +1,19 @@
+name: "plugin-gravityforms-remote-connector"
+
+publiccodeYmlVersion: 1.0
+url: "https://github.com/OpenWebconcept/plugin-gravityforms-remote-connector"
+
+platforms:
+  - "web"
+
+categories:
+  - "application-development"
+
+softwareType: "softwareAddon"
+
+description:
+  localisedName: "plugin-gravityforms-remote-connector"
+
+nl:
+  commonground:
+    layerType: "service"
